@@ -43,18 +43,18 @@
                             </td>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->tanggal }}</td>
-                            <td>
+                            <td nowrap>
                                 @if ($row->registrasi)
                                     <small>
                                         No. Registrasi : {{ $row->registrasi->id }}<br>
                                         Tgl. Registrasi : {{ $row->registrasi->tanggal }}<br>
-                                        No. RM : {{ $row->registrasi->pasien->id }}<br>
-                                        Nama Pasien : {{ $row->registrasi->pasien->nama }}<br>
-                                        Alamat : {{ $row->registrasi->pasien->alamat }}
+                                        No. RM : {{ $row->pasien->id }}<br>
+                                        Nama Pasien : {{ $row->pasien->nama }}<br>
+                                        Alamat : {{ $row->pasien->alamat }}
                                     </small>
                                 @endif
                             </td>
-                            <td>
+                            <td nowrap>
                                 @if ($row->pasien)
                                     <small>
                                         No. RM : {{ $row->pasien_id }}<br>
@@ -71,7 +71,7 @@
                                         </li>
                                         <li>Total Resep : <strong>{{ number_format($row->total_resep) }}</strong></li>
                                         <li>Total Barang :
-                                            <strong>{{ number_format($row->total_harga_barang) }}</strong>
+                                            <strong>{{ number_format($row->total_barang) }}</strong>
                                         </li>
                                         <li>Total Diskon :
                                             <strong>{{ number_format($row->total_diskon_barang + $row->total_diskon_tindakan + $row->diskon) }}</strong>

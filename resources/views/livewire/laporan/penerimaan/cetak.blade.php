@@ -66,9 +66,9 @@
                 <td class="text-end">{{ $cetak ? $row['total_tindakan'] : number_format($row['total_tindakan']) }}</td>
                 <td class="text-end">{{ $cetak ? $row['total_resep'] : number_format($row['total_resep']) }}</td>
                 <td class="text-end">
-                    {{ $cetak ? $row['total_harga_barang'] : number_format($row['total_harga_barang']) }}</td>
+                    {{ $cetak ? $row['total_barang'] : number_format($row['total_barang']) }}</td>
                 <td class="text-end">
-                    {{ $cetak ? $row['total_tindakan'] + $row['total_resep'] + $row['total_harga_barang'] : number_format($row['total_tindakan'] + $row['total_resep'] + $row['total_harga_barang']) }}
+                    {{ $cetak ? $row['total_tindakan'] + $row['total_resep'] + $row['total_barang'] : number_format($row['total_tindakan'] + $row['total_resep'] + $row['total_barang']) }}
                 </td>
                 <td class="text-end">{{ $cetak ? $diskon : number_format($diskon) }}</td>
                 <td class="text-end">
@@ -96,9 +96,9 @@
             <th class="text-end">{{ $cetak ? $data->sum('total_resep') : number_format($data->sum('total_resep')) }}
             </th>
             <th class="text-end">
-                {{ $cetak ? $data->sum('total_harga_barang') : number_format($data->sum('total_harga_barang')) }}</th>
+                {{ $cetak ? $data->sum('total_barang') : number_format($data->sum('total_barang')) }}</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum('total_tindakan') + $data->sum('total_resep') + $data->sum('total_harga_barang') : number_format($data->sum('total_tindakan') + $data->sum('total_resep') + $data->sum('total_harga_barang')) }}
+                {{ $cetak ? $data->sum('total_tindakan') + $data->sum('total_resep') + $data->sum('total_barang') : number_format($data->sum('total_tindakan') + $data->sum('total_resep') + $data->sum('total_barang')) }}
             </th>
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon') : number_format($data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon')) }}

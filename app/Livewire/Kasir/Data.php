@@ -44,12 +44,12 @@ class Data extends Component
     public function render()
     {
         return view('livewire.kasir.data', [
-            'data' => Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna', 'registrasi.tindakan', 'registrasi.resepObat', 'registrasi.peracikanResepObat')
+            'data' => Pembayaran::with('registrasi', 'pasien', 'registrasi.nakes', 'pengguna', 'registrasi.tindakan', 'registrasi.resepObat', 'registrasi.peracikanResepObat')
                 ->where('tanggal', '>=', $this->tanggal1 . ' 00:00:00')
                 ->where('tanggal', '<=', $this->tanggal2 . ' 23:59:59')
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
                     ->orWhere('registrasi_id', 'like', '%' . $this->cari . '%')
-                    ->orWhereHas('registrasi.pasien', fn($r) => $r
+                    ->orWhereHas('pasien', fn($r) => $r
                         ->where('nama', 'like', '%' . $this->cari . '%')
                         ->orWhere('id', 'like', '%' . $this->cari . '%')))
                 ->orderBy('id', 'desc')->paginate(10)

@@ -36,7 +36,7 @@
                         $('#modal-cetak').modal('show')
                     }, 1000)
                 })"
-                    wire:loading.remove class="dropdown-item">Cetak</a>&nbsp;
+                    wire:loading.remove class="dropdown-item">Cetak</a>
             @endif
             @if ($restore)
                 <a href="javascript:;" wire:click="restore('{{ $row['id'] }}')" wire:loading.remove
