@@ -29,6 +29,7 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Data Tagihan</th>
+                        <th>Supplier</th>
                         <th>Tanggal Bayar</th>
                         <th>Catatan</th>
                         <th>Total Bayar</th>
@@ -51,6 +52,7 @@
                                     @endforeach
                                 </ul>
                             </td>
+                            <td>{{ $row->pengadaanPelunasanDetail->first()->pengadaanTagihan->supplier->nama }}</td>
                             <td nowrap>{{ $row->tanggal }}</td>
                             <td>{{ $row->catatan }}</td>
                             <td>{{ number_format($row->jumlah) }}</td>

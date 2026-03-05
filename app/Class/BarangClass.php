@@ -113,6 +113,7 @@ class BarangClass
             $stokKeluar->diskon = $brg['diskon'];
             $stokKeluar->barang_satuan_id = $brg['barang_satuan_id'];
             $stokKeluar->rasio_dari_terkecil = $brg['rasio_dari_terkecil'];
+            $stokKeluar->penjualan = $brg['penjualan'];
             $stokKeluar->pengguna_id = $userId;
             $stokKeluar->save();
 
