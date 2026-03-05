@@ -28,7 +28,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="mb-3" x-show="transaksi != 'pemindahan'" x-transition>
+                    <div class="mb-3">
                         <label class="form-label">Cari Barang</label>
                         <div wire:ignore>
                             <select class="form-control" wire:model="barang_id" x-init="$($el).select2({
