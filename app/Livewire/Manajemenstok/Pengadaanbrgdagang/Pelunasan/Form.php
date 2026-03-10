@@ -26,11 +26,9 @@ class Form extends Component
     {
         $this->dataSupplier = Supplier::whereIn(
             'id',
-            PengadaanTagihan::select('supplier_id')
-                ->distinct()
-                ->whereDoesntHave('pengadaanPelunasanDetail')
-                ->get()
-                ->pluck('supplier_id')
+            (PengadaanTagihan::select('supplier_id')
+                ->where(fn($q) => $q->whereDoesntHave('pengadaanPelunasanDetail'))
+                ->get()->pluck('supplier_id')->unique())
         )->orderBy('nama')->get()->toArray();
         $this->updatedSupplier();
         $this->dataKodePembayaran = KodeAkun::detail()->whereIn('id', ($this->getKodeAkunTransaksiByTransaksi(['Pembayaran', 'Hutang Ke Pemegang Saham'])->pluck('kode_akun_id')))->get()->toArray();
@@ -51,12 +49,12 @@ class Form extends Component
             'catatan' => 'required',
             'kode_akun_pembayaran_id' => 'required',
         ]);
-        
+
         if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
             session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
-        
+
         DB::transaction(function () {
             $pengadaanTagihan = PengadaanTagihan::whereIn('id', $this->pengadaan_tagihan_id)->get();
 
