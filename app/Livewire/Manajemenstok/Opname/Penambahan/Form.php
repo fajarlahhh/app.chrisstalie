@@ -96,7 +96,7 @@ class Form extends Component
             $data->pengadaan_pemesanan_id = null;
             $data->barang_satuan_id = $this->satuan_id;
             $data->rasio_dari_terkecil = $this->satuan['rasio_dari_terkecil'];
-            $data->harga_beli = $this->transaksi == 'pemindahan' ? $this->dataStokKeluar[$this->stok_keluar_id]['harga'] : 0;
+            $data->harga_beli = $this->transaksi == 'pemindahan' ? $this->dataStokKeluar[$this->stok_keluar_id]['harga'] : $this->harga_beli;
             $data->transaksi = $this->transaksi;
             $data->stok_keluar_id = $this->stok_keluar_id;
             $data->pengguna_id = auth()->id();
