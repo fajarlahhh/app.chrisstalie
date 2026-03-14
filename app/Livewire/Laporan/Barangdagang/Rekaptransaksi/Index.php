@@ -54,7 +54,7 @@ class Index extends Component
             })
             ->where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%'))
-            ->orderBy('id')
+            ->orderBy('nama')
             ->get();
     }
 
