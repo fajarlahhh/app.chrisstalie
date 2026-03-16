@@ -29,13 +29,6 @@
                         <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                     @endforeach
                 </select>
-                &nbsp;
-                <select class="form-control w-auto" wire:model.lazy="metode_bayar">
-                    <option value="">Semua Metode Bayar</option>
-                    @foreach ($dataMetodeBayar as $item)
-                        <option value="{{ $item['nama'] }}">{{ $item['nama'] }}</option>
-                    @endforeach
-                </select>
             </div>
         </div>
         <div class="panel-body table-responsive">
