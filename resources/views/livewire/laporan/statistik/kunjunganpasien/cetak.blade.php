@@ -40,9 +40,11 @@
             </tr>
         @endforeach
         <tr>
-            <th colspan="6">TOTAL</th>
+            <th colspan="5">TOTAL</th>
             <th class="text-end">
-                {{ $cetak ? collect($data)->sum('biaya') : number_format(collect($data)->sum('biaya'), 2) }}</th>
+                {{ $cetak ? collect($data)->sum('qty') : number_format(collect($data)->sum('qty')) }}</th>
+                <th class="text-end">
+                    {{ $cetak ? collect($data)->sum('biaya') : number_format(collect($data)->sum('biaya'), 2) }}</th>
         </tr>
     </tbody>
 </table>
