@@ -39,14 +39,23 @@
             <th class="bg-gray-300 text-white">Total Sebelum Diskon</th>
             <th class="bg-gray-300 text-white">Diskon</th>
             <th class="bg-gray-300 text-white">Total Setelah Diskon</th>
+            @if ($metode_bayar)
+                <th class="bg-gray-300 text-white" nowrap>{{ $metode_bayar }}</th>
+            @else
+                <th class="bg-gray-300 text-white" nowrap>Metode Bayar 1</th>
+                <th class="bg-gray-300 text-white" nowrap>Metode Bayar 2</th>
+            @endif
             @role('administrator|supervisor')
                 <th class="bg-gray-300 text-white">Kasir</th>
             @endrole
-            <th class="bg-gray-300 text-white">Metode Bayar</th>
             <th class="bg-gray-300 text-white">Keterangan</th>
         </tr>
     </thead>
     <tbody>
+        @php
+            $total_bayar_1 = 0;
+            $total_bayar_2 = 0;
+        @endphp
         @foreach ($data as $row)
             @php
                 $diskon = $row['total_diskon_barang'] + $row['total_diskon_tindakan'] + $row['diskon'];
@@ -74,15 +83,37 @@
                 <td class="text-end">
                     {{ $cetak ? $row['total_tagihan'] : number_format($row['total_tagihan']) }}
                 </td>
+                @if ($metode_bayar)
+                    <td class="text-end" nowrap>
+                        @if ($metode_bayar == $row['metode_bayar'])
+                            {{ $cetak ? $row['bayar'] : number_format($row['bayar']) }}
+                            @php
+                                $total_bayar_1 += $row['bayar'];
+                            @endphp
+                        @else
+                            {{ $cetak ? $row['bayar_2'] : number_format($row['bayar_2']) }}
+                            @php
+                                $total_bayar_2 += $row['bayar_2'];
+                            @endphp
+                        @endif
+                    </td>
+                @else
+                    <td nowrap>
+                        {{ $cetak ? ($row['metode_bayar'] ? $row['metode_bayar'] . ' : ' . $row['bayar'] : '') : ($row['metode_bayar'] ? $row['metode_bayar'] . ' : ' . number_format($row['bayar']) : '') }}
+                        @php
+                            $total_bayar_1 += $row['bayar'];
+                        @endphp
+                    </td>
+                    <td nowrap>
+                        {{ $cetak ? ($row['metode_bayar_2'] ? $row['metode_bayar_2'] . ' : ' . $row['bayar_2'] : '') : ($row['metode_bayar_2'] ? $row['metode_bayar_2'] . ' : ' . number_format($row['bayar_2']) : '') }}
+                        @php
+                            $total_bayar_2 += $row['bayar_2'];
+                        @endphp
+                    </td>
+                @endif
                 @role('administrator|supervisor')
                     <td>{{ $row['pengguna']['nama'] }}</td>
                 @endrole
-                <td>{{ $row['metode_bayar'] }} : {{ number_format($row['bayar']) }}
-                    @if ($row['metode_bayar_2'])
-                        -
-                        {{ $row['metode_bayar_2'] ? $row['metode_bayar_2'] . ' : ' . number_format($row['bayar_2']) : '' }}
-                    @endif
-                </td>
                 <td>{{ $row['keterangan'] }}</td>
             </tr>
         @endforeach
@@ -106,6 +137,18 @@
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_tagihan') : number_format($data->sum('total_tagihan')) }}
             </th>
+            @if (!$metode_bayar)
+                <th class="text-end">
+                    {{ $cetak ? $total_bayar_1 : number_format($total_bayar_1) }}
+                </th>
+                <th class="text-end">
+                    {{ $cetak ? $total_bayar_2 : number_format($total_bayar_2) }}
+                </th>
+            @else
+                <th class="text-end">
+                    {{ $cetak ? $total_bayar_1 + $total_bayar_2 : number_format($total_bayar_1 + $total_bayar_2) }}
+                </th>
+            @endif
             @role('administrator|supervisor')
                 <th colspan="3"></th>
             @endrole

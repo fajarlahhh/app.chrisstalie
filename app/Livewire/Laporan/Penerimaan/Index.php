@@ -35,20 +35,22 @@ class Index extends Component
         ), 'penerimaan.xlsx');
     }
 
-    private function getData($paginate = true)
+    private function getData()
     {
         $query = Pembayaran::with(['registrasi.pasien', 'pengguna'])->whereBetween(DB::raw('DATE(tanggal)'), [$this->tanggal1, $this->tanggal2]);
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
             $query->where('pengguna_id', auth()->id());
         }
+        $query = $query->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id))
+            ->when($this->metode_bayar, fn($q) => $q->where('metode_bayar', $this->metode_bayar)->orWhere('metode_bayar_2', $this->metode_bayar));
         return $query->get();
     }
 
     public function render()
     {
-        $data = $this->getData(true);
+        $data = $this->getData();
         return view('livewire.laporan.penerimaan.index', [
-            'data' =>  $data->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id))->when($this->metode_bayar, fn($q) => $q->where('metode_bayar', $this->metode_bayar)),
+            'data' =>  $data,
             'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ? Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->get()->toArray() : Pengguna::where('id', auth()->id())->get()->toArray()
         ]);
     }
