@@ -303,6 +303,7 @@ class Index extends Component
             $pembayaran->tanggal = $this->tanggal;
             $pembayaran->registrasi_id = $this->registrasi ? $this->registrasi->id : null;
             $pembayaran->pengguna_id = auth()->id();
+            $pembayaran->selisih = $this->total_bayar - $this->total_tagihan;
             $pembayaran->save();
 
             $detail = $this->kas($pembayaran); // Kas dan diskon
