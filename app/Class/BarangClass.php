@@ -117,7 +117,6 @@ class BarangClass
             $stokKeluar->pengguna_id = $userId;
             $stokKeluar->save();
 
-
             // Update stok secara batch
             Stok::where('barang_id', $brg['barang_id'])
                 ->available()
@@ -133,7 +132,7 @@ class BarangClass
                 ->where('stok_keluar_id', $stokKeluar->id)
                 ->sum('harga_beli');
 
-            if ($brg['harga'] > 0) {
+            if ($brg['harga'] == null) {
                 // Update harga pembelian aktual ke StokKeluar
                 $stokKeluar->update([
                     'harga' => $hargaBeli,
