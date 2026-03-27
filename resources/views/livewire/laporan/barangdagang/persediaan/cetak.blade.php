@@ -60,7 +60,7 @@
                         'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                         'harga_beli' => $q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil,
                         'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
-                        'total' => ($q->harga_beli / $barangSatuanUtama?->rasio_dari_terkecil) * $q->stok,
+                        'total' => (($q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil) / $barangSatuanUtama?->rasio_dari_terkecil) * $q->stok,
                     ];
                 });
                 $total += $stok->sum(fn($q) => $q['total']);
