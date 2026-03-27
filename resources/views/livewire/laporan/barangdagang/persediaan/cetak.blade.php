@@ -103,7 +103,7 @@
                     </td>
                     @role('administrator|supervisor')
                         <td nowrap class="text-end">
-                            {{ number_format($subItem['total']) }}</td>
+                            {{ number_format($subItem['total'], 2) }}</td>
                     @endrole
                 </tr>
             @endforeach
