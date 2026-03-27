@@ -76,6 +76,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="panel-footer">
+            {{ $data->links() }}
+        </div>
     </div>
 
     <div wire:loading>
