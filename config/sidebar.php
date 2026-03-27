@@ -22,10 +22,10 @@ return [
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
-                // [
-                //     "title" => "Barang Konsinyasi",
-                //     "method" => ["Index", "Form"],
-                // ],
+                [
+                    "title" => "Diskon",
+                    "method" => ["Index", "Form"],
+                ],
                 [
                     "title" => "Pegawai",
                     "urutkan" => true,
@@ -51,11 +51,11 @@ return [
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
-                // [
-                //     "title" => "Unsur Gaji",
-                //     "urutkan" => true,
-                //     "method" => ["Index"],
-                // ],
+                [
+                    "title" => "Paket Perawatan",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
             ]
         ],
         [
@@ -82,6 +82,10 @@ return [
                     "title" => "Nakes",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Diskon",
+                    "method" => ["Index"],
                 ],
             ]
         ],

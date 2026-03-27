@@ -69,6 +69,7 @@ class Form extends Component
                 ->where('no_batch', $this->barang['no_batch'])
                 ->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])
                 ->where('harga_beli', $this->barang['harga'])
+                ->whereNull('stok_keluar_id')
                 ->limit($this->qty_keluar)->update([
                     'stok_keluar_id' => $data->id,
                     'tanggal_keluar' => now(),
