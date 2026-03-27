@@ -58,7 +58,7 @@
                 $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($barangSatuanUtama) {
                     return [
                         'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                        'harga_beli' => $q->harga_beli,
+                        'harga_beli' => $q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil,
                         'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
                         'total' => ($q->harga_beli / $barangSatuanUtama?->rasio_dari_terkecil) * $q->stok,
                     ];
@@ -74,7 +74,8 @@
                     {{ $item->persediaan }}</td>
                 <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
                     {{ $barangSatuanUtama?->nama }}
-                    <small>{{ $barangSatuanUtama?->konversi_satuan }}</small></td>
+                    <small>{{ $barangSatuanUtama?->konversi_satuan }}</small>
+                </td>
                 <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
                     {{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                 @if ($stok->count() == 0)
@@ -92,11 +93,10 @@
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
                     @role('administrator|supervisor')
-                        <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
+                        <td nowrap class="text-end">{{ number_format($subItem['harga_beli'], 2) }}</td>
                     @endrole
                     <td nowrap class="text-end">
                         @php
-                            // Mengecek jika stok mengandung koma/titik desimal
                             $stok = $subItem['stok'];
                         @endphp
                         {{ fmod($stok, 1) != 0 ? number_format($stok, 3) : number_format($stok) }}
@@ -113,7 +113,7 @@
     @role('administrator|supervisor')
         <tfoot>
             <tr>
-                <th colspan="7" class="text-end">Total Nilai Persediaan</th>
+                <th colspan="8" class="text-end">Total Nilai Persediaan</th>
                 <th class="text-end">{{ number_format($total, 2) }}</th>
         </tfoot>
     @endrole
