@@ -37,7 +37,10 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Satuan <small class="text-danger">(Ini adalah satuan penjualan terkecil, artinya tidak ada satuan penjualan yang lebih kecil dari ini. Ini tidak dapat diubah lagi. Kesalahan penginputan satuan akan menyebabkan kesalahan stok dan harga jual.)</small></label>
+                    <label class="form-label">Satuan <small class="text-danger">(Ini adalah satuan penjualan terkecil,
+                            artinya tidak ada satuan penjualan yang lebih kecil dari ini. Ini tidak dapat diubah lagi.
+                            Kesalahan penginputan satuan akan menyebabkan kesalahan stok dan harga
+                            jual.)</small></label>
                     <input class="form-control" type="text" wire:model="satuan"
                         @if ($data->exists) disabled @endif />
                     @error('satuan')
@@ -55,19 +58,19 @@
                     </div>
                 @endif
                 <div class="mb-3">
-                    <label class="form-label">Kategori</label>
-                    <select class="form-control" @if ($data->exists) disabled @endif
-                        x-init="$($el).selectpicker({
-                            liveSearch: true,
-                            width: 'auto',
-                            size: 10,
-                            container: 'body',
-                            style: '',
-                            showSubtext: true,
-                            styleBase: 'form-control'
-                        })" wire:model.live="kode_akun_id" data-width="100%">
+                    <label class="form-label">Kategori Persediaan</label>
+                    <select class="form-control" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" wire:model.live="kode_akun_id"
+                        data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach (collect($dataKodeAkun)->where('kategori', 'Aktiva') as $item)
+                        @foreach (collect($dataKodeAkun)->where('parent_id', '11300') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
@@ -76,7 +79,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Kategori Penjualan</label>
+                    <label class="form-label">Kategori Pendapatan</label>
                     <select class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
@@ -88,7 +91,7 @@
                     })" wire:model.live="kode_akun_penjualan_id"
                         data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach (collect($dataKodeAkun)->where('kategori', 'Pendapatan') as $item)
+                        @foreach (collect($dataKodeAkun)->where('parent_id', '41000') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
                             </option>
                         @endforeach
@@ -110,7 +113,7 @@
                     })" wire:model.live="kode_akun_modal_id"
                         data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach (collect($dataKodeAkun)->where('kategori', 'Beban') as $item)
+                        @foreach (collect($dataKodeAkun)->where('parent_id', '50000') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
@@ -158,9 +161,9 @@
                 </button>
                 <x-alert />
             </div>
-        
-        <x-modal.konfirmasi />
-    </form>
+
+            <x-modal.konfirmasi />
+        </form>
     </div>
 
     <div wire:loading>
