@@ -15,7 +15,7 @@ class Index extends Component
     public $saldo;
     public function mount()
     {
-        $this->bulan = $this->bulan ?: date('Y-m', strtotime('-1 month'));
+        $this->bulan = $this->bulan ?: date('Y-m');
         $this->getTemplate();
     }
 

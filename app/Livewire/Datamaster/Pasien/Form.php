@@ -36,7 +36,7 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/datamaster/pasien');
+        $this->redirect(url()->previous());
     }
 
     public function mount(Pasien $data)

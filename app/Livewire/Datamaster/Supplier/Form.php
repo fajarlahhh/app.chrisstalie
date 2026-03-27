@@ -34,7 +34,7 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/datamaster/supplier');
+        $this->redirect(url()->previous());
     }
 
     public function mount(Supplier $data)

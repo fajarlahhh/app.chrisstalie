@@ -137,7 +137,7 @@ class Form extends Component
             session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/datamaster/asetinventaris');
+        $this->redirect(url()->previous());
     }
 
     public function mount(Aset $data)

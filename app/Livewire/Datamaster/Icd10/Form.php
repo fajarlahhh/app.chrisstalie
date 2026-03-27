@@ -30,7 +30,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/datamaster/icd10');
+        $this->redirect(url()->previous());
     }
 
     public function mount(Icd10 $data)

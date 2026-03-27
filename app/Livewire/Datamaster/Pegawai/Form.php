@@ -114,7 +114,7 @@ class Form extends Component
                 session()->flash('success', 'Berhasil menyimpan data');
             }
         });
-        $this->redirect('/datamaster/pegawai');
+        $this->redirect(url()->previous());
     }
 
     public function mount(KepegawaianPegawai $data)

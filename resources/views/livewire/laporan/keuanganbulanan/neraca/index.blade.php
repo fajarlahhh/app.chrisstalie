@@ -21,7 +21,7 @@
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
-                    max="{{ date('Y-m', strtotime('-1 month')) }}" class="form-control w-auto">
+                    max="{{ date('Y-m') }}" class="form-control w-auto">
             </div>
         </div>
         <div class="panel-body table-responsive">
