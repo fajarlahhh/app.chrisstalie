@@ -8,7 +8,7 @@
             <th rowspan="2">Konversi Satuan</th>
             <th rowspan="2" class="text-end">Harga Jual</th>
             <th rowspan="2" class="text-end">Harga Beli Tertinggi</th>
-            <th colspan="2" class="text-end">Keuntungan</th>
+            <th colspan="2">Keuntungan</th>
             <th rowspan="2" class="w-5px"></th>
         </tr>
         <tr>
