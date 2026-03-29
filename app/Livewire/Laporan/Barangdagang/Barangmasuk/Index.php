@@ -54,7 +54,7 @@ class Index extends Component
                             'total' => $q->qty * $q->harga_beli,
                             'supplier' => $pengadaanPemesanan?->supplier?->nama,
                             'uraian' => $pengadaanPemesanan?->uraian,
-                            'operator' => $q->pengguna->kepegawaianPegawai->nama,
+                            'operator' => $q->pengguna->kepegawaianPegawai?->nama ?? $q->pengguna->nama,
                             'catatan' => $q->catatan,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
