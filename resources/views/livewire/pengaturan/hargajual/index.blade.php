@@ -27,7 +27,7 @@
                     styleBase: 'form-control'
                 })">
                     <option value="">Semua Barang</option>
-                    @foreach ($dataBarang as $item)
+                    @foreach (collect($dataBarang)->sortBy('nama') as $item)
                         <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                     @endforeach
                 </select>
