@@ -115,7 +115,7 @@
                                             <template x-if="row.biaya_jasa_perawat > 0">
                                                 <div class="mb-3">
                                                     <label class="form-label">Perawat</label>
-                                                    <select class="form-control" x-model="row.perawat_id">
+                                                    <select class="form-control" x-model="row.perawat_id" required>
                                                         <option value="">-- Pilih Perawat --</option>
                                                         <template x-for="nakes in dataNakes" :key="nakes.id">
                                                             <option :value="nakes.id"

@@ -23,10 +23,6 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Diskon",
-                    "method" => ["Index", "Form"],
-                ],
-                [
                     "title" => "Pegawai",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
