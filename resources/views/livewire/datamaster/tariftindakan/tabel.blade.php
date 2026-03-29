@@ -7,7 +7,7 @@
             <th rowspan="2">ICD 9 CM</th>
             <th rowspan="2" class="text-end">Tarif</th>
             <th colspan="4">Biaya</th>
-            <th rowspan="2">Keuntungan</th>
+            <th colspan="2">Keuntungan</th>
             <th rowspan="2">Catatan</th>
             @if ($cetak == false)
                 <th rowspan="2"></th>
@@ -18,6 +18,8 @@
             <th class="text-end">Biaya Bahan <small class="text-muted">(Harga Beli Tertinggi)</small></th>
             <th class="text-end">Biaya Jasa Dokter</th>
             <th class="text-end">Biaya Jasa Perawat</th>
+            <th class="text-end">Rp.</th>
+            <th class="text-end">%</th>
         </tr>
     </thead>
     <tbody>
@@ -39,8 +41,19 @@
                     {{ $cetak == false ? number_format($item->biaya_jasa_dokter) : $item->biaya_jasa_dokter }}</td>
                 <td class="text-end">
                     {{ $cetak == false ? number_format($item->biaya_jasa_perawat) : $item->biaya_jasa_perawat }}</td>
+                @php
+                    $keuntungan =
+                        $item->tarif -
+                        $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) -
+                        $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) -
+                        $item->biaya_jasa_dokter -
+                        $item->biaya_jasa_perawat;
+                @endphp
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->tarif - $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) - $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat) : $item->tarif - $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) - $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat }}
+                    {{ $cetak == false ? number_format($keuntungan) : $keuntungan }}
+                </td>
+                <td class="text-end">
+                    {{ $item->tarif != 0 ? ($cetak == false ? number_format(($keuntungan / $item->tarif) * 100) : ($keuntungan / $item->tarif) * 100) : 0 }}
                 </td>
                 <td nowrap>{!! nl2br(e($item->catatan)) !!}</td>
                 @if ($cetak == false)

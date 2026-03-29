@@ -17,7 +17,7 @@ class Form extends Component
     use CustomValidationTrait;
     public $data;
     public $dataBarang = [], $dataKodeAkun = [], $dataAlat = [];
-    
+
     public $nama;
     public $kode_akun_id;
     public $icd_9_cm;
@@ -86,19 +86,22 @@ class Form extends Component
 
     public function mount(TarifTindakan $data)
     {
-        
+
         $this->dataBarang = BarangClass::getBarang('klinik');
         $this->dataAlat = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
-            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_satuan_id')->whereIn('barang_satuan_id', collect($this->dataBarang)->pluck('id'))->values()->map(fn($q) => [
-                'id' => $q->barang_satuan_id,
-                'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['harga_beli_tertinggi'],
-                'qty' => $q->qty,
-                'subtotal' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['harga_beli_tertinggi'] * $q->qty,
-            ])->toArray();
+            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_satuan_id')->whereIn('barang_satuan_id', collect($this->dataBarang)->pluck('id'))->values()->map(function ($q) {
+                $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
+                return [
+                    'id' => $q->barang_satuan_id,
+                    'biaya' => $barang['harga_beli_tertinggi'],
+                    'qty' => $q->qty,
+                    'subtotal' => $barang['harga_beli_tertinggi'] * $q->qty,
+                ];
+            })->toArray();
             $this->alat = $this->data->tarifTindakanAlatBarang->whereNotNull('aset_id')->values()->map(fn($q) => [
                 'id' => $q->aset_id,
                 'biaya' => $q->biaya,

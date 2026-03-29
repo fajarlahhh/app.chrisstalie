@@ -390,7 +390,7 @@
                 keuntungan: 0,
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
-                    return (val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    return `${new Intl.NumberFormat().format(val)}`;
                 },
                 hitungKeuntungan() {
                     this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);

@@ -199,7 +199,7 @@
 
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
-                    return (val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    return `${new Intl.NumberFormat().format(val)}`;
                 },
 
                 tambahDetail() {

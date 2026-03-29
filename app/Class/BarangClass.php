@@ -43,7 +43,7 @@ class BarangClass
                 'barang_id' => $q['barang_id'],
                 'biaya' => $q['harga_jual'],
                 'harga' => $q['harga_jual'],
-                'harga_beli_tertinggi' => $q->stokMasuk->max(fn($q) => $q->harga_beli * $q->rasio_dari_terkecil) / $q['rasio_dari_terkecil'],
+                'harga_beli_tertinggi' => $q->stokMasuk->max(fn($q) => $q->harga_beli / $q->rasio_dari_terkecil),
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'satuan' => $q['barang_satuan_nama'],
                 'persediaan' => $q['persediaan'],
