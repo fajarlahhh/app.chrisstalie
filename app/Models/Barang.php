@@ -48,7 +48,7 @@ class Barang extends Model
 
     public function getHargaBeliTertinggiAttribute()
     {
-        return $this->stokMasuk->take(3)->max(fn($q) => $q->harga_beli / $q->rasio_dari_terkecil);
+        return $this->stokMasuk->whereNotNull('pengadaan_pemesanan_id')->take(3)->max(fn($q) => $q->harga_beli / $q->rasio_dari_terkecil);
     }
 
     public function stokAwal(): HasMany
