@@ -28,7 +28,7 @@
                 <td>{!! $item->rasio_dari_terkecil == 1
                     ? '<span class="badge bg-success">Satuan Terkecil</span>'
                     : $item->konversi_satuan !!}</td>
-                <td class="text-end">{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                <td class="text-end">{{ $cetak == false ? number_format($item->harga_jual, 0, ',', '.') : $item->harga_jual }}</td>
                 <td class="text-end">
                     {{ $cetak == false ? number_format($item->barang->harga_beli_tertinggi / $item->rasio_dari_terkecil, 0, ',', '.') : $item->barang->harga_beli_tertinggi / $item->rasio_dari_terkecil }}
                 </td>
