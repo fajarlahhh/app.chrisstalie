@@ -30,7 +30,7 @@
                     : $item->konversi_satuan !!}</td>
                 <td class="text-end">{{ $cetak == false ? number_format($item->harga_jual, 0, ',', '.') : $item->harga_jual }}</td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->barang->harga_beli_tertinggi / $item->rasio_dari_terkecil, 0, ',', '.') : $item->barang->harga_beli_tertinggi / $item->rasio_dari_terkecil }}
+                    {{ $cetak == false ? number_format($item->barang->harga_beli_tertinggi * $item->rasio_dari_terkecil, 0, ',', '.') : $item->barang->harga_beli_tertinggi * $item->rasio_dari_terkecil }}
                 </td>
                 @php
                     $keuntungan = $item->harga_jual - $item->barang->harga_beli_tertinggi / $item->rasio_dari_terkecil;

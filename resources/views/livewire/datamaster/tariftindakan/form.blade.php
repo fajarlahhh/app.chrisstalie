@@ -216,6 +216,7 @@
                                 },
                                 calculateBarang(index) {
                                     let row = this.barang[index];
+                                    console.log(row);
                                     row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0;
                                     this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
                                     this.hitungKeuntungan();
