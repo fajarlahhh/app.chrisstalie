@@ -95,9 +95,9 @@ class Form extends Component
         if ($this->data->exists) {
             $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_satuan_id')->whereIn('barang_satuan_id', collect($this->dataBarang)->pluck('id'))->values()->map(fn($q) => [
                 'id' => $q->barang_satuan_id,
-                'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'],
+                'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['harga_beli_tertinggi'],
                 'qty' => $q->qty,
-                'subtotal' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'] * $q->qty,
+                'subtotal' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['harga_beli_tertinggi'] * $q->qty,
             ])->toArray();
             $this->alat = $this->data->tarifTindakanAlatBarang->whereNotNull('aset_id')->values()->map(fn($q) => [
                 'id' => $q->aset_id,

@@ -254,7 +254,7 @@
                                                         <template x-for="barang in dataBarang" :key="barang.id">
                                                             <option :value="barang.id"
                                                                 :selected="row.id == barang.id"
-                                                                x-text="`${barang.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(barang.biaya)} / ${barang.satuan})`">
+                                                                x-text="`${barang.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(barang.harga_beli_tertinggi)} / ${barang.satuan})`">
                                                             </option>
                                                         </template>
                                                     </select>
@@ -278,7 +278,7 @@
                                         </tr>
                                     </template>
                                     <tr>
-                                        <th colspan="2" class="text-end align-middle">Total Biaya Barang
+                                        <th colspan="2" class="text-end align-middle">Total Biaya Bahan
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
@@ -292,7 +292,7 @@
                                         <td colspan="4">
                                             <div class="text-center">
                                                 <button type="button" class="btn btn-secondary" @click="addBarang">
-                                                    Tambah Barang
+                                                    Tambah Bahan
                                                 </button>
                                                 <br>
                                                 <template x-if="$store.wireErrors?.barang">
@@ -304,6 +304,10 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            <div class="alert alert-warning">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                Biaya Barang dan Alat diambil dari harga beli tertinggi
+                            </div>
                         </div>
                         <div class="alert alert-info">
                             <div class="mb-3">
@@ -350,11 +354,11 @@
                 </button>
                 <x-alert />
             </div>
-        
-        <x-modal.konfirmasi />
-    </form>
+
+            <x-modal.konfirmasi />
+        </form>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

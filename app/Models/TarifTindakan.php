@@ -16,6 +16,16 @@ class TarifTindakan extends Model
         return $this->hasMany(TarifTindakanAlatBarang::class);
     }
 
+    public function tarifTindakanAlat(): HasMany
+    {
+        return $this->hasMany(TarifTindakanAlatBarang::class)->whereNotNull('aset_id');
+    }
+
+    public function tarifTindakanBahan(): HasMany
+    {
+        return $this->hasMany(TarifTindakanAlatBarang::class)->whereNotNull('barang_satuan_id');
+    }
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();

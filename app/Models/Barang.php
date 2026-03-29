@@ -15,7 +15,7 @@ class Barang extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'barang';
-    
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
@@ -44,6 +44,11 @@ class Barang extends Model
     public function stokMasuk(): HasMany
     {
         return $this->hasMany(StokMasuk::class);
+    }
+
+    public function getHargaBeliTertinggiAttribute()
+    {
+        return $this->stokMasuk->max(fn($q) => $q->harga_beli * $q->rasio_dari_terkecil);
     }
 
     public function stokAwal(): HasMany

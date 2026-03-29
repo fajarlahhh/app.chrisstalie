@@ -44,7 +44,8 @@ class Index extends Component
         $query = TarifTindakan::with([
             'pengguna',
             'kodeAkun',
-            'tarifTindakanAlatBarang.barangSatuan',
+            'tarifTindakanAlat',
+            'tarifTindakanBahan.barang.stokMasuk',
         ])
             ->when($this->kode_akun_id, function ($q) {
                 $q->where('kode_akun_id', $this->kode_akun_id);
