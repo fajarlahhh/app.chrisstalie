@@ -13,6 +13,8 @@
             @role('administrator|supervisor')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
+                <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
+                    Export</a>
             @endrole
             <div class="ms-auto d-flex align-items-center">
                 <select class="form-control w-auto" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
@@ -33,44 +35,7 @@
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th class="w-10px">No.</th>
-                        <th>Nama Barang</th>
-                        <th>Satuan</th>
-                        <th>Utama</th>
-                        <th>Harga Jual</th>
-                        <th>Konversi Satuan</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $item)
-                        <tr>
-                            <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>{{ $item->barang_nama }}</td>
-                            <td>{{ $item->nama }}</td>
-                            <td>{!! $item->utama == 1 ? '<span class="badge bg-success">Ya</span>' : '' !!}</td>
-                            <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
-                            <td>{!! $item->rasio_dari_terkecil == 1
-                                ? '<span class="badge bg-success">Satuan Terkecil</span>'
-                                : $item->konversi_satuan !!}</td>
-                            <td class="with-btn-group text-end" nowrap>
-                                @role('administrator|supervisor')
-                                    @if ($item->rasio_dari_terkecil == 1)
-                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
-                                    @else
-                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
-                                    @endif
-                                @endrole
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @include('livewire.pengaturan.hargajual.tabel', ['cetak' => false])
         </div>
         <div class="panel-footer">
             {{ $data->links() }}

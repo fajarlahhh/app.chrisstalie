@@ -7,6 +7,8 @@ use App\Models\BarangSatuan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\Barang;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DatamasterExport;
 
 class Index extends Component
 {
@@ -26,6 +28,11 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function export()
+    {
+        return Excel::download(new DatamasterExport($this->getData(false), 'hargajual', 'pengaturan'), 'harga_jual.xlsx');
+    }
+
     public function delete($id)
     {
         try {
@@ -40,16 +47,21 @@ class Index extends Component
         };
     }
 
+    public function getData($paginate = true)
+    {
+        $query = BarangSatuan::select('barang_satuan.*', 'barang.nama as barang_nama')
+            ->with(['barang', 'pengguna', 'satuanKonversi'])
+            ->when($this->barang_id, fn($q) => $q->where('barang_id', $this->barang_id))
+            ->leftJoin('barang', 'barang_satuan.barang_id', '=', 'barang.id')
+            ->orderBy('barang.nama')
+            ->orderBy('barang_satuan.rasio_dari_terkecil', 'asc');
+        return $paginate ? $query->paginate(10) : $query->get();
+    }
+
     public function render()
     {
         return view('livewire.pengaturan.hargajual.index', [
-            'data' => BarangSatuan::select('barang_satuan.*', 'barang.nama as barang_nama')
-                ->with(['barang', 'pengguna', 'satuanKonversi'])
-                ->when($this->barang_id, fn($q) => $q->where('barang_id', $this->barang_id))
-                ->leftJoin('barang', 'barang_satuan.barang_id', '=', 'barang.id')
-                ->orderBy('barang.nama')
-                ->orderBy('barang_satuan.rasio_dari_terkecil', 'asc')
-                ->paginate(10)
+            'data' => $this->getData(true)
         ]);
     }
 }
