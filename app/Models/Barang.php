@@ -43,7 +43,7 @@ class Barang extends Model
 
     public function stokMasuk(): HasMany
     {
-        return $this->hasMany(StokMasuk::class)->sortByDesc('created_at');
+        return $this->hasMany(StokMasuk::class)->orderBy('created_at', 'desc');
     }
 
     public function getHargaBeliTertinggiAttribute()
