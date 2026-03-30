@@ -28,7 +28,7 @@
                 <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun->nama }}</td>
                 <td>{{ $item->tanggal_perolehan }}</td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->harga_perolehan) : $item->harga_perolehan }}</td>
+                    {{ $cetak == false ? number_format_id($item->harga_perolehan) : $item->harga_perolehan }}</td>
                 <td>
                     @if ($item->kode_akun_sumber_dana_id)
                         {{ $item->kode_akun_sumber_dana_id }} - {{ $item->kodeAkunSumberDana->nama }}
@@ -42,7 +42,7 @@
                     @endif
                 </td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->nilai_penyusutan, 2) : $item->nilai_penyusutan }}</td>
+                    {{ $cetak == false ? number_format_id($item->nilai_penyusutan, 2) : $item->nilai_penyusutan }}</td>
                 <td>{{ $item->lokasi }}</td>
                 <td>
                     @switch($item->status)
@@ -83,7 +83,7 @@
             @if ($data->currentPage() == $data->lastPage())
                 <tr>
                     <th colspan="11" class="text-end">TOTAL</th>
-                    <th class="text-end">{{ number_format($dataRaw->sum('harga_perolehan')) }}</th>
+                    <th class="text-end">{{ number_format_id($dataRaw->sum('harga_perolehan')) }}</th>
                 </tr>
             @endif
         @endif

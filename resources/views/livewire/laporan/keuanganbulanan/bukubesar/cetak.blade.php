@@ -29,7 +29,7 @@
                 @if ($cetak)
                     {{ $saldo }}
                 @else
-                    {{ number_format($saldo, 2) }}
+                    {{ number_format_id($saldo, 2) }}
                 @endif
             </td>
             <td></td>
@@ -52,21 +52,21 @@
                         @if ($cetak)
                             {{ $sub['debet'] }}
                         @else
-                            {{ number_format($sub['debet'], 2) }}
+                            {{ number_format_id($sub['debet'], 2) }}
                         @endif
                     </td>
                     <td class="text-end">
                         @if ($cetak)
                             {{ $sub['kredit'] }}
                         @else
-                            {{ number_format($sub['kredit'], 2) }}
+                            {{ number_format_id($sub['kredit'], 2) }}
                         @endif
                     </td>
                     <td class="text-end">
                         @if ($cetak)
                             {{ $sumSaldo }}
                         @else
-                            {{ number_format($sumSaldo, 2) }}
+                            {{ number_format_id($sumSaldo, 2) }}
                         @endif
                     </td>
                     <td>{{ $sub['system'] ? 'System' : 'Manual' }}</td>

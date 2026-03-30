@@ -69,8 +69,8 @@ class Jurnalumum extends Component
         }
 
         if (
-            number_format(collect($this->detail)->sum(fn($q) => str_replace(',', '', $q['kredit'])), 2)
-            != number_format(collect($this->detail)->sum(fn($q) => str_replace(',', '', $q['debet'])), 2)
+            number_format_id(collect($this->detail)->sum(fn($q) => str_replace(',', '', $q['kredit'])), 2)
+            != number_format_id(collect($this->detail)->sum(fn($q) => str_replace(',', '', $q['debet'])), 2)
         ) {
             $this->addError('detail', 'Debet and Kredit is unbalance');
             return $this->render();

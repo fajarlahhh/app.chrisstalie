@@ -151,7 +151,7 @@
                                                         {{ $detail->qty }}
                                                     </td>
                                                     <td class="text-nowrap text-end w-80px">
-                                                        {{ number_format($detail->harga_beli) }}
+                                                        {{ number_format_id($detail->harga_beli) }}
                                                     </td>
                                                 </tr>
                                             @endforeach

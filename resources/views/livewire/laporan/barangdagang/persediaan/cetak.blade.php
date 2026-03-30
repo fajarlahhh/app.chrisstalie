@@ -93,17 +93,17 @@
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
                     @role('administrator|supervisor')
-                        <td nowrap class="text-end">{{ number_format($subItem['harga_beli'], 2) }}</td>
+                        <td nowrap class="text-end">{{ number_format_id($subItem['harga_beli'], 2) }}</td>
                     @endrole
                     <td nowrap class="text-end">
                         @php
                             $stok = $subItem['stok'];
                         @endphp
-                        {{ fmod($stok, 1) != 0 ? number_format($stok, 3) : number_format($stok) }}
+                        {{ fmod($stok, 1) != 0 ? number_format_id($stok, 3) : number_format_id($stok) }}
                     </td>
                     @role('administrator|supervisor')
                         <td nowrap class="text-end">
-                            {{ number_format($subItem['total'], 2) }}</td>
+                            {{ number_format_id($subItem['total'], 2) }}</td>
                     @endrole
                 </tr>
             @endforeach
@@ -114,7 +114,7 @@
         <tfoot>
             <tr>
                 <th colspan="8" class="text-end">Total Nilai Persediaan</th>
-                <th class="text-end">{{ number_format($total, 2) }}</th>
+                <th class="text-end">{{ number_format_id($total, 2) }}</th>
         </tfoot>
     @endrole
 </table>

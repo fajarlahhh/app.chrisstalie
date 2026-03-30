@@ -105,7 +105,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $row->nama }}</td>
-                                    <td>{{ number_format($row->harga_jual) }}</td>
+                                    <td>{{ number_format_id($row->harga_jual) }}</td>
                                     <td>{!! $row->rasio_dari_terkecil == 1
                                         ? '<span class="badge bg-success">Terkecil</span>'
                                         : '<span class="badge bg-warning">' . $row->konversi_satuan . '</span>' !!}

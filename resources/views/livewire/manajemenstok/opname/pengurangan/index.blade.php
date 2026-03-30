@@ -53,8 +53,8 @@
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
-                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga, 0, ',', '.') }}</td>
-                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga * $row->qty, 0, ',', '.') }}</td>
+                            <td class="text-nowrap w-100px text-end">{{ number_format_id($row->harga) }}</td>
+                            <td class="text-nowrap w-100px text-end">{{ number_format_id($row->harga * $row->qty) }}</td>
                             <td class="text-nowrap w-100px"><a
                                     href="/jurnalkeuangan?bulan={{ substr($row->created_at, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>

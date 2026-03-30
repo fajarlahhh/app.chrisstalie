@@ -38,17 +38,17 @@
             <tr>
                 <td></td>
                 <td>- Pendapatan {{ $index }}</td>
-                <td class="text-end">{{ number_format($row->sum('total_tagihan')) }}</td>
+                <td class="text-end">{{ number_format_id($row->sum('total_tagihan')) }}</td>
                 <td>
-                    Diskon : {{ number_format($row->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}
+                    Diskon : {{ number_format_id($row->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}
                 </td>
             </tr>
         @endforeach
         <tr>
             <th></th>
             <th>Total Pendapatan</th>
-            <th class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan')) }}</th>
-            <th>Total Diskon : {{ number_format($dataPendapatan->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}</th>
+            <th class="text-end">{{ number_format_id($dataPendapatan->sum('total_tagihan')) }}</th>
+            <th>Total Diskon : {{ number_format_id($dataPendapatan->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}</th>
         </tr>
         <tr>
             <td class="w-10px">2.</td>
@@ -73,7 +73,7 @@
                 <tr>
                     <td></td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;{{ $pengeluaran->first()['kode_akun_nama'] }}</td>
-                    <td class="text-end">{{ number_format($pengeluaran->sum('debet')) }}</td>
+                    <td class="text-end">{{ number_format_id($pengeluaran->sum('debet')) }}</td>
                     <td>
                         {{ $item->uraian }}
                     </td>
@@ -83,7 +83,7 @@
         <tr>
             <th></th>
             <th>Total Pengeluaran</th>
-            <th class="text-end">{{ number_format($totalPengeluaran) }}
+            <th class="text-end">{{ number_format_id($totalPengeluaran) }}
             </th>
         </tr>
         <tr>
@@ -93,19 +93,19 @@
                     <tr>
                         <td class="w-200px">Total Pendapatan</td>
                         <td class="w-10px">:</td>
-                        <td class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan')) }}</td>
+                        <td class="text-end">{{ number_format_id($dataPendapatan->sum('total_tagihan')) }}</td>
                     </tr>
                     <tr>
                         <td>Total Pengeluaran</td>
                         <td>: </td>
                         <td class="text-end">
-                            {{ number_format($totalPengeluaran) }}</td>
+                            {{ number_format_id($totalPengeluaran) }}</td>
                     </tr>
                     <tr>
                         <td>Total Keuntungan</td>
                         <td>: </td>
                         <td class="text-end">
-                            {{ number_format($dataPendapatan->sum('total_tagihan') - $totalPengeluaran) }}
+                            {{ number_format_id($dataPendapatan->sum('total_tagihan') - $totalPengeluaran) }}
                         </td>
                     </tr>
                 </table>

@@ -22,7 +22,7 @@
                 <td>{{ $row->member->pasien->nama }}</td>
                 <td>{{ $row->member->email }}</td>
                 <td>{{ $row->metode_bayar }}</td>
-                <td>{{ $cetak ? $row->masuk : number_format($row->masuk) }}</td>
+                <td>{{ $cetak ? $row->masuk : number_format_id($row->masuk) }}</td>
                 <td class="with-btn-group text-end" nowrap>
                     @role('administrator|supervisor')
                         <x-action :row="$row" custom="" :detail="false" :edit="false" :print="false"

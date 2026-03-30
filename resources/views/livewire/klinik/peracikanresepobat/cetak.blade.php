@@ -123,7 +123,7 @@
                         {{ $item->qty }} {{ $item->barangSatuan->nama }}
                     </td>
                     <td class="p-0 text-end">
-                        {{ number_format($item->harga * $item->qty) }}
+                        {{ number_format_id($item->harga * $item->qty) }}
                     </td>
                 </tr>
             @endforeach
@@ -132,7 +132,7 @@
                     Total
                 </td>
                 <td class="p-0 text-end" nowrap>
-                    {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                    {{ number_format_id($resep->sum(fn($q) => $q->harga * $q->qty)) }}
                 </td>
             </tr>
             <tr>
@@ -145,7 +145,7 @@
         <tr>
             <th class="p-0">Total</th>
             <th class="p-0 text-end" nowrap>
-                {{ number_format($data->resepObat->sum(fn($q) => $q->harga * $q->qty)) }}
+                {{ number_format_id($data->resepObat->sum(fn($q) => $q->harga * $q->qty)) }}
             </th>
         </tr>
     </table>

@@ -51,14 +51,14 @@
                 </td>
                 <td nowrap>{{ $row['pengguna']['nama'] }}</td>
                 <td class="text-end">
-                    {{ $cetak ? $row->keuanganJurnalDetail->sum('kredit') : number_format($row->keuanganJurnalDetail->sum('kredit')) }}
+                    {{ $cetak ? $row->keuanganJurnalDetail->sum('kredit') : number_format_id($row->keuanganJurnalDetail->sum('kredit')) }}
                 </td>
             </tr>
         @endforeach
         <tr>
             <th colspan="7">TOTAL</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum(fn($row) => $row->keuanganJurnalDetail->sum('kredit')) : number_format($data->sum(fn($row) => $row->keuanganJurnalDetail->sum('kredit'))) }}
+                {{ $cetak ? $data->sum(fn($row) => $row->keuanganJurnalDetail->sum('kredit')) : number_format_id($data->sum(fn($row) => $row->keuanganJurnalDetail->sum('kredit'))) }}
             </th>
         </tr>
     </tbody>

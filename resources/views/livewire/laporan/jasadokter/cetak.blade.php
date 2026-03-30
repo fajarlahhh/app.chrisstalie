@@ -42,7 +42,7 @@
                 @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
                     <td class="text-end">
                         @if ($row['perawat_id'] == $key)
-                            {{ $cetak ? $row['biaya'] : number_format($row['biaya']) }}
+                            {{ $cetak ? $row['biaya'] : number_format_id($row['biaya']) }}
                         @endif
                     </td>
                 @endforeach
@@ -52,7 +52,7 @@
             <th colspan="5">Total</th>
             @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
                 <th class="text-end">
-                    {{ $cetak ? collect($data)->where('perawat_id', $key)->sum('biaya') : number_format(collect($data)->where('perawat_id', $key)->sum('biaya')) }}
+                    {{ $cetak ? collect($data)->where('perawat_id', $key)->sum('biaya') : number_format_id(collect($data)->where('perawat_id', $key)->sum('biaya')) }}
                 </th>
             @endforeach
         </tr>

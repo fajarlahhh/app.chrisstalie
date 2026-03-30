@@ -36,8 +36,8 @@
                 <td>{{ $row->pasien->jenis_kelamin }}</td>
                 <td>{{ $row->pasien->alamat }}</td>
                 <td>{{ $row->pasien->no_hp }}</td>
-                <td class="text-end">{{ number_format($row->saldo) }}</td>
-                <td class="text-end">{{ number_format($row->poin ?? 0) }}</td>
+                <td class="text-end">{{ number_format_id($row->saldo) }}</td>
+                <td class="text-end">{{ number_format_id($row->poin ?? 0) }}</td>
                 <td><x-level :level="$row->level" /></td>
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>

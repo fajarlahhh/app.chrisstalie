@@ -82,10 +82,10 @@
                                                     {{ $detail->qty }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px p-1">
-                                                    {{ number_format($detail->harga_beli) }}
+                                                    {{ number_format_id($detail->harga_beli) }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px p-1">
-                                                    {{ number_format($detail->harga_beli * $detail->qty) }}
+                                                    {{ number_format_id($detail->harga_beli * $detail->qty) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -93,19 +93,19 @@
                                     <tfoot>
                                         <tr>
                                             <th colspan="4" class="text-end p-1">Total Harga Barang :</th>
-                                            <th class="text-end p-1">{{ number_format($row->total_harga_barang) }}</th>
+                                            <th class="text-end p-1">{{ number_format_id($row->total_harga_barang) }}</th>
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="text-end p-1">Diskon :</th>
-                                            <th class="text-end p-1">{{ number_format($row->diskon) }}</th>
+                                            <th class="text-end p-1">{{ number_format_id($row->diskon) }}</th>
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="text-end p-1">PPN :</th>
-                                            <th class="text-end p-1">{{ number_format($row->ppn) }}</th>
+                                            <th class="text-end p-1">{{ number_format_id($row->ppn) }}</th>
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="text-end p-1">Tagihan :</th>
-                                            <th class="text-end p-1">{{ number_format($row->total_tagihan) }}</th>
+                                            <th class="text-end p-1">{{ number_format_id($row->total_tagihan) }}</th>
                                         </tr>
                                     </tfoot>
                                 </table>

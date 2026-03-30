@@ -67,17 +67,17 @@
                                 <small>
                                     <ul>
                                         <li>Total Tindakan :
-                                            <strong>{{ number_format($row->total_tindakan + $row->diskon) }}</strong>
+                                            <strong>{{ number_format_id($row->total_tindakan + $row->diskon) }}</strong>
                                         </li>
-                                        <li>Total Resep : <strong>{{ number_format($row->total_resep) }}</strong></li>
+                                        <li>Total Resep : <strong>{{ number_format_id($row->total_resep) }}</strong></li>
                                         <li>Total Barang :
-                                            <strong>{{ number_format($row->total_barang) }}</strong>
+                                            <strong>{{ number_format_id($row->total_barang) }}</strong>
                                         </li>
                                         <li>Total Diskon :
-                                            <strong>{{ number_format($row->total_diskon_barang + $row->total_diskon_tindakan + $row->diskon) }}</strong>
+                                            <strong>{{ number_format_id($row->total_diskon_barang + $row->total_diskon_tindakan + $row->diskon) }}</strong>
                                         </li>
                                         <li>Total Tagihan :
-                                            <strong>{{ number_format($row->total_tagihan) }}</strong>
+                                            <strong>{{ number_format_id($row->total_tagihan) }}</strong>
                                         </li>
                                     </ul>
                                 </small>
@@ -87,10 +87,10 @@
                                     <ul>
                                         <li>No. Nota : <strong>{{ $row->id }}</strong></li>
                                         <li><strong>{{ $row->metode_bayar }} :
-                                                {{ number_format($row->bayar) }}</strong></li>
+                                                {{ number_format_id($row->bayar) }}</strong></li>
                                         @if ($row->metode_bayar_2)
                                             <li><strong>{{ $row->metode_bayar_2 }} :
-                                                    {{ number_format($row->bayar_2) }}</strong></li>
+                                                    {{ number_format_id($row->bayar_2) }}</strong></li>
                                         @endif
                                         <li>Kasir : <strong>{{ $row->pengguna->nama }}</strong></li>
                                         <li>Tanggal Input : <strong>{{ $row->created_at }}</strong></li>

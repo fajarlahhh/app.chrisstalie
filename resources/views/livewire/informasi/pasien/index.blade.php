@@ -358,10 +358,10 @@
                                                                     {{ $item->perawat?->nama }}</small><br>
                                                                 <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-
                                                                     {{ $item->qty }} x
-                                                                    {{ number_format($item->biaya) }}
-                                                                    {{ $item->diskon > 0 ? ' - ' . number_format($item->diskon) : '' }}
+                                                                    {{ number_format_id($item->biaya) }}
+                                                                    {{ $item->diskon > 0 ? ' - ' . number_format_id($item->diskon) : '' }}
                                                                     =
-                                                                    <strong>{{ number_format($item->biaya * $item->qty - $item->diskon) }}</strong>
+                                                                    <strong>{{ number_format_id($item->biaya * $item->qty - $item->diskon) }}</strong>
                                                                 </small><br>
                                                                 <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Catatan
                                                                         :</strong>
@@ -420,8 +420,8 @@
                                                                         {{ $barang['satuan'] }}
                                                                         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $barang['qty'] }}
                                                                         x
-                                                                        {{ number_format($barang['harga']) }} =
-                                                                        {{ number_format($barang['subtotal']) }}</small><br>
+                                                                        {{ number_format_id($barang['harga']) }} =
+                                                                        {{ number_format_id($barang['subtotal']) }}</small><br>
                                                                 @endforeach
                                                                 <small><strong>Catatan
                                                                         :</strong><br>&nbsp;&nbsp;&nbsp;{{ $item['catatan'] }}</small>
@@ -444,13 +444,13 @@
                                             <td nowrap>
                                                 <strong>No. Nota :</strong> {{ $row->pembayaran?->id }}<br>
                                                 <strong>Total Tindakan :</strong>
-                                                {{ number_format($row->pembayaran?->total_tindakan) }}<br>
+                                                {{ number_format_id($row->pembayaran?->total_tindakan) }}<br>
                                                 <strong>Total Resep :</strong>
-                                                {{ number_format($row->pembayaran?->total_resep) }}<br>
+                                                {{ number_format_id($row->pembayaran?->total_resep) }}<br>
                                                 <strong>Diskon :</strong>
-                                                {{ number_format($row->pembayaran?->diskon) }}<br>
+                                                {{ number_format_id($row->pembayaran?->diskon) }}<br>
                                                 <strong>Total Tagihan :</strong>
-                                                {{ number_format($row->pembayaran?->total_tagihan) }}
+                                                {{ number_format_id($row->pembayaran?->total_tagihan) }}
                                                 <br><br>
                                                 <div class="row ps-2 pe-2">
                                                     <div class="col-xl-6">
@@ -463,7 +463,7 @@
                                                                 {{ $row->pembayaran?->metode_bayar }}<br>
                                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah
                                                                     Pembayaran :</strong>
-                                                                {{ number_format($row->pembayaran?->bayar) }}<br>
+                                                                {{ number_format_id($row->pembayaran?->bayar) }}<br>
                                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan
                                                                     :</strong>
                                                                 {{ $row->pembayaran?->keterangan }}
@@ -480,7 +480,7 @@
                                                                 {{ $row->pembayaran?->metode_bayar_2 }}<br>
                                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah
                                                                     :</strong>
-                                                                {{ number_format($row->pembayaran?->bayar_2) }}<br>
+                                                                {{ number_format_id($row->pembayaran?->bayar_2) }}<br>
                                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan
                                                                     :</strong>
                                                                 {{ $row->pembayaran?->keterangan_2 }}

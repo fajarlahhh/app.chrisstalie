@@ -30,17 +30,17 @@
                 <td>{{ $item->nama }}</td>
                 <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                 <td>{{ $item->icd_9_cm }}</td>
-                <td class="text-end">{{ $cetak == false ? number_format($item->tarif) : $item->tarif }}</td>
+                <td class="text-end">{{ $cetak == false ? number_format_id($item->tarif) : $item->tarif }}</td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya)) : $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) }}
+                    {{ $cetak == false ? number_format_id($item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya)) : $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) }}
                 </td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi)) : $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) }}
+                    {{ $cetak == false ? number_format_id($item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi), 2) : $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) }}
                 </td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->biaya_jasa_dokter) : $item->biaya_jasa_dokter }}</td>
+                    {{ $cetak == false ? number_format_id($item->biaya_jasa_dokter) : $item->biaya_jasa_dokter }}</td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->biaya_jasa_perawat) : $item->biaya_jasa_perawat }}</td>
+                    {{ $cetak == false ? number_format_id($item->biaya_jasa_perawat) : $item->biaya_jasa_perawat }}</td>
                 @php
                     $keuntungan =
                         $item->tarif -
@@ -50,10 +50,10 @@
                         $item->biaya_jasa_perawat;
                 @endphp
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($keuntungan) : $keuntungan }}
+                    {{ $cetak == false ? number_format_id($keuntungan, 2) : $keuntungan }}
                 </td>
                 <td class="text-end">
-                    {{ $item->tarif != 0 ? ($cetak == false ? number_format(($keuntungan / $item->tarif) * 100) : ($keuntungan / $item->tarif) * 100) : 0 }}
+                    {{ $item->tarif != 0 ? ($cetak == false ? number_format_id(($keuntungan / $item->tarif) * 100, 2) : ($keuntungan / $item->tarif) * 100) : 0 }}
                 </td>
                 <td nowrap>{!! nl2br(e($item->catatan)) !!}</td>
                 @if ($cetak == false)

@@ -53,7 +53,7 @@
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
-                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga_beli, 0, ',', '.') }}
+                            <td class="text-nowrap w-100px text-end">{{ number_format_id($row->harga_beli) }}
                             </td>
                             <td>{{ $row->transaksi }}</td>
                             <td class="text-nowrap w-100px"><a

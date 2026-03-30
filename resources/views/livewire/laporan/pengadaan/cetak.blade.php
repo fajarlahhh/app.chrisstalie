@@ -44,11 +44,11 @@
                                 <td class="p-1">
                                     {{ $subRow->goods_id ? $subRow->goods?->nama : $subRow->nama }}</td>
                                 <td class="text-end p-1  text-nowrap">
-                                    {{ number_format($subRow->harga) }}</td>
+                                    {{ number_format_id($subRow->harga) }}</td>
                                 <td class="text-end p-1  text-nowrap">
-                                    {{ number_format($subRow->qty) }}</td>
+                                    {{ number_format_id($subRow->qty) }}</td>
                                 <td class="text-end p-1  text-nowrap">
-                                    {{ number_format($subRow->qty * $subRow->harga) }}</td>
+                                    {{ number_format_id($subRow->qty * $subRow->harga) }}</td>
                             </tr>
                         @endforeach
                         <tr>
@@ -57,7 +57,7 @@
                                 @php
                                     $total += $row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty);
                                 @endphp
-                                {{ number_format($row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty)) }}
+                                {{ number_format_id($row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty)) }}
                             </td>
                         </tr>
                     </table>
@@ -76,8 +76,8 @@
         @endforeach
         <tr>
             <th colspan="5">TOTAL</th>
-            <th class="text-end">{{ number_format($total) }}</th>
-            <th class="text-end">{{ number_format($totalLunas) }}</th>
+            <th class="text-end">{{ number_format_id($total) }}</th>
+            <th class="text-end">{{ number_format_id($totalLunas) }}</th>
         </tr>
     </tbody>
 </table>

@@ -45,9 +45,9 @@
                                 <td class="w-10px">{{ $loop->iteration }}</td>
                                 <td>{{ $detail->barangSatuan->barang->nama }}</td>
                                 <td class="w-100px">{{ $detail->barangSatuan->nama }}</td>
-                                <td class="text-end w-100px">{{ number_format($detail->harga_beli) }}</td>
+                                <td class="text-end w-100px">{{ number_format_id($detail->harga_beli) }}</td>
                                 <td class="text-center w-50px">{{ $detail->qty }}</td>
-                                <td class="text-end w-100px">{{ number_format($detail->harga_beli * $detail->qty) }}
+                                <td class="text-end w-100px">{{ number_format_id($detail->harga_beli * $detail->qty) }}
                                 </td>
                             </tr>
                         @endforeach

@@ -60,7 +60,7 @@
                                                     <td class="p-1" nowrap>{{ $item['kode_akun_id'] ?? null }}
                                                     </td>
                                                     <td class="text-end p-1" nowrap>
-                                                        {{ number_format($item['debet'] ?? 0) }}</td>
+                                                        {{ number_format_id($item['debet'] ?? 0) }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -91,7 +91,7 @@
                                                     <td class="p-1" nowrap>{{ $item['nama'] }}</td>
                                                     @foreach ($item['pegawai_unsur_gaji'] as $subRow)
                                                         <td class="text-end p-1">
-                                                            {{ number_format($subRow['nilai'] ?? 0) }}</td>
+                                                            {{ number_format_id($subRow['nilai'] ?? 0) }}</td>
                                                     @endforeach
                                                 </tr>
                                             @endforeach
@@ -104,9 +104,9 @@
                             </td>
                             <td class="text-end">
                                 @if ($row->kepegawaian_pegawai_id)
-                                    {{ number_format(collect($row->detail)->sum('debet')) }}
+                                    {{ number_format_id(collect($row->detail)->sum('debet')) }}
                                 @else
-                                    {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
+                                    {{ number_format_id(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
                                 @endif
                             </td>
                             <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"

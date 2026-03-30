@@ -71,7 +71,7 @@
                                 @if ($data->exists) disabled @endif>
                                 <option hidden selected>-- Tidak Ada Satuan Konversi --</option>
                                 @foreach ($dataBarangSatuan as $item)
-                                    <option data-subtext="Rp. {{ number_format($item['harga_jual'], 0, ',', '.') }}"
+                                    <option data-subtext="Rp. {{ number_format_id($item['harga_jual']) }}"
                                         value="{{ $item['id'] }}">
                                         {{ $item['nama'] }}</option>
                                 @endforeach

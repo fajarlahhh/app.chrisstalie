@@ -29,7 +29,7 @@
                                     <tr>
                                         <td class="p-1">{{ $satuan->nama }}</td>
                                         <td class="text-end w-100px p-1">
-                                            {{ $cetak == false ? number_format($satuan->harga_jual, 0, ',', '.') : $satuan->harga_jual }}
+                                            {{ $cetak == false ? number_format_id($satuan->harga_jual) : $satuan->harga_jual }}
                                         </td>
                                         <td class="p-1 text-nowrap w-150px">
                                             {!! $satuan->rasio_dari_terkecil == 1

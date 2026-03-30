@@ -72,31 +72,31 @@
                                                 <td class="p-1" nowrap>{{ $q['barang']['nama'] }}</td>
                                                 <td class="p-1" nowrap>{{ $q['barang_satuan']['nama'] }}</td>
                                                 <td class="text-end w-70px p-1" nowrap>
-                                                    {{ number_format($q['harga_beli'], 2) }}</td>
+                                                    {{ number_format_id($q['harga_beli'], 2) }}</td>
                                                 <td class="text-end w-70px p-1" nowrap>{{ $q['qty'] }}</td>
                                                 <td class="text-end w-70px p-1" nowrap>
-                                                    {{ number_format($q['harga_beli'] * $q['qty'], 2) }}</td>
+                                                    {{ number_format_id($q['harga_beli'] * $q['qty'], 2) }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
                                             <th colspan="4" class="p-1">Total Harga Barang</th>
                                             <th class="text-end w-70px p-1" nowrap>
-                                                {{ number_format($item['total_harga_barang'], 2) }}</th>
+                                                {{ number_format_id($item['total_harga_barang'], 2) }}</th>
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="p-1">Diskon</th>
                                             <th class="text-end w-70px p-1" nowrap>
-                                                {{ number_format($item['diskon'], 2) }}</th>
+                                                {{ number_format_id($item['diskon'], 2) }}</th>
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="p-1">PPN</th>
                                             <th class="text-end w-70px p-1" nowrap>
-                                                {{ number_format($item['ppn'], 2) }}</th>
+                                                {{ number_format_id($item['ppn'], 2) }}</th>
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="p-1">Total Tagihan</th>
                                             <th class="text-end w-70px p-1" nowrap>
-                                                {{ number_format($item['total_tagihan'], 2) }}</th>
+                                                {{ number_format_id($item['total_tagihan'], 2) }}</th>
                                         </tr>
                                     </table>
                                 </td>

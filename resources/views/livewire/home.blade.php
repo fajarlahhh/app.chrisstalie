@@ -43,9 +43,9 @@
                                 <div class="stats-title">OMSET BULAN INI</div>
                                 <div class="stats-number text-end fs-12px">
                                     <small>JASA</small> :
-                                    {{ number_format($dataPembayaranBulanIni->sum(fn($q) => $q->total_tindakan - $q->total_diskon_tindakan), 2) }}
+                                    {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_tindakan - $q->total_diskon_tindakan), 2) }}
                                     <br><small>OBAT & PRODUK</small> :
-                                    {{ number_format($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang - $q->total_diskon_barang), 2) }}
+                                    {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang - $q->total_diskon_barang), 2) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>
@@ -59,7 +59,7 @@
                             <div class="stats-content">
                                 <div class="stats-title">PENGELUARAN BULAN INI</div>
                                 <div class="stats-number text-end">
-                                    {{ number_format($dataPengeluaranBulanIni->sum(fn($row) => $row->keuanganJurnalDetail->sum('kredit'))) }}
+                                    {{ number_format_id($dataPengeluaranBulanIni->sum(fn($row) => $row->keuanganJurnalDetail->sum('kredit'))) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>
@@ -146,7 +146,7 @@
                                             <span class="badge bg-success">{{ $row->tanggal_jatuh_tempo }}</span>
                                         @endif
                                     </td>
-                                    <td class="text-end" nowrap>{{ number_format($row->total_tagihan) }}</td>
+                                    <td class="text-end" nowrap>{{ number_format_id($row->total_tagihan) }}</td>
                                     <td>
                                         <a href="/manajemenstok/pengadaanbrgdagang/pelunasan/form?supplier={{ $row->supplier_id }}"
                                             class="btn btn-xs btn-primary">Lunasi</a>

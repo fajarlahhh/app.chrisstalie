@@ -124,8 +124,8 @@
                 <tr>
                     <td class="p-0">
                         {{ $tindakan->tarifTindakan->nama }}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($tindakan->biaya) }} @if ($tindakan->diskon > 0)
-                            - {{ number_format($tindakan->diskon) }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format_id($tindakan->biaya) }} @if ($tindakan->diskon > 0)
+                            - {{ number_format_id($tindakan->diskon) }}
                         @endif
                     </td>
                     <td class="p-0 ps-2 text-center w-10px" nowrap>
@@ -133,7 +133,7 @@
 
                     </td>
                     <td class="p-0 text-end w-50px" nowrap>
-                        {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
+                        {{ number_format_id(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
                     </td>
                 </tr>
             @endforeach
@@ -141,13 +141,13 @@
                 <tr>
                     <td class="p-0">
                         {{ $resep->first()->nama }}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format_id($resep->sum(fn($q) => $q->harga * $q->qty)) }}
                     </td>
                     <td class="p-0 ps-2 text-center w-10px" nowrap>
                         1
                     </td>
                     <td class="p-0 text-end w-50px" nowrap>
-                        {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                        {{ number_format_id($resep->sum(fn($q) => $q->harga * $q->qty)) }}
                     </td>
                 </tr>
             @endforeach
@@ -157,13 +157,13 @@
                 <td class="p-0">
                     {{ $keluar->barangSatuan->barang->nama }}<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $keluar->barangSatuan->nama }} -
-                        {{ number_format($keluar->harga) }}</small>
+                        {{ number_format_id($keluar->harga) }}</small>
                 </td>
                 <td class="p-0 ps-2 text-center w-10px" nowrap>
                     {{ $keluar->qty }}
                 </td>
                 <td class="p-0 text-end w-50px" nowrap>
-                    {{ number_format($keluar->qty * $keluar->harga) }}
+                    {{ number_format_id($keluar->qty * $keluar->harga) }}
                 </td>
             </tr>
         @endforeach
@@ -173,26 +173,26 @@
         <tr>
             <td class="p-0">Total Tindakan</td>
             <td class="p-0 text-end" nowrap>
-                {{ number_format($data->total_tindakan) }}
+                {{ number_format_id($data->total_tindakan) }}
             </td>
         </tr>
         <tr>
             <td class="p-0">Total Resep</td>
-            <td class="p-0 text-end">{{ number_format($data->total_resep) }}</td>
+            <td class="p-0 text-end">{{ number_format_id($data->total_resep) }}</td>
         </tr>
         <tr>
             <td class="p-0">Total Harga Barang</td>
-            <td class="p-0 text-end">{{ number_format($data->total_harga_barang) }}</td>
+            <td class="p-0 text-end">{{ number_format_id($data->total_harga_barang) }}</td>
         </tr>
         <tr>
             <td class="p-0">Diskon</td>
-            <td class="p-0 text-end">{{ number_format($data->total_diskon_barang + $data->total_diskon_tindakan +  $data->diskon) }}
+            <td class="p-0 text-end">{{ number_format_id($data->total_diskon_barang + $data->total_diskon_tindakan +  $data->diskon) }}
             </td>
         </tr>
         <tr>
             <th class="p-0">Total Tagihan</th>
             <th class="p-0 text-end" nowrap>
-                {{ number_format($data->total_tagihan) }}
+                {{ number_format_id($data->total_tagihan) }}
             </th>
         </tr>
         <tr>
@@ -202,12 +202,12 @@
         </tr>
         <tr>
             <td class="p-0">{{ $data->metode_bayar }}</td>
-            <td class="p-0 text-end">{{ number_format($data->bayar) }}</td>
+            <td class="p-0 text-end">{{ number_format_id($data->bayar) }}</td>
         </tr>
         @if ($data->metode_bayar_2)
             <tr>
                 <td class="p-0">{{ $data->metode_bayar_2 }}</td>
-                <td class="p-0 text-end">{{ number_format($data->bayar_2) }}</td>
+                <td class="p-0 text-end">{{ number_format_id($data->bayar_2) }}</td>
             </tr>
         @endif
     </table>

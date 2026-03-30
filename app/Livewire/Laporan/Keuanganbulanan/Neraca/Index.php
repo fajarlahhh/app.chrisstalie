@@ -102,7 +102,7 @@ class Index extends Component
                 'nomor' => $item->nomor,
                 'kode_akun' => $item->kode_akun,
                 'uraian' => $item->uraian,
-                'nilai' => $nilai == '' ? '' : number_format($nilai, 2),
+                'nilai' => $nilai == '' ? '' : number_format_id($nilai, 2),
             ];
         }
         return $data;
@@ -169,7 +169,7 @@ class Index extends Component
                 'nomor' => $item->nomor,
                 'kode_akun' => $item->kode_akun,
                 'uraian' => $item->uraian,
-                'nilai' => $nilai == '' ? '' : number_format($nilai, 2),
+                'nilai' => $nilai == '' ? '' : number_format_id($nilai, 2),
             ];
         }
         return $data;

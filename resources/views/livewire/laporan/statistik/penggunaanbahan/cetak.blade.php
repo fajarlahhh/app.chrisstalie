@@ -29,14 +29,14 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row['nama'] }}</td>
-                <td class="text-end">{{ $cetak ? $row['qty'] : number_format($row['qty']) }}</td>
-                <td class="text-end">{{ $cetak ? $row['biaya'] : number_format($row['biaya'], 2) }}</td>
+                <td class="text-end">{{ $cetak ? $row['qty'] : number_format_id($row['qty']) }}</td>
+                <td class="text-end">{{ $cetak ? $row['biaya'] : number_format_id($row['biaya'], 2) }}</td>
             </tr>
         @endforeach
         <tr>
             <th colspan="3">TOTAL</th>
             <th class="text-end">
-                {{ $cetak ? collect($data)->sum('biaya') : number_format(collect($data)->sum('biaya'), 2) }}</th>
+                {{ $cetak ? collect($data)->sum('biaya') : number_format_id(collect($data)->sum('biaya'), 2) }}</th>
         </tr>
     </tbody>
 </table>

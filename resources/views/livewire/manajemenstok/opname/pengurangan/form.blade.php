@@ -60,7 +60,7 @@
                                 <option value="" selected>-- Pilih Barang --</option>
                                 @foreach (collect($dataBarang)->sortBy('nama') as $row)
                                     <option value="{{ $row['id'] }}" data-nama="{{ $row['nama'] }}"
-                                        data-harga="{{ number_format($row['harga'], 0, ',', '.') }}"
+                                        data-harga="{{ number_format_id($row['harga']) }}"
                                         data-satuan="{{ $row['satuan'] }}" data-exp="{{ $row['tanggal_kedaluarsa'] }}"
                                         data-batch="{{ $row['no_batch'] }}" data-qty="{{ $row['qty'] }}">
                                         {{ $row['nama'] }} (Batch: {{ $row['no_batch'] }}) - {{ $row['qty'] }}
@@ -82,12 +82,12 @@
                     <div class="mb-3">
                         <label class="form-label">Harga Beli</label>
                         <input type="text" class="form-control text-end"
-                            value="{{ number_format($barang['harga'] ?? 0) }}" disabled>
+                            value="{{ number_format_id($barang['harga'] ?? 0) }}" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Stok</label>
                         <input type="text" class="form-control"
-                            value="{{ number_format($barang['qty'] ?? 0) }} {{ $barang['satuan'] ?? '' }}" disabled>
+                            value="{{ number_format_id($barang['qty'] ?? 0) }} {{ $barang['satuan'] ?? '' }}" disabled>
                     </div>
                 </div>
                 @if ($barang)

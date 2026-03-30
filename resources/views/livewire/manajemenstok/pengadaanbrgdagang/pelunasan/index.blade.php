@@ -48,14 +48,14 @@
                                     @foreach ($row->pengadaanPelunasanDetail as $subRow)
                                         <li>No. Tagihan : {{ $subRow->pengadaanTagihan->no_faktur }},
                                              <strong>Rp.
-                                                {{ number_format($subRow->tagihan) }}</strong></li>
+                                                {{ number_format_id($subRow->tagihan) }}</strong></li>
                                     @endforeach
                                 </ul>
                             </td>
                             <td>{{ $row->pengadaanPelunasanDetail->first()->pengadaanTagihan->supplier->nama }}</td>
                             <td nowrap>{{ $row->tanggal }}</td>
                             <td>{{ $row->catatan }}</td>
-                            <td>{{ number_format($row->jumlah) }}</td>
+                            <td>{{ number_format_id($row->jumlah) }}</td>
                             <td>{{ $row->kodeAkunPembayaran->nama }}</td>
                             <td>{{ $row->bukti }}</td>
                             <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"

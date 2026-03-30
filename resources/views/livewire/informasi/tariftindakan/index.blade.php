@@ -59,7 +59,7 @@
                                     <tr>
                                         <td>Tarif</td>
                                         <td class="w-10px">:</td>
-                                        <td>Rp. {{ number_format($dataTarifTindakan->tarif) }}</td>
+                                        <td>Rp. {{ number_format_id($dataTarifTindakan->tarif) }}</td>
                                     </tr>
                                     <tr>
                                         <td>Catatan</td>

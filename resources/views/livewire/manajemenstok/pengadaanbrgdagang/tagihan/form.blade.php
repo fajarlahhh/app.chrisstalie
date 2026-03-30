@@ -93,12 +93,12 @@
                                         </td>
                                         <td>
                                             <input type="text" class="form-control text-end"
-                                                value="{{ number_format($brg['harga_beli']) }}" disabled
+                                                value="{{ number_format_id($brg['harga_beli']) }}" disabled
                                                 autocomplete="off">
                                         </td>
                                         <td>
                                             <input type="text" class="form-control text-end"
-                                                value="{{ number_format($brg['qty'] * $brg['harga_beli']) }}" disabled>
+                                                value="{{ number_format_id($brg['qty'] * $brg['harga_beli']) }}" disabled>
                                         </td>
                                     </tr>
                                 @endforeach

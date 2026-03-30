@@ -182,7 +182,7 @@
                 metode_bayar_2: @js($metode_bayar_2),
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
-                    return `${new Intl.NumberFormat().format(val)}`;
+                    return `${new Intl.NumberFormat('id-ID').format(val)}`;
                 },
                 hitungTotalTindakan() {
                     this.total_tindakan = this.tindakan.reduce((sum, row) => {

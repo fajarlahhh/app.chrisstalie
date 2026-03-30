@@ -13,9 +13,9 @@
                     $integer = $parts[0];
                     $decimal = $parts[1] ?? '';
                     // Tambah pemisah ribuan pada integer, jaga presisi koma original
-                    return number_format($integer, 0) . ($decimal !== '' ? '.' . $decimal : '');
+                    return number_format_id((float) $integer) . ($decimal !== '' ? ',' . $decimal : '');
                 } else {
-                    return number_format($angka);
+                    return number_format_id($angka);
                 }
             }
             return $angka;
