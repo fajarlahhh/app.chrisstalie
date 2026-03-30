@@ -199,7 +199,7 @@
 
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
-                    return `${new Intl.NumberFormat().format(val)}`;
+                    return `${new Intl.NumberFormat('id-ID').format(val)}`;
                 },
 
                 tambahDetail() {
