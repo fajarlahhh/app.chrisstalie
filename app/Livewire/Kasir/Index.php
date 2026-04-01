@@ -420,7 +420,7 @@ class Index extends Component
 
         $biayaPenyusutanAset = collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
             return [
-                'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi(['Biaya Penyusutan Aset'])->kode_akun_id,
+                'kode_akun_id' => $q['kode_akun_penjualan_id'],
                 'debet' => $q['biaya'] * $q['qty'],
                 'kredit' => 0,
             ];
