@@ -304,7 +304,7 @@ return [
                     "method" => ["Index"],
                 ],
                 [
-                    "title" => "PenyusutanAset",
+                    "title" => "Penyusutan Aset",
                     "method" => ["Index"],
                 ],
                 [
