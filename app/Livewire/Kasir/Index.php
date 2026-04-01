@@ -126,6 +126,7 @@ class Index extends Component
                     'nama' => $q->alat->nama,
                     'metode_penyusutan' => $q->alat->metode_penyusutan,
                     'kode_akun_penyusutan_id' => $q->alat->kode_akun_penyusutan_id,
+                    'kode_akun_penjualan_id' => $q->alat->kode_akun_penjualan_id,
                     'qty' => $q->qty,
                     'biaya' => $q->biaya,
                     'kode_akun_id' => $q->alat->kode_akun_id,
