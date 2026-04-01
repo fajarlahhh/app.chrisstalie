@@ -304,6 +304,10 @@ return [
                     "method" => ["Index"],
                 ],
                 [
+                    "title" => "PenyusutanAset",
+                    "method" => ["Index"],
+                ],
+                [
                     "title" => "Penerimaan",
                     "method" => ["Index"],
                 ],

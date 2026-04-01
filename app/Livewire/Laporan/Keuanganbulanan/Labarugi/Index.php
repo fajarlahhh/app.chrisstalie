@@ -40,7 +40,7 @@ class Index extends Component
         foreach ($template as $item) {
             $nilai = '';
             if ($item['kode_akun']) {
-                
+
                 $debet = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('debet_jurnal');
                 $kredit = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('kredit_jurnal');
 
@@ -94,7 +94,7 @@ class Index extends Component
             $data[] = [
                 'nomor' => $item->nomor,
                 'kode_akun' => $item->kode_akun,
-                'uraian' => $item->uraian,
+                'uraian' => $item->uraian /*. ($item->kode_akun ? ' <small>(' . implode(', ', explode(',', $item->kode_akun)) . ')</small>' : '')*/,
                 'nilai' => $nilai == '' ? '' : number_format_id($nilai, 2),
             ];
         }

@@ -50,7 +50,7 @@ class Index extends Component
     public function getData($paginate = true)
     {
         $query = BarangSatuan::select('barang_satuan.*', 'barang.nama as barang_nama')
-            ->with(['barang', 'pengguna', 'satuanKonversi'])
+            ->with(['barang.stokMasuk', 'pengguna', 'satuanKonversi'])
             ->when($this->barang_id, fn($q) => $q->where('barang_id', $this->barang_id))
             ->leftJoin('barang', 'barang_satuan.barang_id', '=', 'barang.id')
             ->orderBy('barang.nama')

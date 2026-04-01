@@ -148,6 +148,7 @@ class Index extends Component
             ->where('metode_penyusutan', 'Garis Lurus')
             ->where('tanggal_terminasi', '>=', $periode->format('Y-m-01'))
             ->get();
+            dd($dataAset->sum('nilai_penyusutan'));
         $detail = $dataAset->groupBy('kode_akun_penyusutan_id')->map(function ($aset) {
             return [
                 'debet' => 0,
