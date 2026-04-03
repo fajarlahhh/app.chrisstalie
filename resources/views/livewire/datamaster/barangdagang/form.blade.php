@@ -68,7 +68,7 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })" wire:model.live="kode_akun_id"
-                        data-width="100%">
+                        data-width="100%" @if ($data->exists) disabled @endif>
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach (collect($dataKodeAkun)->where('parent_id', '11300') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -89,7 +89,7 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })" wire:model.live="kode_akun_penjualan_id"
-                        data-width="100%" @if ($data->exists) disabled @endif>
+                        data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach (collect($dataKodeAkun)->where('parent_id', '41000') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
