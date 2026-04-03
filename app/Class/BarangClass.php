@@ -20,7 +20,7 @@ class BarangClass
 
     public static function getBarang($persediaan = null, $khusus = null, $resep = null)
     {
-        return Barang::select(
+        return (Barang::select(
             'barang.id as id',
             'barang.id as barang_id',
             'barang.nama as barang_nama',
@@ -32,8 +32,8 @@ class BarangClass
             'kode_akun_id',
             'kode_akun_penjualan_id',
             'kode_akun_modal_id'
-        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
-            ->with(['barangSatuan.satuanKonversi', 'stokMasuk'])
+        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')->where('barang.id', '52')
+            ->with(['barangSatuan.satuanKonversi', 'barangSatuanUtama', 'stokMasuk'])
             ->when($khusus, fn($q) => $q->where('khusus', $khusus))
             ->when($persediaan, fn($q) => $q->where('persediaan', $persediaan))
             ->when($resep == '0' || $resep == '1', fn($q) => $q->where('perlu_resep', $resep))
@@ -43,14 +43,14 @@ class BarangClass
                 'barang_id' => $q['barang_id'],
                 'biaya' => $q['harga_jual'],
                 'harga' => $q['harga_jual'],
-                'harga_beli_tertinggi' => $q->stokMasuk->take(3)->max(fn($r) => $r->harga_beli / $r->rasio_dari_terkecil) / $q->rasio_dari_terkecil,
+                'harga_beli_tertinggi' => $q->stokMasuk->take(3)->max(fn($r) => $r->harga_beli * ($q->rasio_dari_terkecil == 1 ? 1 : $r->rasio_dari_terkecil)),
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'satuan' => $q['barang_satuan_nama'],
                 'persediaan' => $q['persediaan'],
                 'kode_akun_id' => $q['kode_akun_id'],
                 'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
                 'kode_akun_modal_id' => $q['kode_akun_modal_id'],
-            ])->toArray();
+            ])->toArray());
     }
 
     public static function getBarangBySatuanUtama($persediaan = null, $khusus = 0)

@@ -43,12 +43,12 @@ class Barang extends Model
 
     public function stokMasuk(): HasMany
     {
-        return $this->hasMany(StokMasuk::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(StokMasuk::class)->with('barangSatuan')->orderBy('created_at', 'desc');
     }
 
-    public function getHargaBeliTertinggiAttribute()
+    public function getHargaBeliTertinggi($rasio)
     {
-        return $this->stokMasuk->whereNotNull('pengadaan_pemesanan_id')->take(3)->max(fn($q) => $q->harga_beli / $q->rasio_dari_terkecil);
+        return $this->stokMasuk->whereNotNull('pengadaan_pemesanan_id')->take(3)->max(fn($q) => $q->harga_beli * ($rasio == 1 ? 1 : $q->rasio_dari_terkecil));
     }
 
     public function stokAwal(): HasMany

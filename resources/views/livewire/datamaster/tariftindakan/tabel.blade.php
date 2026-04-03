@@ -35,7 +35,17 @@
                     {{ $cetak == false ? number_format_id($item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya)) : $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) }}
                 </td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format_id($item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi), 2) : $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) }}
+                    {{ $cetak == false
+                        ? number_format_id(
+                            $item->tarifTindakanBahan->sum(
+                                fn($q) => ($q->qty * $q->barang?->getHargaBeliTertinggi($q->barangSatuan->rasio_dari_terkecil))
+                                    ,
+                            ),
+                            2,
+                        )
+                        : $item->tarifTindakanBahan->sum(
+                            fn($q) => ($q->qty * $q->barang?->getHargaBeliTertinggi($q->barangSatuan->rasio_dari_terkecil)) / $q->barangSatuan?->rasio_dari_terkecil,
+                        ) }}
                 </td>
                 <td class="text-end">
                     {{ $cetak == false ? number_format_id($item->biaya_jasa_dokter) : $item->biaya_jasa_dokter }}</td>
@@ -45,7 +55,7 @@
                     $keuntungan =
                         $item->tarif -
                         $item->tarifTindakanAlat->sum(fn($q) => $q->qty * $q->biaya) -
-                        $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->harga_beli_tertinggi) -
+                        $item->tarifTindakanBahan->sum(fn($q) => $q->qty * $q->barang?->getHargaBeliTertinggi($q->barangSatuan->rasio_dari_terkecil)) -
                         $item->biaya_jasa_dokter -
                         $item->biaya_jasa_perawat;
                 @endphp

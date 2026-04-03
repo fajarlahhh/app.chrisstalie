@@ -30,10 +30,10 @@
                     : $item->konversi_satuan !!}</td>
                 <td class="text-end">{{ $cetak == false ? number_format_id($item->harga_jual) : $item->harga_jual }}</td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format_id($item->barang->harga_beli_tertinggi * $item->rasio_dari_terkecil) : $item->barang->harga_beli_tertinggi * $item->rasio_dari_terkecil }}
+                    {{ $cetak == false ? number_format_id($item->barang->getHargaBeliTertinggi($item->rasio_dari_terkecil) * $item->rasio_dari_terkecil) : $item->barang->getHargaBeliTertinggi($item->rasio_dari_terkecil) * $item->rasio_dari_terkecil }}
                 </td>
                 @php
-                    $keuntungan = $item->harga_jual - $item->barang->harga_beli_tertinggi * $item->rasio_dari_terkecil;
+                    $keuntungan = $item->harga_jual - $item->barang->getHargaBeliTertinggi($item->rasio_dari_terkecil) * $item->rasio_dari_terkecil;
                 @endphp
                 <td class="text-end">{{ $cetak == false ? number_format_id($keuntungan) : $keuntungan }}</td>
                 <td class="text-end">
