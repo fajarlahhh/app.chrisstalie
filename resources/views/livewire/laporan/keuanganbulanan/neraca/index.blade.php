@@ -26,6 +26,16 @@
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
+            @if ($kodeAkunBelumMasuk->count() > 0)
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> Ada kode akun yang belum masuk ke dalam laba rugi.
+                    <ul>
+                        @foreach ($kodeAkunBelumMasuk as $item)
+                            <li>{{ $item->id }} - {{ $item->nama }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             @include('livewire.laporan.keuanganbulanan.neraca.cetak', ['cetak' => false])
         </div>
     </div>

@@ -22,8 +22,8 @@
                     <select class="form-control" wire:model.live="persediaan" data-width="100%"
                         @if ($data->exists) disabled @endif>
                         <option hidden selected>-- Pilih Persediaan --</option>
-                        <option value="Apotek">Apotek</option>
-                        <option value="Klinik">Klinik</option>
+                        <option value="Apotek">Persediaan Barang Dagang</option>
+                        <option value="Klinik">Persediaan Alat & Bahan</option>
                     </select>
                     @error('persediaan')
                         <span class="text-danger">{{ $message }}</span>
@@ -58,7 +58,7 @@
                     </div>
                 @endif
                 <div class="mb-3">
-                    <label class="form-label">Kategori Persediaan</label>
+                    <label class="form-label">Kategori</label>
                     <select class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',

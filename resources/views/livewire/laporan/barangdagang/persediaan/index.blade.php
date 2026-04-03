@@ -17,10 +17,11 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
+                <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
                 <select class="form-control w-auto" wire:model.lazy="persediaan">
                     <option value="">Semua Persediaan</option>
-                    <option value="Apotek">Persediaan Apotek</option>
-                    <option value="Klinik">Persediaan Klinik</option>
+                    <option value="Apotek">Persediaan Barang Dagang</option>
+                    <option value="Klinik">Persediaan Alat & Bahan</option>
                 </select>&nbsp;
                 <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                     <option value="">Semua Kategori</option>

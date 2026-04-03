@@ -2,19 +2,26 @@
 
 namespace App\Livewire\Laporan\Keuanganbulanan\Labarugi;
 
-use Livewire\Component;
-use Livewire\Attributes\Url;
 use App\Models\KeuanganSaldo;
 use App\Models\KeuanganTemplateLaporanKeuangan;
+use App\Models\KodeAkun;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class Index extends Component
 {
     #[Url]
     public $bulan;
+    public $template, $kodeAkunBelumMasuk;
 
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m');
+        $this->template = KeuanganTemplateLaporanKeuangan::where('jenis', 'Laba Rugi')->orderBy('urutan')->get();
+
+
+        $kodeAkunTemplate = explode(';', implode(';', $this->template->whereNotNull('kode_akun')->pluck('kode_akun')->toArray()));
+        $this->kodeAkunBelumMasuk = KodeAkun::whereIn('kategori', ['Pendapatan', 'Beban'])->detail()->whereNotIn('id', $kodeAkunTemplate)->get();
     }
 
     public function cetak()
@@ -34,8 +41,7 @@ class Index extends Component
 
         $data = [];
         $detail = [];
-        $template = KeuanganTemplateLaporanKeuangan::where('jenis', 'Laba Rugi')->orderBy('urutan')->get();
-        foreach ($template as $item) {
+        foreach ($this->template as $item) {
             $nilai = '';
             if ($item['kode_akun']) {
 

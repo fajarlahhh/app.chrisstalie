@@ -5,6 +5,7 @@ namespace App\Livewire\Laporan\Keuanganbulanan\Neraca;
 use Livewire\Component;
 use App\Models\KeuanganTemplateLaporanKeuangan;
 use App\Models\KeuanganSaldo;
+use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
 
 class Index extends Component
@@ -13,10 +14,15 @@ class Index extends Component
     public $bulan;
     public $template;
     public $saldo;
+    public $kodeAkunBelumMasuk;
+
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m');
         $this->getTemplate();
+
+        $kodeAkunTemplate = explode(';', implode(';', $this->template->whereNotNull('kode_akun')->pluck('kode_akun')->toArray()));
+        $this->kodeAkunBelumMasuk = KodeAkun::whereIn('kategori', ['Aktiva', 'Kewajiban', 'Ekuitas'])->detail()->whereNotIn('id', $kodeAkunTemplate)->get();
     }
 
     public function updatedBulan()
