@@ -32,7 +32,7 @@ class BarangClass
             'kode_akun_id',
             'kode_akun_penjualan_id',
             'kode_akun_modal_id'
-        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')->where('barang.id', '52')
+        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
             ->with(['barangSatuan.satuanKonversi', 'barangSatuanUtama', 'stokMasuk'])
             ->when($khusus, fn($q) => $q->where('khusus', $khusus))
             ->when($persediaan, fn($q) => $q->where('persediaan', $persediaan))

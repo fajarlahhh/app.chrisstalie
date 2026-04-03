@@ -42,12 +42,14 @@ class Form extends Component
                 BarangSatuan::where('barang_id', $this->barang_id)->where('id', '!=', $this->data->id)->update(['utama' => 0]);
             }
             $barangSatuan = collect($this->dataBarangSatuan)->where('id', $this->satuan_konversi_id)->first();
-            if ($this->data->rasio_dari_terkecil != 1) {
-                $this->data->nama = $this->nama;
-                $this->data->rasio_dari_terkecil = $this->faktor_konversi * (
-                    $barangSatuan['rasio_dari_terkecil'] *
-                    $barangSatuan['barang']['barang_satuan_terkecil']['rasio_dari_terkecil']);
-                $this->data->satuan_konversi_id = $this->satuan_konversi_id;
+            if (!$this->data->exists) {
+                if ($this->data->rasio_dari_terkecil != 1) {
+                    $this->data->nama = $this->nama;
+                    $this->data->rasio_dari_terkecil = $this->faktor_konversi * (
+                        $barangSatuan['rasio_dari_terkecil'] *
+                        $barangSatuan['barang']['barang_satuan_terkecil']['rasio_dari_terkecil']);
+                    $this->data->satuan_konversi_id = $this->satuan_konversi_id;
+                }
             }
             $this->data->barang_id = $this->barang_id;
             $this->data->harga_jual = $this->harga_jual;

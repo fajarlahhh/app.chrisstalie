@@ -46,6 +46,8 @@ class Index extends Component
             'kodeAkun',
             'tarifTindakanAlat',
             'tarifTindakanBahan.barang.stokMasuk',
+            'tarifTindakanBahan.barang.barangSatuan',
+            'tarifTindakanBahan.barangSatuan',
         ])
             ->when($this->kode_akun_id, function ($q) {
                 $q->where('kode_akun_id', $this->kode_akun_id);

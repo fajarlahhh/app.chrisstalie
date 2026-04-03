@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Barang')
+    @section('title', 'Tarif Tindakan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
