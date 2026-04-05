@@ -42,7 +42,9 @@
                     <option value="2">Manual</option>
                 </select>
                 &nbsp;
-                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+                <input type="date" class="form-control w-auto" wire:model.lazy="tanggal1" max="{{ date('Y-m-d') }}">
+                &nbsp;
+                <input type="date" class="form-control w-auto" wire:model.lazy="tanggal2" max="{{ date('Y-m-d') }}">
                 &nbsp;
                 <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">

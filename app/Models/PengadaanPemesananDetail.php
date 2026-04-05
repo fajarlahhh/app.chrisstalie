@@ -11,6 +11,7 @@ class PengadaanPemesananDetail extends Model
     use HasFactory;
 
     protected $table = 'pengadaan_pemesanan_detail';
+    public $timestamps = false;
 
     public function barang(): BelongsTo
     {

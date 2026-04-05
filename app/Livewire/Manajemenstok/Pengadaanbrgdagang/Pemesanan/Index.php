@@ -83,7 +83,8 @@ class Index extends Component
                 })->orWhereHas('supplier', function ($q) {
                     $q->where('nama', 'like', '%' . $this->cari . '%');
                 })
-                    ->orWhere('catatan', 'like', '%' . $this->cari . '%'))
+                    ->orWhere('catatan', 'like', '%' . $this->cari . '%')
+                    ->orWhere('nomor', 'like', '%' . $this->cari . '%'))
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);

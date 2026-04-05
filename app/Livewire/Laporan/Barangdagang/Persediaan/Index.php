@@ -12,13 +12,15 @@ use Illuminate\Support\Facades\DB;
 class Index extends Component
 {
     #[Url]
-    public $cari, $persediaan, $kode_akun_id, $bulan;
+    public $cari, $persediaan = 'Apotek', $kode_akun_id, $bulan;
     public $dataKodeAkun = [], $dataStok;
 
     public function mount()
     {
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
         $this->bulan = $this->bulan ?: date('Y-m');
+        $this->persediaan = $this->persediaan ?: 'Apotek';
+        $this->kode_akun_id = $this->kode_akun_id ?: '';
     }
 
     private function getData()

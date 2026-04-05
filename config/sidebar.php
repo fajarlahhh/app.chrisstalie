@@ -184,6 +184,11 @@ return [
                             "method" => ["Index", "Form"],
                         ],
                         [
+                            "title" => "Validasi Pemesanan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
                             "title" => "Stok Masuk",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],

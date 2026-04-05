@@ -389,6 +389,7 @@
                 icd_9_cm: @js($icd_9_cm),
                 keuntungan: 0,
                 formatNumber(val) {
+                    console.log(val);
                     if (val === null || val === undefined || isNaN(val)) return '0';
                     return `${new Intl.NumberFormat('id-ID').format(val)}`;
                 },

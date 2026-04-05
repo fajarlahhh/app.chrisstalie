@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Validasipemesanan;
 
 use App\Models\KepegawaianPegawai;
-use Livewire\Component;
-use App\Models\Supplier;
 use App\Models\PengadaanPemesanan;
-use Illuminate\Support\Facades\DB;
-use App\Models\PengadaanPermintaan;
-use App\Models\PengadaanVerifikasi;
 use App\Models\Pengguna;
+use App\Models\Supplier;
 use App\Traits\CustomValidationTrait;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class Form extends Component
 {
@@ -49,65 +47,50 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            $data = new PengadaanPemesanan();
-            if (!$data->exists) {
-                $terakhir = PengadaanPemesanan::where('tanggal', 'like', date('Y-m') . '%')
-                    ->orderBy('nomor', 'desc')
-                    ->first();
-                $nomorTerakhir = $terakhir ? (int)substr($terakhir->nomor, 0, 5) : 0;
-                $nomor = sprintf('%05d', $nomorTerakhir + 1) . '/SP-CHRISSTALIE/' . date('m') . '/' . date('Y');
-                $data->nomor = $nomor;
+            $this->data->supplier_id = $this->supplier_id;
+            $this->data->supplier_lama_id = $this->data->supplier_id;
+            $this->data->validator_id = auth()->id();
+            $this->data->validated_at = now();
+            $this->data->save();
+
+            foreach ($this->barang as $key => $value) {
+                $this->data->pengadaanPemesananDetail()->where('id', $value['pengadaan_pemesanan_detail_id'])->update([
+                    'qty' => $value['qty'],
+                    'harga_beli' => $value['harga_beli'],
+                    'qty_lama' => $value['qty_lama'],
+                    'harga_beli_lama' => $value['harga_beli_lama'],
+                    'harga_beli_terkecil' => $value['harga_beli'] / $value['rasio_dari_terkecil'],
+                ]);
             }
-            $data->tanggal = date('Y-m-d');
-            $data->jenis = $this->data->jenis_barang;
-            $data->tanggal_estimasi_kedatangan = $this->tanggal_estimasi_kedatangan;
-            $data->catatan = $this->catatan;
-            $data->supplier_id = $this->supplier_id;
-            $data->pengadaan_permintaan_id = $this->data->id;
-            $data->pengguna_id = auth()->id();
-            $data->penanggung_jawab_id = $this->penanggung_jawab_id;
-            $data->save();
-
-            $data->pengadaanPemesananDetail()->delete();
-            $data->pengadaanPemesananDetail()->insert(collect($this->barang)->map(fn($q) => [
-                'qty' => $q['qty'],
-                'harga_beli' => $q['harga_beli'],
-                'barang_id' => $q['barang_id'],
-                'barang_satuan_id' => $q['id'],
-                'pengadaan_permintaan_id' => $this->data->id,
-                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-                'harga_beli_terkecil' => $q['harga_beli'] / $q['rasio_dari_terkecil'],
-                'pengadaan_pemesanan_id' => $data->id,
-            ])->toArray());
-
 
             $cetak = view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan.cetak', [
-                'data' => $data,
+                'data' => $this->data,
                 'apoteker' => KepegawaianPegawai::where('apoteker', 1)->first(),
             ])->render();
             session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/manajemenstok/pengadaanbrgdagang/pemesanan');
+        $this->redirect('/manajemenstok/pengadaanbrgdagang/validasipemesanan');
     }
 
-    public function mount(PengadaanPermintaan $data)
+    public function mount(PengadaanPemesanan $data)
     {
         $this->data = $data;
-        if ($this->data->pengadaanVerifikasi->where('status', 'Disetujui')->count() == 0) {
+        if ($this->data->validator_id != null) {
             return abort(404);
         }
         $this->fill($this->data->toArray());
-        $this->barang = $data->pengadaanPermintaanDetail->map(fn($q) => [
+        $this->barang = $data->pengadaanPemesananDetail->map(fn($q) => [
+            'pengadaan_pemesanan_detail_id' => $q->id,
             'id' => $q->barang_satuan_id,
             'barang_id' => $q->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
             'satuan' => $q->barangSatuan->nama,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-            'qty_permintaan' => $q->qty_disetujui,
-            'qty_sudah_dipesan' => $data->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->sum('qty') ?? 0,
-            'qty' => 0,
-            'harga_beli' => 0,
+            'qty' => $q->qty,
+            'harga_beli' => (float)$q->harga_beli,
+            'qty_lama' => $q->qty,
+            'harga_beli_lama' => (float)$q->harga_beli,
         ])->toArray();
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
         $this->dataPengguna = Pengguna::role(['supervisor', 'administrator'])->with('kepegawaianPegawai')->whereNotNull('kepegawaian_pegawai_id')->orderBy('nama')->get()->toArray();
@@ -115,6 +98,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan.form');
+        return view('livewire.manajemenstok.pengadaanbrgdagang.validasipemesanan.form');
     }
 }

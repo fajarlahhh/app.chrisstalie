@@ -79,6 +79,11 @@ class PengadaanPemesanan extends Model
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
+    public function validator(): BelongsTo
+    {
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
+    }
+
     public function getTotalHargaAttribute(): float
     {
         return $this->pengadaanPemesananDetail->sum(function ($item) {

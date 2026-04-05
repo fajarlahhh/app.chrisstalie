@@ -19,9 +19,13 @@
             <div class="ms-auto d-flex align-items-center">
                 <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
                 <select class="form-control w-auto" wire:model.lazy="persediaan">
-                    <option value="">Semua Persediaan</option>
+                    @role('administrator|supervisor')
+                        <option value="">Semua Persediaan</option>
+                    @endrole
                     <option value="Apotek">Persediaan Barang Dagang</option>
-                    <option value="Klinik">Persediaan Alat & Bahan</option>
+                    @role('administrator|supervisor')
+                        <option value="Klinik">Persediaan Alat & Bahan</option>
+                    @endrole
                 </select>&nbsp;
                 <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                     <option value="">Semua Kategori</option>

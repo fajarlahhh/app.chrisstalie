@@ -20,7 +20,9 @@
                 <select class="form-control w-auto" wire:model.lazy="persediaan">
                     <option value="">Semua Persediaan</option>
                     <option value="Apotek">Persediaan Barang Dagang</option>
-                    <option value="Klinik">Persediaan Alat & Bahan</option>
+                    @role('administrator|supervisor')
+                        <option value="Klinik">Persediaan Alat & Bahan</option>
+                    @endrole
                 </select>&nbsp;
                 <select class="form-control w-auto" wire:model.lazy="jenis">
                     <option value="perbarang">Per Barang</option>

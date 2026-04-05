@@ -18,9 +18,13 @@
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <select class="form-control w-auto" wire:model.lazy="persediaan">
-                    <option value="">Semua Persediaan</option>
+                    @role('administrator|supervisor')
+                        <option value="">Semua Persediaan</option>
+                    @endrole
                     <option value="Apotek">Persediaan Barang Dagang</option>
-                    <option value="Klinik">Persediaan Alat & Bahan</option>
+                    @role('administrator|supervisor')
+                        <option value="Klinik">Persediaan Alat & Bahan</option>
+                    @endrole
                 </select>&nbsp;
                 <select class="form-control w-auto" wire:model.lazy="jenis">
                     <option value="pertransaksi">Per Transaksi</option>

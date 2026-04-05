@@ -11,14 +11,14 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $tanggal1, $tanggal2, $jenis, $persediaan;
+    public $tanggal1, $tanggal2, $jenis, $persediaan = 'Apotek';
 
     public function mount()
     {
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-d');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
         $this->jenis = $this->jenis ?: 'perbarang';
-        $this->persediaan = $this->persediaan ?: '';
+        $this->persediaan = $this->persediaan ?: 'Apotek';
     }
 
     public function print()

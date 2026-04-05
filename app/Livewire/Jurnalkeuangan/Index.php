@@ -13,11 +13,12 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $bulan, $jenis, $kategori;
+    public $cari, $tanggal1, $tanggal2, $jenis, $kategori;
 
     public function mount()
     {
-        $this->bulan = $this->bulan ?: date('Y-m');
+        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
+        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
     }
 
     public function delete($id)
@@ -35,7 +36,7 @@ class Index extends Component
     {
         return KeuanganJurnal::with(['keuanganJurnalDetail.kodeAkun', 'pengguna'])
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
-            ->where('tanggal', 'like', $this->bulan . '%')
+            ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
             ->when($this->kategori == 1, fn($q) => $q->where('system', $this->kategori))
             ->when($this->kategori == 2, fn($q) => $q->where('system', '0'))
             ->where(
@@ -51,7 +52,7 @@ class Index extends Component
 
     public function getJenis()
     {
-        return KeuanganJurnal::where('tanggal', 'like', $this->bulan . '%')->select('jenis')->groupBy('jenis')->orderBy('jenis', 'asc')->get()->toArray();
+        return KeuanganJurnal::whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])->select('jenis')->groupBy('jenis')->orderBy('jenis', 'asc')->get()->toArray();
     }
 
     public function render()
