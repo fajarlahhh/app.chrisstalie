@@ -2,16 +2,18 @@
 
 namespace App\Livewire\Klinik\Tindakan;
 
-use App\Models\Nakes;
-use Livewire\Component;
-use App\Models\Tindakan;
-use App\Models\Registrasi;
+use App\Class\BarangClass;
 use App\Models\BarangSatuan;
+use App\Models\Nakes;
+use App\Models\Registrasi;
+use App\Models\Stok;
 use App\Models\TarifTindakan;
-use App\Models\TindakanAlatBarang;
-use Illuminate\Support\Facades\DB;
-use App\Traits\CustomValidationTrait;
 use App\Models\TarifTindakanAlatBarang;
+use App\Models\Tindakan;
+use App\Models\TindakanAlatBarang;
+use App\Traits\CustomValidationTrait;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class Form extends Component
 {
@@ -19,13 +21,16 @@ class Form extends Component
 
     public $tindakan = [], $dataTindakan = [], $dataNakes = [];
     public $data, $nakes_id;
+    public $bahan = [];
+    public $dataBarang = [];
 
     public function mount(Registrasi $data)
     {
         $this->data = $data;
         $this->nakes_id = $data->nakes_id;
 
-        if($this->data->pembayaran){
+        $this->dataBarang = collect(BarangClass::getBarang());
+        if ($this->data->pembayaran) {
             return abort(404);
         }
         $this->dataTindakan = TarifTindakan::with('tarifTindakanAlatBarang.barangSatuan')->orderBy('nama')->get()->map(fn($q) => [
@@ -76,9 +81,24 @@ class Form extends Component
 
     public function submit()
     {
-        if($this->data->pembayaran){
+        if ($this->data->pembayaran) {
             return abort(404);
         }
+        $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
+            $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
+            return [
+                'barang_id' => $barang['barang_id'],
+                'nama' => $barang['nama'],
+                'satuan' => $barang['satuan'],
+                'kode_akun_id' => $barang['kode_akun_id'],
+                'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
+                'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
+                'qty' => $q->qty,
+                'biaya' => $q->biaya,
+                'barang_satuan_id' => $q->barang_satuan_id,
+                'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            ];
+        })->toArray();
         $this->validateWithCustomMessages([
             'tindakan' => 'required|array',
             'tindakan.*.id' => 'required|distinct',
@@ -93,6 +113,24 @@ class Form extends Component
                     $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama']);
                 }
             },
+            'bahan.*.qty' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $index = explode('.', $attribute)[1];
+                    $bahan = $this->bahan[$index] ?? null;
+                    if (!$bahan) return;
+
+                    $stokTersedia = Stok::where('barang_id', $bahan['barang_id'])
+                        ->available()
+                        ->count();
+                    if (($value * ($bahan['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $bahan['rasio_dari_terkecil'];
+                        $fail("Stok bahan {$bahan['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$bahan['satuan']}. Yang dibutuhkan untuk tindakan  {$value} {$bahan['satuan']}.");
+                    }
+                }
+            ],
         ], [
             'tindakan.required' => 'Minimal satu tindakan harus dipilih.',
             'tindakan.array' => 'Format data tindakan tidak valid.',
@@ -126,7 +164,7 @@ class Form extends Component
                 $tindakan->qty = $q['qty'];
                 $tindakan->pengguna_id = auth()->id();
                 $tindakan->save();
-                
+
                 $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['id']);
 
                 foreach ($tarifTindakanAlatBarang as $r) {

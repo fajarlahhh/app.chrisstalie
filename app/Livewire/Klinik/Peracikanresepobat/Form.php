@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Klinik\Peracikanresepobat;
 
-use Livewire\Component;
-use App\Models\ResepObat;
 use App\Class\BarangClass;
-use App\Models\Registrasi;
 use App\Models\PeracikanResepObat;
-use Illuminate\Support\Facades\DB;
+use App\Models\Registrasi;
+use App\Models\ResepObat;
+use App\Models\Stok;
 use App\Traits\CustomValidationTrait;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class Form extends Component
 {
@@ -30,11 +31,78 @@ class Form extends Component
         if ($this->data->peracikanResepObat) {
             return abort(404);
         }
+        $this->resep = collect($this->registrasi->resepObat)
+            ->groupBy('resep')
+            ->map(function ($group) {
+                $first = $group->first();
+                return [
+                    'resep' => $first->resep,
+                    'catatan' => $first->catatan,
+                    'nama' => $first->nama,
+                    'barang' => $group->map(function ($r) {
+                        $barang = collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id);
+                        if (!$barang) {
+                            return [
+                                'id' => null,
+                                'nama' => 'Terjadi Kesalahan Resep Obat',
+                                'satuan' => null,
+                                'kode_akun_id' => null,
+                                'kode_akun_penjualan_id' => null,
+                                'kode_akun_modal_id' => null,
+                                'harga' => null,
+                                'qty' => null,
+                                'subtotal' => null,
+                            ];
+                        }
+                        return [
+                            'id' => $r->barang_satuan_id,
+                            'nama' => $barang['nama'],
+                            'satuan' => $barang['satuan'],
+                            'kode_akun_id' => $barang['kode_akun_id'],
+                            'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
+                            'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
+                            'harga' => $r->harga,
+                            'qty' => $r->qty,
+                            'subtotal' => $r->harga * $r->qty,
+                        ];
+                    })->toArray(),
+                ];
+            })
+            ->values()->toArray();
         $this->validateWithCustomMessages([
             'resep' => 'required|array|min:1',
             'resep.*.barang' => 'required|array|min:1',
             'resep.*.barang.*.id' => 'required|integer',
-            'resep.*.barang.*.qty' => 'required|integer|min:1',
+            'resep.*.barang.*.qty' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
+                    $resepIndex = $parts[1] ?? null;
+                    $barangIndex = $parts[3] ?? null;
+
+                    if (
+                        !is_numeric($resepIndex) ||
+                        !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+                    ) {
+                        return;
+                    }
+                    $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+
+                    $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
+                    if (!$barang) return;
+
+                    $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
+                        ->available()
+                        ->count();
+
+                    if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
+                        $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}. Yang dibutuhkan untuk resep {$this->resep[$resepIndex]['nama']} {$value} {$barang['satuan']}.");
+                    }
+                }
+            ],
         ]);
 
         DB::transaction(function () {

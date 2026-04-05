@@ -102,7 +102,8 @@ class Index extends Component
                             ];
                         })->toArray(),
                     ];
-                })->values()->toArray();
+                })
+                ->values()->toArray();
 
             $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
                 $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
@@ -280,7 +281,7 @@ class Index extends Component
             } else {
                 $id = date('Ym') . '00001';
             }
-            
+
             $pembayaran = new Pembayaran();
             $pembayaran->id = $id;
             $pembayaran->total_barang = $this->total_barang + $this->total_diskon_barang;
