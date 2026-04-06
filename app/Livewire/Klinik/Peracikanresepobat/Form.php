@@ -31,7 +31,7 @@ class Form extends Component
         if ($this->data->peracikanResepObat) {
             return abort(404);
         }
-        $this->resep = collect($this->registrasi->resepObat)
+        $this->resep = collect($this->data->resepObat)
             ->groupBy('resep')
             ->map(function ($group) {
                 $first = $group->first();
