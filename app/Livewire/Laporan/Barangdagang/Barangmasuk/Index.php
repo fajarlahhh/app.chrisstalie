@@ -57,7 +57,7 @@ class Index extends Component
                             'operator' => $q->pengguna->kepegawaianPegawai?->nama ?? $q->pengguna->nama,
                             'catatan' => $q->catatan,
                         ];
-                    })->sortBy('barang_id')->groupBy('barang_id')->toArray();
+                    })->sortBy('tanggal')->groupBy('barang_id')->toArray();
                 break;
             case 'perbarang':
                 return StokMasuk::with(['barang', 'barangSatuan.satuanKonversi'])

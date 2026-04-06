@@ -124,7 +124,7 @@ class Form extends Component
                     $stokMasuk = new StokMasuk();
                     $stokMasuk->tanggal = now();
                     $stokMasuk->qty = $value['qty_masuk'];
-                    $stokMasuk->harga_beli = $value['harga_beli'];
+                    $stokMasuk->harga_beli = $value['harga_beli_terkecil'];
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
                     $stokMasuk->barang_id = $value['id'];

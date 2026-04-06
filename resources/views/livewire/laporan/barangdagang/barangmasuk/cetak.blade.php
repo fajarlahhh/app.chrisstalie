@@ -35,7 +35,7 @@
                     <th class="bg-gray-300 text-white">Operator</th>
                     <th class="bg-gray-300 text-white">Status</th>
                     <th class="bg-gray-300 text-white">Barang</th>
-                    <th class="bg-gray-300 text-white">Satuan Utama</th>
+                    <th class="bg-gray-300 text-white">Satuan</th>
                     <th class="bg-gray-300 text-white">No. Batch</th>
                     <th class="bg-gray-300 text-white">Tanggal Kedaluarsa</th>
                     <th class="bg-gray-300 text-white">Supplier</th>
