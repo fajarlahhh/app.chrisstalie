@@ -53,6 +53,7 @@ class Form extends Component
             ->leftJoin('pengadaan_pemesanan_detail', 'pengadaan_pemesanan.id', '=', 'pengadaan_pemesanan_detail.pengadaan_pemesanan_id')
             ->groupBy('pengadaan_pemesanan.id', 'tanggal', 'supplier_id', 'uraian')
             ->havingRaw('SUM(pengadaan_pemesanan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pengadaan_pemesanan_id = pengadaan_pemesanan.id )')
+            ->whereNotNull('validator_id')
             ->with('supplier')->get()->toArray();
     }
 
