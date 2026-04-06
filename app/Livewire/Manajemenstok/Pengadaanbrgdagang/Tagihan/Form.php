@@ -24,7 +24,7 @@ class Form extends Component
             'nama' => $q->barang->nama,
             'satuan' => $q->barangSatuan->nama,
             'qty' => $q->pengadaanPemesanan->stokMasuk->where('barang_id', $q->barang_id)->sum('qty'),
-            'harga_beli' => $q->harga_beli,
+            'harga_beli' => $q->harga_beli * $q->rasio_dari_terkecil,
         ])->toArray();
         $this->total_harga_barang = collect($this->barang)->sum(fn($q) => $q['qty'] * $q['harga_beli']);
         $this->total_tagihan = $this->total_harga_barang - $this->diskon + $this->ppn;
