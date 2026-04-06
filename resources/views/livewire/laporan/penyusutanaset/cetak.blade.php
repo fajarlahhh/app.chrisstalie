@@ -11,7 +11,7 @@
         <tr>
             <th class="w-100px">Periode</th>
             <th class="w-10px">:</th>
-            <td>{{ $bulan }}</td>
+            <td>{{ $tahun }}</td>
         </tr>
     </table>
 @endif
@@ -41,9 +41,9 @@
                 <td>{{ $row['nama'] }}</td>
                 <td>{{ $row['kategori'] }}</td>
                 <td nowrap>{{ $row['tanggal_perolehan'] }}</td>
-                <td class="text-end">{{ number_format_id($row['masa_manfaat']) }}</td>
+                <td class="text-end">{{ $cetak ? $row['masa_manfaat'] : number_format_id($row['masa_manfaat']) }}</td>
                 <td nowrap>{{ $row['tanggal_terminasi'] }}</td>
-                <td class="text-end">{{ number_format_id($row['harga_perolehan']) }}</td>
+                <td class="text-end">{{ $cetak ? $row['harga_perolehan'] : number_format_id($row['harga_perolehan']) }}</td>
                 @php
                     $nilaiPenyusutan = 0;
                 @endphp
@@ -51,14 +51,14 @@
                     @php
                         $nilaiPenyusutan += $row['nilai_penyusutan_' . $i];
                     @endphp
-                    <td class="text-end">{{ number_format_id($row['nilai_penyusutan_' . $i], 2) }}</td>
+                    <td class="text-end">{{ $cetak ? $row['nilai_penyusutan_' . $i] : number_format_id($row['nilai_penyusutan_' . $i], 2) }}</td>
                 @endfor
-                <td class="text-end">{{ number_format_id($row['harga_perolehan'] - $nilaiPenyusutan) }}</td>
+                <td class="text-end">{{ $cetak ? $row['harga_perolehan'] - $nilaiPenyusutan : number_format_id($row['harga_perolehan'] - $nilaiPenyusutan) }}</td>
             </tr>
         @endforeach
         <tr>
             <th colspan="6">Total</th>
-            <th class="text-end">{{ number_format_id($data->sum('harga_perolehan')) }}</th>
+            <th class="text-end">{{ $cetak ? $data->sum('harga_perolehan') : number_format_id($data->sum('harga_perolehan')) }}</th>
             @php
                 $nilaiPenyusutan = 0;
             @endphp
@@ -66,10 +66,10 @@
                 @php
                     $nilaiPenyusutan += $data->sum('nilai_penyusutan_' . $i);
                 @endphp
-                <th class="text-end">{{ number_format_id($data->sum('nilai_penyusutan_' . $i), 2) }}</th>
+                <th class="text-end">{{ $cetak ? $data->sum('nilai_penyusutan_' . $i) : number_format_id($data->sum('nilai_penyusutan_' . $i), 2) }}</th>
             @endfor
             <th class="text-end">
-                {{ number_format_id($data->sum('harga_perolehan') - $nilaiPenyusutan, 2) }}</th>
+                {{ $cetak ? $data->sum('harga_perolehan') - $nilaiPenyusutan : number_format_id($data->sum('harga_perolehan') - $nilaiPenyusutan, 2) }}</th>
         </tr>
     </tbody>
 </table>

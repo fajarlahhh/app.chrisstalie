@@ -5,6 +5,8 @@ namespace App\Livewire\Laporan\Penyusutanaset;
 use App\Models\Aset;
 use Livewire\Component;
 use Livewire\Attributes\Url;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LaoranpenyusutanasetExport;
 
 class Index extends Component
 {
@@ -14,6 +16,14 @@ class Index extends Component
     public function mount()
     {
         $this->tahun = date('Y');
+    }
+
+    public function export()
+    {
+        return Excel::download(new LaoranpenyusutanasetExport(
+            $this->getData(),
+            $this->tahun
+        ), 'penyusutanaset.xlsx');
     }
 
     public function getData()
