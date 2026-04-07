@@ -69,7 +69,7 @@ class Form extends Component
                 $data->id,
                 [
                     [
-                        'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
+                        'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['rasio_dari_terkecil'] * $q['qty']),
                         'kredit' => 0,
                         'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi(['Stok Masuk Barang'])->kode_akun_id
                     ],
@@ -85,7 +85,7 @@ class Form extends Component
                     ],
                     [
                         'debet' => 0,
-                        'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - $this->diskon + $this->ppn,
+                        'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['rasio_dari_terkecil'] * $q['qty']) - $this->diskon + $this->ppn,
                         'kode_akun_id' => $this->pengadaanPemesanan->supplier->kode_akun_id
                     ]
                 ]
