@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 use App\Traits\KodeakuntransaksiTrait;
 use App\Models\PengadaanPemesananDetail;
+use App\Models\StokMasuk;
 
 class Form extends Component
 {
@@ -19,11 +20,11 @@ class Form extends Component
     public function updatedPengadaanPemesananId($value)
     {
         $this->pengadaanPemesanan = PengadaanPemesanan::find($value);
-        $this->barang = PengadaanPemesananDetail::where('pengadaan_pemesanan_id', $value)->with('barang', 'pengadaanPemesanan.stokMasuk')->get()->map(fn($q) => [
+        $this->barang = StokMasuk::where('pengadaan_pemesanan_id', $value)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
             'satuan' => $q->barangSatuan->nama,
-            'qty' => $q->pengadaanPemesanan->stokMasuk->where('barang_id', $q->barang_id)->sum('qty'),
+            'qty' => $q->qty,
             'harga_beli' => $q->harga_beli * $q->rasio_dari_terkecil,
         ])->toArray();
         $this->total_harga_barang = collect($this->barang)->sum(fn($q) => $q['qty'] * $q['harga_beli']);
