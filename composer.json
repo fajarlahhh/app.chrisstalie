@@ -33,7 +33,6 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/QrCodeHelper.php",
             "app/Helpers/NumberFormatId.php"
         ]
     },
