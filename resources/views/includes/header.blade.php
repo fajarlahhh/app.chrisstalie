@@ -21,7 +21,7 @@
         </button>
         <a href="/" class="navbar-brand">
             <span class="navbar-logo"></span>
-            <b>{{ strtoupper(config('app.name')) }}</b>&nbsp;RME
+            <b>{{ strtoupper(config('app.name')) }}</b>&nbsp;
         </a>
     </div>
 
