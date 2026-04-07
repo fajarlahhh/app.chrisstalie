@@ -141,4 +141,5 @@ return [
 
     'fingerprint_ip' => env('FINGERPRINT_IP', 'Laravel'),
     'fingerprint_key' => env('FINGERPRINT_KEY', 'Laravel'),
+    'aset_cdn_url' => env('ASET_CDN_URL', 'Laravel'),
 ];

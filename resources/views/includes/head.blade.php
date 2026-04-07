@@ -7,8 +7,8 @@
 <link rel="icon" href="/assets/img/favicon.png" type="image/gif">
 
 <!-- ================== BEGIN BASE CSS STYLE ================== -->
-<link href="/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="/assets/css/app.min.css" rel="stylesheet" />
+<link href="{{ config('app.aset_cdn_url') }}/assets/css/vendor.min.css" rel="stylesheet" />
+<link href="{{ config('app.aset_cdn_url') }}/assets/css/app.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <!-- ================== END BASE CSS STYLE ================== -->
 

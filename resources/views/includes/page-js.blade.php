@@ -1,6 +1,6 @@
 <!-- ================== BEGIN core-js ================== -->
-<script src="/assets/js/vendor.min.js"></script>
-<script src="/assets/js/app.min.js"></script>
+<script src="{{ config('app.aset_cdn_url') }}/assets/js/vendor.min.js"></script>
+<script src="{{ config('app.aset_cdn_url') }}/assets/js/app.min.js"></script>
 <!-- ================== END core-js ================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
