@@ -74,7 +74,7 @@ class Index extends Component
                         'resep' => $first->resep,
                         'catatan' => $first->catatan,
                         'nama' => $first->nama,
-                        'barang' => $group->map(function ($r) {
+                        'detail' => $group->map(function ($r) {
                             $barang = collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id);
                             if (!$barang) {
                                 return [
@@ -143,7 +143,7 @@ class Index extends Component
                 return $q['biaya'] * $q['qty'] - $q['diskon'];
             });
             $this->total_resep = collect($this->resep)->sum(function ($q) {
-                return collect($q['barang'])->sum(function ($b) {
+                return collect($q['detail'])->sum(function ($b) {
                     return $b['harga'] * $b['qty'];
                 });
             });
@@ -205,7 +205,7 @@ class Index extends Component
                             }
                         }
                     ],
-                    'resep.*.barang.*.qty' => [
+                    'resep.*.detail.*.qty' => [
                         'required',
                         'numeric',
                         'min:1',
@@ -216,11 +216,11 @@ class Index extends Component
 
                             if (
                                 !is_numeric($resepIndex) ||
-                                !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+                                !isset($this->resep[$resepIndex]['detail'][$barangIndex])
                             ) {
                                 return;
                             }
-                            $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+                            $barangResep = $this->resep[$resepIndex]['detail'][$barangIndex];
 
                             $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
                             if (!$barang) return;

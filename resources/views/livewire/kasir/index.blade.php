@@ -73,17 +73,9 @@
                 @else
                     @include('livewire.klinik.informasipasien', ['data' => $registrasi])
                 @endif
-                <div class="alert alert-light table-responsive border">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                            <tbody>
-                                @include('livewire.kasir.tindakan')
-                                @include('livewire.kasir.resep')
-                                @include('livewire.kasir.barang')
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @include('livewire.kasir.tindakan')
+                @include('livewire.kasir.resep')
+                @include('livewire.kasir.barang')
                 @include('livewire.kasir.pembayaran')
             </div>
             <div class="panel-footer">
@@ -200,7 +192,7 @@
                 },
                 hitungTotalResep() {
                     this.total_resep = this.resep.reduce((sum, row) => {
-                        return sum + (row.barang.reduce((sum, b) => sum + (b.harga * b.qty), 0));
+                        return sum + (row.detail.reduce((sum, b) => sum + (b.harga * b.qty), 0));
                     }, 0);
                     this.hitungTotalTagihan();
                 },
