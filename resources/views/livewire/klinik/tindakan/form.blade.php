@@ -101,7 +101,7 @@
                                             <template x-if="row.biaya_jasa_dokter > 0">
                                                 <div class="mb-3">
                                                     <label class="form-label">Dokter</label>
-                                                    <select class="form-control" x-model="row.dokter_id" required>
+                                                    <select class="form-control" x-model="row.dokter_id">
                                                         <option value="" hidden>-- Pilih Dokter --</option>
                                                         <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
                                                             :key="nakes.id">
@@ -115,7 +115,7 @@
                                             <template x-if="row.biaya_jasa_perawat > 0">
                                                 <div class="mb-3">
                                                     <label class="form-label">Perawat</label>
-                                                    <select class="form-control" x-model="row.perawat_id" required>
+                                                    <select class="form-control" x-model="row.perawat_id" >
                                                         <option value="">-- Pilih Perawat --</option>
                                                         <template x-for="nakes in dataNakes" :key="nakes.id">
                                                             <option :value="nakes.id"
