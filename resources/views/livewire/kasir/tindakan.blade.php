@@ -8,9 +8,9 @@
         <th class="text-end w-150px">Sub Total</th>
         <th class="w-5px"></th>
     </tr>
-    <template x-for="(row, index) in tindakan" :key="index">
+    <template x-for="(row, x) in tindakan" :key="x" id="tindakan">
         <tr>
-            <td x-text="index + 1"></td>
+            <td x-text="x + 1"></td>
             <td nowrap>
                 <span x-text="row.nama"></span>
                 <br>

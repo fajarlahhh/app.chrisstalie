@@ -5,13 +5,14 @@
         <th class="text-end w-150px">Sub Total</th>
         <th class="w-5px"></th>
     </tr>
-    <template x-for="(row, index) in resep" :key="`resep-${index}`">
+    <template x-for="(row, y) in resep" :key="y" id="resep">
         <tr>
-            <td x-text="tindakan.length + index + 1"></td>
+            <td x-text="tindakan.length + y + 1"></td>
             <td class="text-nowrap" colspan="4">
                 <span x-text="row.resep"></span>. <span x-text="row.nama"></span>
                 <br>
-                <span class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan : <span x-text="row.catatan"></span></span>
+                <span class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan : <span
+                        x-text="row.catatan"></span></span>
             </td>
             <td>
                 <input type="text" class="form-control text-end"
@@ -19,7 +20,7 @@
             </td>
             <td class="w-10px">
                 <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled"
-                    @click="hapusResep(index)">
+                    @click="hapusResep(y)">
                     <i class="fa fa-times"></i>
                 </button>
             </td>

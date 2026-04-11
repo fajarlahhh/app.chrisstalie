@@ -7,9 +7,9 @@
     <th class="text-end w-150px">Sub Total</th>
     <th class="w-5px"></th>
 </tr>
-<template x-for="(row, index) in barang" :key="index">
+<template x-for="(row, z) in barang" :key="z" id="barang">
     <tr>
-        <td x-text="tindakan.length + resep.length + index + 1"></td>
+        <td x-text="tindakan.length + resep.length + z + 1"></td>
         <td wire:ignore>
             <select class="form-control" required x-model="row.id" x-init="$($el).select2({
                 width: '100%',
@@ -17,7 +17,7 @@
             });
             $($el).on('change', function(e) {
                 row.id = e.target.value;
-                updateBarang(index);
+                updateBarang(z);
             });
             $watch('row.id', (value) => {
                 if (value !== $($el).val()) {
@@ -37,17 +37,17 @@
         </td>
         <td>
             <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
-                @input="hitungTotalBarang(index)">
+                @input="hitungTotalBarang(z)">
         </td>
         <td>
-            <input type="number" class="form-control" @input="hitungTotalBarang(index)" :max="row.harga * row.qty" x-model.number="row.diskon">
+            <input type="number" class="form-control" @input="hitungTotalBarang(z)" :max="row.harga * row.qty" x-model.number="row.diskon">
         </td>
         <th>
             <input type="text" class="form-control text-end"
                 :value="formatNumber(row.harga * row.qty - parseInt(row.diskon || 0))" disabled>
         </th>
         <td>
-            <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled" @click="hapusBarang(index)">
+            <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled" @click="hapusBarang(z)">
                 <i class="fa fa-times"></i>
             </button>
         </td>
