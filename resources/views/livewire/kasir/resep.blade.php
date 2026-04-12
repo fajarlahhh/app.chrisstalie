@@ -9,10 +9,10 @@
         <tr>
             <td x-text="tindakan.length + y + 1"></td>
             <td class="text-nowrap" colspan="4">
-                <span x-text="row.resep"></span>. <span x-text="row.nama"></span>
+                <span x-text="row.nama"></span>
                 <br>
-                <span class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan : <span
-                        x-text="row.catatan"></span></span>
+                <small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan : <span
+                        x-text="row.catatan"></span></small>
             </td>
             <td>
                 <input type="text" class="form-control text-end"
