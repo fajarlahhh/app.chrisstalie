@@ -249,10 +249,8 @@
 
                     if (selectedBarang) {
                         barangItem.harga = selectedBarang.harga;
-                        barangItem.barang_satuan_id = null; // Reset satuan selection
                     } else {
                         barangItem.harga = 0;
-                        barangItem.barang_satuan_id = null;
                     }
                     this.hitungSubtotal(resepIndex, barangIndex);
                 },

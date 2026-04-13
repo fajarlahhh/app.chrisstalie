@@ -31,16 +31,16 @@ class Form extends Component
         if ($this->data->peracikanResepObat) {
             return abort(404);
         }
-        $this->resep = collect($this->data->resepObat)
+        $this->resep = collect($this->resep)
             ->groupBy('resep')
             ->map(function ($group) {
                 $first = $group->first();
                 return [
-                    'resep' => $first->resep,
-                    'catatan' => $first->catatan,
-                    'nama' => $first->nama,
-                    'barang' => $group->map(function ($r) {
-                        $barang = collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id);
+                    'resep' => $first['resep'],
+                    'catatan' => $first['catatan'],
+                    'nama' => $first['nama'],
+                    'barang' =>  collect($first['barang'])->map(function ($r) {
+                        $barang = collect($this->dataBarang)->firstWhere('id', $r['id']);
                         if (!$barang) {
                             return [
                                 'id' => null,
@@ -52,18 +52,20 @@ class Form extends Component
                                 'harga' => null,
                                 'qty' => null,
                                 'subtotal' => null,
+                                'rasio_dari_terkecil' => null,
                             ];
                         }
                         return [
-                            'id' => $r->barang_satuan_id,
+                            'id' => $r['id'],
                             'nama' => $barang['nama'],
                             'satuan' => $barang['satuan'],
                             'kode_akun_id' => $barang['kode_akun_id'],
                             'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
                             'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
-                            'harga' => $r->harga,
-                            'qty' => $r->qty,
-                            'subtotal' => $r->harga * $r->qty,
+                            'harga' => $r['harga'],
+                            'qty' => $r['qty'],
+                            'subtotal' => $r['harga'] * $r['qty'],
+                            'rasio_dari_terkecil' => $barang['rasio_dari_terkecil'],
                         ];
                     })->toArray(),
                 ];
@@ -96,7 +98,6 @@ class Form extends Component
                     $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
                         ->available()
                         ->count();
-
                     if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
                         $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
                         $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}. Yang dibutuhkan untuk resep {$this->resep[$resepIndex]['nama']} {$value} {$barang['satuan']}.");
@@ -177,6 +178,7 @@ class Form extends Component
                 ->map(function ($group) {
                     $first = $group->first();
                     return [
+                        'resep' => $first->resep,
                         'catatan' => $first->catatan,
                         'nama' => $first->nama,
                         'barang' => $group->map(function ($r) {
