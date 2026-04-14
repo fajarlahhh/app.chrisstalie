@@ -102,13 +102,12 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Dokter</label>
                                                     <select class="form-control" x-model="row.dokter_id">
-                                                        <option value="" hidden>-- Pilih Dokter --</option>
+                                                        <option value="">-- Tidak Ada Dokter --</option>
                                                         <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
                                                             :key="nakes.id">
                                                             <option :value="nakes.id" :selected="row.dokter_id == nakes.id"
                                                                 x-text="nakes.nama"></option>
                                                         </template>
-                                                        <option value="">-- Tidak Ada Dokter --</option>
                                                     </select>
                                                 </div>
                                             </template>
@@ -116,7 +115,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Perawat</label>
                                                     <select class="form-control" x-model="row.perawat_id" >
-                                                        <option value="">-- Pilih Perawat --</option>
+                                                        <option value="">-- Tidak Ada Perawat --</option>
                                                         <template x-for="nakes in dataNakes" :key="nakes.id">
                                                             <option :value="nakes.id"
                                                                 :selected="row.perawat_id == nakes.id" x-text="nakes.nama">
