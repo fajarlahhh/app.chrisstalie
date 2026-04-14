@@ -123,7 +123,6 @@
                                                             </option>
                                                         </template>
                                                     </select>
-                                                    <option value="">-- Tidak Ada Perawat --</option>
                                                 </div>
                                             </template>
                                             <div class="mb-3">
