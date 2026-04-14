@@ -13,8 +13,8 @@
         <div class="panel-heading overflow-auto d-flex">
             <div class="ms-auto d-flex align-items-center">
                 <select class="form-control w-auto" wire:model.lazy="status">
-                    <option value="1">Belum Proses</option>
-                    <option value="2">Sudah Proses</option>
+                    <option value="1">Belum Bayar</option>
+                    <option value="2">Sudah Bayar</option>
                 </select>&nbsp;
                 @if ($status == 2)
                     <input type="date" class="form-control w-auto" wire:model.lazy="tanggal"
@@ -68,20 +68,14 @@
                                         @php
                                             $custom =
                                                 "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->tindakan->first()->pengguna->nama .
+                                                $row->pembayaran->pengguna->nama .
                                                 '<br>' .
-                                                $row->tindakan->first()->created_at .
+                                                $row->pembayaran->created_at .
                                                 '</a>';
                                         @endphp
-                                        @if ($row->pembayaran)
                                             <x-action :row="$row" :custom="$custom" :detail="false"
                                                 :edit="false" :information="false" :print="false" :permanentdelete="false"
                                                 :restore="false" :delete="false" />
-                                        @else
-                                            <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="true" :information="false" :print="false" :permanentdelete="false"
-                                                :restore="false" :delete="true" />
-                                        @endif
                                     @endif
                                 @endrole
                             </td>

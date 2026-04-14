@@ -39,11 +39,11 @@ class Index extends Component
             });
 
         if ($this->status == 2) {
-            $query->whereHas('tindakan', function ($q) {
-                $q->whereDate('created_at', $this->tanggal);
+            $query->whereHas('pembayaran', function ($q) {
+                $q->whereDate('tanggal', $this->tanggal);
             });
         } elseif ($this->status == 1) {
-            $query->whereDoesntHave('tindakan')->whereDoesntHave('pembayaran');
+            $query->whereDoesntHave('pembayaran')->whereDoesntHave('pembayaran');
         }
 
         return $query->orderBy('id', 'asc');
