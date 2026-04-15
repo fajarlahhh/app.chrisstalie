@@ -4,11 +4,8 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Verifikasi;
 
 use Livewire\Component;
 use App\Models\PengadaanVerifikasi;
-use Illuminate\Support\Str;
-use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
 use App\Models\PengadaanPermintaan;
-use App\Models\PengadaanPermintaanDetail;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -24,7 +21,7 @@ class Form extends Component
                 'barang' => 'required|array',
                 'barang.*.qty_disetujui' => 'required|numeric|min:1',
             ]);
-        }else{
+        } else {
             $this->validateWithCustomMessages([
                 'status' => 'required',
                 'catatan' => 'required',
@@ -44,11 +41,13 @@ class Form extends Component
                 ])->toArray());
             }
             $pengadaanVerifikasi = PengadaanVerifikasi::where('pengadaan_permintaan_id', $this->data->id)->where('jenis', 'Permintaan Pengadaan')->whereNull('status')->first();
-            $pengadaanVerifikasi->status = $this->status;
-            $pengadaanVerifikasi->catatan = $this->catatan;
-            $pengadaanVerifikasi->waktu_verifikasi = now();
-            $pengadaanVerifikasi->pengguna_id = auth()->id();
-            $pengadaanVerifikasi->save();
+            if ($pengadaanVerifikasi) {
+                $pengadaanVerifikasi->status = $this->status;
+                $pengadaanVerifikasi->catatan = $this->catatan;
+                $pengadaanVerifikasi->waktu_verifikasi = now();
+                $pengadaanVerifikasi->pengguna_id = auth()->id();
+                $pengadaanVerifikasi->save();
+            }
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
@@ -57,7 +56,7 @@ class Form extends Component
 
     public function mount(PengadaanPermintaan $data)
     {
-        
+
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->barang = $data->pengadaanPermintaanDetail->map(fn($q) => [
