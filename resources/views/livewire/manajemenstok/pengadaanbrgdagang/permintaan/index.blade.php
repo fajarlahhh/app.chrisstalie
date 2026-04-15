@@ -31,6 +31,7 @@
                         <th>Deskripsi</th>
                         <th>Waktu Permintaan</th>
                         <th>History Verifikasi</th>
+                        <th>Proses</th>
                         <th class="w-600px">Detail</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -57,6 +58,39 @@
                                         <span class="badge bg-warning">Pending Verifikasi</span><br>
                                     @endif
                                 @endforeach
+                            </td>
+                            <td nowrap>
+                                <small>
+                                    <ul>
+                                        <li>Verifikasi : {!! $item->pengadaanVerifikasi->whereNotNull('status')->count()
+                                            ? '<span class="badge bg-success">Selesai</span>'
+                                            : '<span class="badge bg-warning">Menunggu</span>' !!}
+                                        </li>
+                                        <li>Pemesanan : {!! $item->pengadaanPemesanan->count()
+                                            ? '<span class="badge bg-success">Selesai</span>'
+                                            : '<span class="badge bg-warning">Menunggu</span>' !!}
+                                        </li>
+                                        <li>Stok Masuk :
+                                            @php
+                                                $jumlahStokMasuk = $item->pengadaanPemesanan->sum(function (
+                                                    $pemesanan,
+                                                ) {
+                                                    return $pemesanan->stokMasuk->count();
+                                                });
+                                            @endphp
+                                            {!! $jumlahStokMasuk
+                                                ? '<span class="badge bg-success">Selesai</span>'
+                                                : '<span class="badge bg-warning">Menunggu</span>' !!}
+                                        </li>
+                                        <li>Tagihan : {!! $item->pengadaanPemesanan->sum(function ($pemesanan) {
+                                            return $pemesanan->pengadaanTagihan ? 1 : 0;
+                                        })
+                                            ? '<span class="badge bg-success">Selesai</span>'
+                                            : '<span class="badge bg-warning">Menunggu</span>' !!}
+                                        </li>
+
+                                    </ul>
+                                </small>
                             </td>
                             <td>
                                 <table class="table table-bordered fs-11px">
