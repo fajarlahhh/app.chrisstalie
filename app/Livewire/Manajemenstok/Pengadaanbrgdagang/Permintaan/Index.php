@@ -38,6 +38,7 @@ class Index extends Component
             'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
             'pengadaanPermintaanDetail.barangSatuan.barang',
             'pengadaanPemesanan.stokMasuk',
+            'pengadaanPemesanan.pengadaanTagihan',
             'pengadaanPemesananDetail',
             'pengadaanVerifikasi',
             'pengguna'
