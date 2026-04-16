@@ -90,7 +90,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->status == null)
+                                    @if ($item->status != null)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
