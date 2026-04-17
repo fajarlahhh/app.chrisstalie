@@ -93,23 +93,23 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Tgl. Kedaluarsa</label>
-                    <input type="date" class="form-control" wire:model="tanggal_kedaluarsa"
+                    <label class="form-label" for="tanggal_kedaluarsa">Tgl. Kedaluarsa</label>
+                    <input type="date" class="form-control" wire:model="tanggal_kedaluarsa" id="tanggal_kedaluarsa"
                         min="{{ date('Y-m-d') }}">
                     @error('tanggal_kedaluarsa')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Qty Masuk (Dalam Satuan {{ $satuan['nama'] ?? '' }})</label>
-                    <input type="number" class="form-control" wire:model="qty_masuk" min="1" autocomplete="off">
+                    <label class="form-label" for="qty_masuk">Qty Masuk (Dalam Satuan {{ $satuan['nama'] ?? '' }})</label>
+                    <input type="number" class="form-control" wire:model="qty_masuk" min="1" autocomplete="off" id="qty_masuk">
                     @error('qty_masuk')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Harga Beli</label>
-                    <input type="text" class="form-control text-end" wire:model="harga_beli">
+                    <label class="form-label" for="harga_beli">Harga Beli</label>
+                    <input type="text" class="form-control text-end" wire:model="harga_beli" id="harga_beli">
                     @error('harga_beli')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
