@@ -27,7 +27,7 @@ class Index extends Component
     public function delete($id)
     {
         foreach (File::where('registrasi_id', $id)->get() as $row) {
-            Storage::disk('local')->delete('public/' . $row->link);
+            Storage::disk('s3')->delete($row->link);
         }
         File::where('registrasi_id', $id)->delete();
     }

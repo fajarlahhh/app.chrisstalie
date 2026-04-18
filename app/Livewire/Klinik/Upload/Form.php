@@ -26,11 +26,11 @@ class Form extends Component
         if ($this->registrasi_id) {
             $this->data = Registrasi::with(['pasien'])->find($this->registrasi_id);
         }
-        if ($data->file && method_exists($data->file, 'map')) {
+        if ($data->file) {
             $this->fileDiupload = $data->file->where('jenis', 'Upload')->map(function ($q) {
                 return [
                     'id' => $q['id'] ?? null,
-                    'file' => $q['link'] ?? null,
+                    'file' => null,
                     'link' => $q['link'] ?? null,
                     'judul' => $q['judul'] ?? null,
                     'extensi' => $q['extensi'] ?? null,
@@ -46,14 +46,34 @@ class Form extends Component
     }
 
     public function submit()
-    {
-        $this->validateWithCustomMessages([
-            'fileDiupload' => 'nullable',
-            'fileDiupload.*' => 'nullable|image|mimes:jpeg,png,jpg',
-        ]);
+    {   
+        // Hanya validasi jika ada file yang benar-benar diinput (punya objek file, bukan hanya string/link)
+        // Lakukan validasi hanya jika fileDiupload.*.file adalah objek file (bukan string/link)
+        if (
+            collect($this->fileDiupload)
+                ->where('id', null)
+                ->filter(fn($row) => !empty($row['file']) && is_object($row['file']))
+                ->count() > 0
+        ) {
+            $this->validateWithCustomMessages([
+                'fileDiupload' => 'nullable',
+                // Hanya validasi jika elemen adalah objek file, bukan string/link
+                'fileDiupload.*.file' => function ($attribute, $value, $fail) {
+                    if (is_object($value)) {
+                        // validasi image dan mimes
+                        $rules = ['image', 'mimes:jpeg,png,jpg'];
+                        foreach ($rules as $rule) {
+                            validator(['file' => $value], ['file' => $rule])->validate();
+                        }
+                    }
+                },
+            ]);
+        }
+
+
 
         $this->hapusFile();
-        $this->uploadFile($this->data->id, 'Upload');
+        $this->uploadFile($this->data->id, 'registrasi_id', 'Upload');
 
         session()->flash('success', 'Berhasil menyimpan data');
         $this->redirect('/klinik/upload');

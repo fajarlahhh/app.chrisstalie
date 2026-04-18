@@ -104,7 +104,7 @@ class Form extends Component
             ])->toArray());
 
             if ($this->upload == 1) {
-                $upload = $this->upload($this->data);
+                $upload = $this->upload($this->data, 'pegawai_id', 'Pegawai');
                 if ($upload) {
                     session()->flash('success', 'Berhasil mengupload data ke mesin');
                 } else {

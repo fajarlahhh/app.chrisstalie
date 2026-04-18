@@ -71,7 +71,7 @@ class Form extends Component
             $diagnosis->save();
 
             $this->hapusFile();
-            $this->uploadFile($this->data->id, 'Diagnosis');
+            $this->uploadFile($this->data->id, 'registrasi_id', 'Diagnosis');
         });
 
         session()->flash('success', 'Berhasil menyimpan data Diagnosis');
