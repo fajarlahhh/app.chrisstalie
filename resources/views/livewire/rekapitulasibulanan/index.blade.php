@@ -36,7 +36,7 @@
                     </ul>
                 </div>
                 <div class="alert alert-warning">
-                    Lakukan Rekapitulasi Bulanan di awal bulan untuk mendapatankan data akhir bulan lalu.
+                    Lakukan Rekapitulasi Bulanan di awal bulan untuk mendapatkan saldo akhir bulan lalu.
                 </div>
             </div>
             <div class="panel-footer">
