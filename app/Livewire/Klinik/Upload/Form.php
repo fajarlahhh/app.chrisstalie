@@ -47,6 +47,11 @@ class Form extends Component
 
     public function submit()
     {
+        $this->validateWithCustomMessages([
+            'fileDiupload' => 'nullable',
+            'fileDiupload.*' => 'nullable|image|mimes:jpeg,png,jpg',
+        ]);
+
         $this->hapusFile();
         $this->uploadFile($this->data->id, 'Upload');
 

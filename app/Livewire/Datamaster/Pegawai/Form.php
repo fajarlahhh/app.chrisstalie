@@ -58,7 +58,7 @@ class Form extends Component
             'tanggal_masuk' => 'required|date',
             'nik' => 'required|numeric|digits:16',
             'no_bpjs' => 'required',
-            'file_ttd' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'file_ttd' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         DB::transaction(function () {
