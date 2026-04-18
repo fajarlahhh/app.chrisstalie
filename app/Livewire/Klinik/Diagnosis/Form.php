@@ -55,9 +55,27 @@ class Form extends Component
             'icd10' => 'required|array|min:1',
             'icd10.*.id' => 'required',
             'icd10' => 'required',
-            'fileDiupload' => 'nullable',
-            'fileDiupload.*' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
+        if (
+            collect($this->fileDiupload)
+                ->where('id', null)
+                ->filter(fn($row) => !empty($row['file']) && is_object($row['file']))
+                ->count() > 0
+        ) {
+            $this->validateWithCustomMessages([
+                'fileDiupload' => 'nullable',
+                // Hanya validasi jika elemen adalah objek file, bukan string/link
+                'fileDiupload.*.file' => function ($attribute, $value, $fail) {
+                    if (is_object($value)) {
+                        // validasi image dan mimes
+                        $rules = ['image', 'mimes:jpeg,png,jpg'];
+                        foreach ($rules as $rule) {
+                            validator(['file' => $value], ['file' => $rule])->validate();
+                        }
+                    }
+                },
+            ]);
+        }
 
         DB::transaction(function () {
             Diagnosis::where('id', $this->data->id)->delete();
