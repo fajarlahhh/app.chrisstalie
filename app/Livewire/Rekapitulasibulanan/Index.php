@@ -189,6 +189,11 @@ class Index extends Component
     public function submit()
     {
         set_time_limit(0);
+        if (KeuanganSaldo::where('periode', $this->bulan . '-01')->where('tutup_buku', 0)->count() > 0) {
+            session()->flash('danger', '<strong>Gagal</strong>. Rekapitulasi bulanan bulan sebelumnya belum dilakukan tutup buku');
+            return;
+        }
+        dd('oke');
         $periode = Carbon::parse($this->bulan . '-01');
         // $diff = Carbon::parse($this->bulan . '-01')->diffInMonths(date('Y-m-01'));
         // if ($diff > 12) {
