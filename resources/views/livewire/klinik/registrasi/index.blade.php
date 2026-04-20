@@ -42,35 +42,35 @@
                                 <hr>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
-                                    <input class="form-control" type="text" wire:model="nik" />
+                                    <input id="nik"  class="form-control" type="text" wire:model="nik" />
                                     @error('nik')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" wire:model="nama" />
+                                    <input id="nama"  class="form-control" type="text" wire:model="nama" />
                                     @error('nama')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" wire:model="alamat" />
+                                    <input id="alamat"  class="form-control" type="text" wire:model="alamat" />
                                     @error('alamat')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" wire:model="tanggal_lahir" />
+                                    <input id="tanggal_lahir"  class="form-control" type="date" wire:model="tanggal_lahir" />
                                     @error('tanggal_lahir')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <select data-container="body" class="form-control " wire:model="jenis_kelamin"
+                                    <select id="jenis_kelamin"  data-container="body" class="form-control " wire:model="jenis_kelamin"
                                         data-width="100%">
                                         <option selected hidden>-- Tidak Ada Jenis Kelamin --</option>
                                         <option value="Laki-laki">Laki-laki</option>
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" wire:model="no_hp" />
+                                    <input id="no_hp"  class="form-control" type="text" wire:model="no_hp" />
                                     @error('no_hp')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -140,7 +140,7 @@
                                 @endif
                                 <div class="mb-3">
                                     <label class="form-label">No. RM</label>
-                                    <input class="form-control" type="text" wire:model="rm"
+                                    <input id="rm"  class="form-control" type="text" wire:model="rm"
                                         @if ($nik) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                     @error('rm')
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" wire:model="nama"
+                                    <input id="nama-2"  class="form-control" type="text" wire:model="nama"
                                         @if ($nama) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                     @error('nama')
@@ -158,13 +158,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
-                                    <input class="form-control" type="text" wire:model="nik"
+                                    <input id="nik-2"  class="form-control" type="text" wire:model="nik"
                                         @if ($nik) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" wire:model="alamat"
+                                    <input id="alamat-2"  class="form-control" type="text" wire:model="alamat"
                                         @if ($alamat) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                     @error('alamat')
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" wire:model="tanggal_lahir"
+                                    <input id="tanggal_lahir-2"  class="form-control" type="date" wire:model="tanggal_lahir"
                                         @if ($tanggal_lahir) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                     @error('tanggal_lahir')
@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" wire:model="jenis_kelamin"
+                                    <input id="jenis_kelamin-2"  class="form-control" type="text" wire:model="jenis_kelamin"
                                         @if ($jenis_kelamin) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                     @error('jenis_kelamin')
@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" wire:model="no_hp"
+                                    <input id="no_hp-2"  class="form-control" type="text" wire:model="no_hp"
                                         @if ($no_hp) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                 </div>
@@ -224,7 +224,7 @@
                         @endif
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input class="form-control" type="date" wire:model="tanggal"
+                            <input id="tanggal"  class="form-control" type="date" wire:model="tanggal"
                                 min="{{ date('Y-m-d') }}" />
                             @error('tanggal')
                                 <span class="text-danger">{{ $message }}</span>
@@ -233,7 +233,7 @@
                         <div x-data="{ ketemuDokter: @entangle('ketemu_dokter').defer }">
                             <div class="mb-3">
                                 <label class="form-label">Ketemu Dokter</label>
-                                <select data-container="body" class="form-control" x-model="ketemuDokter"
+                                <select id="ketemu_dokter"  data-container="body" class="form-control" x-model="ketemuDokter"
                                     wire:model="ketemu_dokter" data-width="100%">
                                     <option value="0">Tidak</option>
                                     <option value="1">Ya</option>
@@ -241,7 +241,7 @@
                             </div>
                             <div class="mb-3" x-show="ketemuDokter == 1" x-cloak>
                                 <label class="form-label">Dokter</label>
-                                <select data-container="body" class="form-control" x-init="$($el).selectpicker({
+                                <select id="nakes_id"  data-container="body" class="form-control" x-init="$($el).selectpicker({
                                     liveSearch: true,
                                     width: 'auto',
                                     size: 10,
@@ -265,7 +265,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Keluhan Awal</label>
-                            <textarea class="form-control" wire:model="keluhan_awal" rows="5"></textarea>
+                            <textarea id="keluhan_awal"  class="form-control" wire:model="keluhan_awal" rows="5"></textarea>
                             @error('keluhan_awal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

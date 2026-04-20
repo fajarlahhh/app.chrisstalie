@@ -20,7 +20,7 @@
                     <div class="mb-3">
                         <label class="form-label">Cari Barang</label>
                         <div wire:ignore>
-                            <select class="form-control" wire:model="barang_id" x-init="$($el).select2({
+                            <select id="barang_id"  class="form-control" wire:model="barang_id" x-init="$($el).select2({
                                 width: '100%',
                                 dropdownAutoWidth: true,
                                 placeholder: 'Pilih Barang',
@@ -93,7 +93,7 @@
                 @if ($barang)
                     <div class="mb-3">
                         <label class="form-label">Qty Dikeluarkan (Dalam Satuan {{ $barang['satuan'] ?? '' }})</label>
-                        <input type="number" class="form-control" wire:model="qty_keluar" min="1"
+                        <input id="qty_keluar"  type="number" class="form-control" wire:model="qty_keluar" min="1"
                             max="{{ $barang['qty'] }}" autocomplete="off">
                         @error('qty_keluar')
                             <span class="text-danger">{{ $message }}</span>
@@ -101,7 +101,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Catatan</label>
-                        <textarea class="form-control" type="text" wire:model="catatan"></textarea>
+                        <textarea id="catatan"  class="form-control" type="text" wire:model="catatan"></textarea>
                         @error('catatan')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

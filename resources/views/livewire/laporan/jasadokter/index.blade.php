@@ -14,10 +14,10 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal1"  class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal1" />
                 &nbsp;s/d&nbsp;
-                <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal2"  class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal2" />
             </div>
         </div>

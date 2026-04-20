@@ -17,8 +17,8 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
-                <select class="form-control w-auto" wire:model.lazy="persediaan">
+                <input id="bulan"  type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
+                <select id="persediaan"  class="form-control w-auto" wire:model.lazy="persediaan">
                     @role('administrator|supervisor')
                         <option value="">Semua Persediaan</option>
                     @endrole
@@ -27,13 +27,13 @@
                         <option value="Klinik">Persediaan Alat & Bahan</option>
                     @endrole
                 </select>&nbsp;
-                <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
+                <select id="kode_akun_id"  class="form-control w-auto" wire:model.lazy="kode_akun_id">
                     <option value="">Semua Kategori</option>
                     @foreach ($dataKodeAkun as $item)
                         <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                     @endforeach
                 </select>&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

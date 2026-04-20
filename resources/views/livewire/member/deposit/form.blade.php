@@ -19,7 +19,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="tanggal" max="{{ date('Y-m-d') }}" />
+                    <input id="tanggal"  class="form-control" type="date" wire:model="tanggal" max="{{ date('Y-m-d') }}" />
                     @error('tanggal')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -69,7 +69,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Metode Bayar</label>
-                    <select class="form-control" wire:model="metode_bayar" data-width="100%">
+                    <select id="metode_bayar"  class="form-control" wire:model="metode_bayar" data-width="100%">
                         <option hidden>-- Pilih Metode Bayar --</option>
                         @foreach ($dataMetodeBayar as $item)
                             <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
@@ -78,14 +78,14 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jumlah</label>
-                    <input class="form-control" type="number" wire:model="jumlah" />
+                    <input id="jumlah"  class="form-control" type="number" wire:model="jumlah" />
                     @error('jumlah')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Catatan</label>
-                    <input class="form-control" type="text" wire:model="catatan" />
+                    <input id="catatan"  class="form-control" type="text" wire:model="catatan" />
                     @error('catatan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

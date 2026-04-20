@@ -19,21 +19,21 @@
                     <div class="col-lg-4">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama" x-model="nama" />
+                            <input id="nama"  class="form-control" type="text" wire:model="nama" x-model="nama" />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">ICD 9 CM</label>
-                            <input class="form-control" type="text" wire:model="icd_9_cm" x-model="icd_9_cm" />
+                            <input id="icd_9_cm"  class="form-control" type="text" wire:model="icd_9_cm" x-model="icd_9_cm" />
                             @error('icd_9_cm')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tarif</label>
-                            <input class="form-control" type="number" step="1" min="0" wire:model="tarif"
+                            <input id="tarif"  class="form-control" type="number" step="1" min="0" wire:model="tarif"
                                 x-model.number="tarif" @keyup="hitungKeuntungan()" />
                             @error('tarif')
                                 <span class="text-danger">{{ $message }}</span>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model="kode_akun_id" x-model="kode_akun_id"
+                            <select id="kode_akun_id"  class="form-control" wire:model="kode_akun_id" x-model="kode_akun_id"
                                 x-init="$($el).selectpicker({
                                     liveSearch: true,
                                     width: 'auto',
@@ -63,7 +63,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Catatan</label>
-                            <textarea class="form-control" rows="8" wire:model="catatan" x-model="catatan"></textarea>
+                            <textarea id="catatan"  class="form-control" rows="8" wire:model="catatan" x-model="catatan"></textarea>
                             @error('catatan')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -312,7 +312,7 @@
                         <div class="alert alert-info">
                             <div class="mb-3">
                                 <label class="form-label">Biaya Jasa Dokter</label>
-                                <input class="form-control" type="number" step="1" min="0"
+                                <input id="biaya_jasa_dokter"  class="form-control" type="number" step="1" min="0"
                                     wire:model="biaya_jasa_dokter" x-model.number="biaya_jasa_dokter"
                                     @keyup="hitungKeuntungan()" />
                                 @error('biaya_jasa_dokter')
@@ -321,7 +321,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Biaya Jasa Perawat</label>
-                                <input class="form-control" type="number" step="1" min="0"
+                                <input id="biaya_jasa_perawat"  class="form-control" type="number" step="1" min="0"
                                     wire:model="biaya_jasa_perawat" x-model.number="biaya_jasa_perawat"
                                     @keyup="hitungKeuntungan()" />
                                 @error('biaya_jasa_perawat')

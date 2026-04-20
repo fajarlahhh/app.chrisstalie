@@ -19,7 +19,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Kategori</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="kategori"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -41,7 +41,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Parent</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="parent_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -61,14 +61,14 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kode</label>
-                    <input class="form-control" type="text" wire:model="kode" />
+                    <input id="kode"  class="form-control" type="text" wire:model="kode" />
                     @error('kode')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
+                    <input id="nama"  class="form-control" type="text" wire:model="nama" />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

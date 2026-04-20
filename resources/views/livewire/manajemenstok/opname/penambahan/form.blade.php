@@ -19,7 +19,7 @@
                 <div x-data="{ transaksi: @entangle('transaksi') }">
                     <div class="mb-3">
                         <label class="form-label">Transaksi</label>
-                        <select class="form-control" wire:model.live="transaksi" x-model="transaksi">
+                        <select id="transaksi"  class="form-control" wire:model.live="transaksi" x-model="transaksi">
                             <option value="" selected hidden>-- Pilih Transaksi --</option>
                             <option value="pemindahan">Pemindahan Stok</option>
                             <option value="opname">Opname</option>
@@ -31,7 +31,7 @@
                     <div class="mb-3">
                         <label class="form-label">Cari Barang</label>
                         <div wire:ignore>
-                            <select class="form-control" wire:model="barang_id" x-init="$($el).select2({
+                            <select id="barang_id"  class="form-control" wire:model="barang_id" x-init="$($el).select2({
                                 width: '100%',
                                 dropdownAutoWidth: true
                             });
@@ -51,7 +51,7 @@
                     <div class="mb-3" x-show="transaksi == 'pemindahan'" x-transition>
                         <label class="form-label">Cari Stok Keluar</label>
                         <div wire:ignore>
-                            <select class="form-control" wire:model="stok_keluar_id" x-init="$($el).select2({
+                            <select id="stok_keluar_id"  class="form-control" wire:model="stok_keluar_id" x-init="$($el).select2({
                                 width: '100%',
                                 dropdownAutoWidth: true
                             });
@@ -73,7 +73,7 @@
                 @if ($barang_id)
                     <div class="mb-3">
                         <label class="form-label">Satuan</label>
-                        <select class="form-control" wire:model.live="satuan_id">
+                        <select id="satuan_id"  class="form-control" wire:model.live="satuan_id">
                             <option value="" selected hidden>-- Pilih Satuan --</option>
                             @foreach ($dataBarangSatuan as $item)
                                 <option value="{{ $item['id'] }}">{{ $item['nama'] }}
@@ -87,7 +87,7 @@
                 @endif
                 <div class="mb-3">
                     <label class="form-label">No. Batch</label>
-                    <input type="text" class="form-control" wire:model="no_batch">
+                    <input id="no_batch"  type="text" class="form-control" wire:model="no_batch">
                     @error('no_batch')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -126,7 +126,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Catatan</label>
-                    <textarea class="form-control" type="text" wire:model="catatan"></textarea>
+                    <textarea id="catatan"  class="form-control" type="text" wire:model="catatan"></textarea>
                     @error('catatan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

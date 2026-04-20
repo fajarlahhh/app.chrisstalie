@@ -19,7 +19,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Persediaan</label>
-                    <select class="form-control" wire:model.live="persediaan" data-width="100%"
+                    <select id="persediaan"  class="form-control" wire:model.live="persediaan" data-width="100%"
                         @if ($data->exists) disabled @endif>
                         <option hidden selected>-- Pilih Persediaan --</option>
                         <option value="Apotek">Persediaan Barang Dagang</option>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
+                    <input id="nama"  class="form-control" type="text" wire:model="nama" />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -41,7 +41,7 @@
                             artinya tidak ada satuan penjualan yang lebih kecil dari ini. Ini tidak dapat diubah lagi.
                             Kesalahan penginputan satuan akan menyebabkan kesalahan stok dan harga
                             jual.)</small></label>
-                    <input class="form-control" type="text" wire:model="satuan"
+                    <input id="satuan"  class="form-control" type="text" wire:model="satuan"
                         @if ($data->exists) disabled @endif />
                     @error('satuan')
                         <span class="text-danger">{{ $message }}</span>
@@ -50,7 +50,7 @@
                 @if (!$data->exists)
                     <div class="mb-3">
                         <label class="form-label">Harga Jual</label>
-                        <input class="form-control" type="text" wire:model="harga"
+                        <input id="harga"  class="form-control" type="text" wire:model="harga"
                             @if ($data->exists) disabled @endif />
                         @error('harga')
                             <span class="text-danger">{{ $message }}</span>
@@ -59,7 +59,7 @@
                 @endif
                 <div class="mb-3">
                     <label class="form-label">Kategori</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="kode_akun_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -80,7 +80,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori Pendapatan</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="kode_akun_penjualan_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -102,7 +102,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori Modal</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="kode_akun_modal_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -123,14 +123,14 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">KFA</label>
-                    <input class="form-control" type="text" wire:model="kfa" />
+                    <input id="kfa"  class="form-control" type="text" wire:model="kfa" />
                     @error('kfa')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 @if ($persediaan == 'Apotek')
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" wire:model="perlu_resep"
+                        <input id="perlu_resep"  class="form-check-input" type="checkbox" wire:model="perlu_resep"
                             @if ($perlu_resep) checked @endif />
                         <label class="form-check-label" for="perlu_resep">
                             Perlu Resep
@@ -138,7 +138,7 @@
                     </div>
                 @endif
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" wire:model="khusus"
+                    <input id="khusus"  class="form-check-input" type="checkbox" wire:model="khusus"
                         @if ($khusus) checked @endif />
                     <label class="form-check-label" for="khusus">
                         Khusus

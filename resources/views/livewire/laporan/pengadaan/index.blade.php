@@ -18,10 +18,10 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="date1"  class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="date1" />
                 &nbsp;s/d&nbsp;
-                <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="date2"  class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="date2" />
             </div>
         </div>

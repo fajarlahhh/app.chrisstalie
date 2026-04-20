@@ -16,11 +16,11 @@
                     Tambah</a>&nbsp;
             @endrole
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="status">
+                <select id="status"  class="form-control w-auto" wire:model.lazy="status">
                     <option value="Aktif">Aktif</option>
                     <option value="Non Aktif">Non Aktif</option>
                 </select>&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

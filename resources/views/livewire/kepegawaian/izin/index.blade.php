@@ -15,9 +15,9 @@
                     class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;&nbsp;
             @endunlessrole
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal1" />&nbsp;
-                <input class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal2" />&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="tanggal1"  class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal1" />&nbsp;
+                <input id="tanggal2"  class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal2" />&nbsp;
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model="cari">
                 &nbsp;
                 <button class="btn btn-primary" type="button" wire:click="$commit">Filter</button>

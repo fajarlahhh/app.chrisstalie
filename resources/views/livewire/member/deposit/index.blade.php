@@ -14,11 +14,11 @@
             <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'" class="btn btn-outline-secondary btn-block">
                 Tambah</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="date" wire:model.lazy="tanggal1"
+                <input id="tanggal1"  class="form-control w-auto" type="date" wire:model.lazy="tanggal1"
                     max="{{ date('Y-m-d') }}" />&nbsp;
-                <input class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
+                <input id="tanggal2"  class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
                     max="{{ date('Y-m-d') }}" />&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

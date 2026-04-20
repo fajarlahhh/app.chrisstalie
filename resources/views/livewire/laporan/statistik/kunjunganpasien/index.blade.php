@@ -21,13 +21,13 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="sort">
+                <select id="sort"  class="form-control w-auto" wire:model.lazy="sort">
                     <option value="qty">Desc Qty</option>
                     <option value="biaya">Desc Biaya</option>
                 </select>&nbsp;
-                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal1"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal1" class="form-control w-auto">&nbsp;s/d&nbsp;
-                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal2"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal2" class="form-control w-auto">
             </div>
         </div>

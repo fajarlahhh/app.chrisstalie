@@ -21,7 +21,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama"
+                            <input id="nama"  class="form-control" type="text" wire:model="nama"
                                 @if ($data->exists) disabled @endif />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
@@ -29,21 +29,21 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Detail</label>
-                            <textarea class="form-control" wire:model="detail" rows="3"></textarea>
+                            <textarea id="detail"  class="form-control" wire:model="detail" rows="3"></textarea>
                             @error('detail')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Satuan</label>
-                            <input class="form-control" type="text" wire:model="satuan" />
+                            <input id="satuan"  class="form-control" type="text" wire:model="satuan" />
                             @error('satuan')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal Perolehan</label>
-                            <input class="form-control" @if ($data->exists) disabled @endif type="date"
+                            <input id="tanggal_perolehan"  class="form-control" @if ($data->exists) disabled @endif type="date"
                                 wire:model="tanggal_perolehan" @if ($data->exists) disabled @endif />
                             @error('tanggal_perolehan')
                                 <span class="text-danger">{{ $message }}</span>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Harga Perolehan</label>
-                            <input class="form-control" type="number" wire:model="harga_perolehan"
+                            <input id="harga_perolehan"  class="form-control" type="number" wire:model="harga_perolehan"
                                 @if ($data->exists) disabled @endif />
                             @error('harga_perolehan')
                                 <span class="text-danger">{{ $message }}</span>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model="kode_akun_id" x. x-init="$($el).selectpicker({
+                            <select id="kode_akun_id"  class="form-control" wire:model="kode_akun_id" x-init="$($el).selectpicker({
                                 liveSearch: true,
                                 width: 'auto',
                                 size: 10,
@@ -81,7 +81,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Sumber Dana</label>
-                            <select class="form-control" wire:model="kode_akun_sumber_dana_id"
+                            <select id="kode_akun_sumber_dana_id"  class="form-control" wire:model="kode_akun_sumber_dana_id"
                                 x-model="kode_akun_sumber_dana_id" x-init="$($el).selectpicker({
                                     liveSearch: true,
                                     width: 'auto',
@@ -105,7 +105,7 @@
                         <hr>
                         <div class="mb-3">
                             <label class="form-label">Lokasi</label>
-                            <input class="form-control" type="text" wire:model="lokasi" />
+                            <input id="lokasi"  class="form-control" type="text" wire:model="lokasi" />
                             @error('lokasi')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -117,7 +117,7 @@
                             <hr>
                             <div class="mb-3">
                                 <label class="form-label">Metode Penyusutan</label>
-                                <select class="form-control" @if ($data->exists) disabled @endif
+                                <select id="metode_penyusutan"  class="form-control" @if ($data->exists) disabled @endif
                                     wire:model="metode_penyusutan" x-model="$wire.metode_penyusutan" data-width="100%">
                                     <option hidden selected>-- Pilih Metode Penyusutan --</option>
                                     <option value="Garis Lurus">Garis Lurus</option>
@@ -136,7 +136,7 @@
                                         <span>Pemakaian <small>(x)</small></span>
                                     </template>
                                 </label>
-                                <input class="form-control" type="text" wire:model="masa_manfaat"
+                                <input id="masa_manfaat"  class="form-control" type="text" wire:model="masa_manfaat"
                                     @if ($data->exists) disabled @endif />
                                 @error('masa_manfaat')
                                     <span class="text-danger">{{ $message }}</span>
@@ -144,7 +144,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nilai Residu</label>
-                                <input class="form-control" type="number" wire:model="nilai_residu"
+                                <input id="nilai_residu"  class="form-control" type="number" wire:model="nilai_residu"
                                     @if ($data->exists) disabled @endif />
                                 @error('nilai_residu')
                                     <span class="text-danger">{{ $message }}</span>
@@ -156,7 +156,7 @@
                 @if ($data->exists)
                     <div class="mb-3">
                         <label class="form-label">Status</label>
-                        <select class="form-control" wire:model="status" data-width="100%">
+                        <select id="status"  class="form-control" wire:model="status" data-width="100%">
                             <option hidden selected>-- Tidak Ada Status --</option>
                             <option value="Aktif">Aktif</option>
                             <option value="Tidak Aktif">Tidak Aktif</option>

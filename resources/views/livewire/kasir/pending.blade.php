@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body table-responsive" id="modal-body-pasien">
-                <input type="text" class="form-control mb-3" placeholder="Cari" aria-label="Sizing example input"
+                <input id="cari"  type="text" class="form-control mb-3" placeholder="Cari" aria-label="Sizing example input"
                     autocomplete="off" aria-describedby="basic-addon2" wire:model.lazy="cari">
                 <table class="table table-hover table-bordered">
                     <thead>

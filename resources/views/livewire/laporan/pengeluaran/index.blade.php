@@ -16,11 +16,11 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal1"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal1" class="form-control w-auto">&nbsp;s/d&nbsp;
-                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal2"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal2" class="form-control w-auto">&nbsp;
-                <select class="form-control w-auto" wire:model.lazy="pengguna_id">
+                <select id="pengguna_id"  class="form-control w-auto" wire:model.lazy="pengguna_id">
                     @role('administrator|supervisor')
                         <option value="">Semua Pengguna</option>
                     @endrole
@@ -29,7 +29,7 @@
                     @endforeach
                 </select>
                 &nbsp;
-                <select class="form-control w-auto" wire:model.live="metode_bayar">
+                <select id="metode_bayar"  class="form-control w-auto" wire:model.live="metode_bayar">
                     <option value="">Semua Metode Bayar</option>
                     @foreach ($dataKodeAkun as $item)
                         <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>

@@ -11,11 +11,11 @@
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="status">
+                <select id="status"  class="form-control w-auto" wire:model.lazy="status">
                     <option value="Pending">Pending</option>
                     <option value="Terverifikasi">Terverifikasi</option>
                 </select>&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

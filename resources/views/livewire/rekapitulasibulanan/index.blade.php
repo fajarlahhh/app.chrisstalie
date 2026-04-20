@@ -15,11 +15,11 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Bulan</label>
-                    <input type="month" class="form-control" wire:model="bulan" min="2025-09">
+                    <input id="bulan"  type="month" class="form-control" wire:model="bulan" min="2025-09">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tutup Buku</label>
-                    <select class="form-control" wire:model="tutup_buku">
+                    <select id="tutup_buku"  class="form-control" wire:model="tutup_buku">
                         <option value="0">Tidak</option>
                         <option value="1">Ya</option>
                     </select>

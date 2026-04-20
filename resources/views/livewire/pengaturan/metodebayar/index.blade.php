@@ -15,7 +15,7 @@
                     class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
             @endrole
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

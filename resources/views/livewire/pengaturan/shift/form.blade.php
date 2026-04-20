@@ -19,21 +19,21 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
+                    <input id="nama"  class="form-control" type="text" wire:model="nama" />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jam Masuk</label>
-                    <input class="form-control" type="time" wire:model="jam_masuk" />
+                    <input id="jam_masuk"  class="form-control" type="time" wire:model="jam_masuk" />
                     @error('jam_masuk')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jam Pulang</label>
-                    <input class="form-control" type="time" wire:model="jam_pulang" />
+                    <input id="jam_pulang"  class="form-control" type="time" wire:model="jam_pulang" />
                     @error('jam_pulang')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

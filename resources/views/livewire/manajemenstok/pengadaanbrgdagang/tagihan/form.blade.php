@@ -21,7 +21,7 @@
                 </div>
                 <div class="mb-3" wire:ignore>
                     <label class="form-label">No. Pemesanan</label>
-                    <select class="form-control" x-init="window.initSelect2 = (el) => {
+                    <select id="pengadaan_pemesanan_id"  class="form-control" x-init="window.initSelect2 = (el) => {
                         $(el).select2({
                             templateResult: state => !state.id ? state.text : state.text,
                             width: '100%',
@@ -43,14 +43,14 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. Invoice/Faktur</label>
-                    <input class="form-control" type="text" wire:model="no_faktur" x-model="no_faktur" required />
+                    <input id="no_faktur"  class="form-control" type="text" wire:model="no_faktur" x-model="no_faktur" required />
                     @error('no_faktur')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal Tagihan</label>
-                    <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
+                    <input id="tanggal"  class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
                         max="{{ date('Y-m-d') }}" required />
                     @error('tanggal')
                         <span class="text-danger">{{ $message }}</span>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jatuh Tempo</label>
-                    <input class="form-control" type="date" wire:model="jatuh_tempo" x-model="jatuh_tempo"
+                    <input id="jatuh_tempo"  class="form-control" type="date" wire:model="jatuh_tempo" x-model="jatuh_tempo"
                         min="{{ date('Y-m-d') }}" required />
                     @error('jatuh_tempo')
                         <span class="text-danger">{{ $message }}</span>
@@ -118,14 +118,14 @@
                 <hr>
                 <div class="mb-3">
                     <label class="form-label">Diskon <small>(Rp.)</small></label>
-                    <input class="form-control" type="number" wire:model="diskon" x-model="diskon">
+                    <input id="diskon"  class="form-control" type="number" wire:model="diskon" x-model="diskon">
                     @error('diskon')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">PPN <small>(Rp.)</small></label>
-                    <input class="form-control" type="number" wire:model="ppn" x-model="ppn">
+                    <input id="ppn"  class="form-control" type="number" wire:model="ppn" x-model="ppn">
                     @error('ppn')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -137,7 +137,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Catatan</label>
-                    <textarea class="form-control" wire:model="catatan" x-model="catatan"></textarea>
+                    <textarea id="catatan"  class="form-control" wire:model="catatan" x-model="catatan"></textarea>
                     @error('catatan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

@@ -18,7 +18,7 @@
             <div class="panel-body">
                 <div class="mb-3" wire:ignore>
                     <label class="form-label">No. Pemesanan</label>
-                    <select class="form-control" x-init="$($el).select2({
+                    <select id="pengadaan_pemesanan_id"  class="form-control" x-init="$($el).select2({
                         templateResult: formatState,
                         width: '100%',
                         dropdownAutoWidth: true,
@@ -82,7 +82,7 @@
                                                 value="{{ $brg['qty'] }}" disabled autocomplete="off">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" min="0"
+                                            <input id="barang-{{ $index }}-qty_masuk"  type="number" class="form-control" min="0"
                                                 max="{{ $brg['qty'] }}" step="1"
                                                 wire:model="barang.{{ $index }}.qty_masuk" autocomplete="off">
                                             @error('barang.' . $index . '.qty_masuk')
@@ -90,14 +90,14 @@
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control"
+                                            <input id="barang-{{ $index }}-no_batch"  type="text" class="form-control"
                                                 wire:model="barang.{{ $index }}.no_batch" autocomplete="off">
                                             @error('barang.' . $index . '.no_batch')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="date" class="form-control"
+                                            <input id="barang-{{ $index }}-tanggal_kedaluarsa"  type="date" class="form-control"
                                                 min="{{ now()->format('Y-m-d') }}"
                                                 wire:model="barang.{{ $index }}.tanggal_kedaluarsa"
                                                 autocomplete="off">

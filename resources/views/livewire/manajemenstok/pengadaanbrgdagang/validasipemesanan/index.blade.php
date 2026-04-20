@@ -67,7 +67,9 @@
                                         <tr>
                                             <th>Barang</th>
                                             <th>Satuan</th>
-                                            <th>Qty</th>
+                                            <th>Qty Pemesanan</th>
+                                            <th>Qty Pemesanan <br><small>Tervalidasi</small></th>
+                                            <th>Qty Masuk</th>
                                             <th>Harga Beli</th>
                                         </tr>
                                     </thead>
@@ -84,7 +86,13 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px">
+                                                    {{ $detail->qty_lama }}
+                                                </td>
+                                                <td class="text-nowrap text-end w-80px">
                                                     {{ $detail->qty }}
+                                                </td>
+                                                <td class="text-nowrap text-end w-80px p-1">
+                                                    {{ $item->stokMasuk->where('barang_id', $detail->barang_id)->sum('qty') }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px">
                                                     {{ number_format_id($detail->harga_beli) }}

@@ -19,14 +19,14 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Kode</label>
-                    <input class="form-control" type="text" wire:model="kode" />
+                    <input id="kode"  class="form-control" type="text" wire:model="kode" />
                     @error('kode')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Uraian</label>
-                    <input class="form-control" type="text" wire:model="uraian" />
+                    <input id="uraian"  class="form-control" type="text" wire:model="uraian" />
                     @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

@@ -53,7 +53,7 @@
                                         return $wire.detail[{{ $i }}].absen !== false;
                                     }
                                 }">
-                                    <input class="form-check-input mb-1" type="checkbox" value="1"
+                                    <input id="detail-{{ $i }}-absen"  class="form-check-input mb-1" type="checkbox" value="1"
                                         wire:model.live="detail.{{ $i }}.absen"
                                         x-model="$wire.detail[{{ $i }}].absen"
                                         @if (!$kepegawaian_pegawai_id) disabled @endif />
@@ -62,7 +62,7 @@
                                     </p>
                                     <template x-if="isChecked">
                                         <div>
-                                            <select class="form-control"
+                                            <select id="detail-{{ $i }}-shift_id"  class="form-control"
                                                 wire:model="detail.{{ $i }}.shift_id" required>
                                                 <option value="">-- Pilih Shift --</option>
                                                 @foreach ($dataShift as $row)

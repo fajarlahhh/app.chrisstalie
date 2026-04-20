@@ -21,7 +21,7 @@
                     <div class="col-6">
                         <div class="mb-3">
                             <label class="form-label">Pegawai</label>
-                            <select data-container="body" class="form-control" x-init="$($el).selectpicker({
+                            <select id="kepegawaian_pegawai_id"  data-container="body" class="form-control" x-init="$($el).selectpicker({
                                 liveSearch: true,
                                 width: 'auto',
                                 size: 10,
@@ -44,7 +44,7 @@
                         @if (!$kepegawaian_pegawai_id)
                             <div class="mb-3">
                                 <label class="form-label">No. KTP</label>
-                                <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
+                                <input id="nik"  class="form-control" type="number" step="1" maxlength="16" minlength="16"
                                     wire:model="nik" @if ($kepegawaian_pegawai_id) disabled @endif />
                                 @error('nik')
                                     <span class="text-danger">{{ $message }}</span>
@@ -52,14 +52,14 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">IHS</label>
-                                <input class="form-control" type="text" wire:model="ihs" disabled />
+                                <input id="ihs"  class="form-control" type="text" wire:model="ihs" disabled />
                                 @error('ihs')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
-                                <input class="form-control" type="text" wire:model="nama"
+                                <input id="nama"  class="form-control" type="text" wire:model="nama"
                                     @if ($kepegawaian_pegawai_id) disabled @endif />
                                 @error('nama')
                                     <span class="text-danger">{{ $message }}</span>
@@ -67,7 +67,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Alamat</label>
-                                <input class="form-control" type="text" wire:model="alamat"
+                                <input id="alamat"  class="form-control" type="text" wire:model="alamat"
                                     @if ($kepegawaian_pegawai_id) disabled @endif />
                                 @error('alamat')
                                     <span class="text-danger">{{ $message }}</span>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">No. Hp</label>
-                                <input class="form-control" type="text" wire:model="no_hp"
+                                <input id="no_hp"  class="form-control" type="text" wire:model="no_hp"
                                     @if ($kepegawaian_pegawai_id) disabled @endif />
                                 @error('no_hp')
                                     <span class="text-danger">{{ $message }}</span>
@@ -94,7 +94,7 @@
                                         <input class="checkbox" type="checkbox" id="dokter" value="1"
                                             wire:model="dokter" x-model="dokter" />
                                     </div>
-                                    <select class="form-control" wire:model="kode_akun_jasa_dokter_id"
+                                    <select id="kode_akun_jasa_dokter_id"  class="form-control" wire:model="kode_akun_jasa_dokter_id"
                                         x-init="$($el).selectpicker({
                                             liveSearch: true,
                                             width: 'auto',
@@ -123,7 +123,7 @@
                                         <input class="checkbox" type="checkbox" id="perawat" value="1"
                                             wire:model="perawat" x-model="perawat" />
                                     </div>
-                                    <select class="form-control" wire:model="kode_akun_jasa_perawat_id"
+                                    <select id="kode_akun_jasa_perawat_id"  class="form-control" wire:model="kode_akun_jasa_perawat_id"
                                         x-init="$($el).selectpicker({
                                             liveSearch: true,
                                             width: 'auto',

@@ -37,7 +37,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Sumber Dana</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="sumber_dana_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -57,7 +57,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="tujuan_dana_id">Tujuan Dana</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="tujuan_dana_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,

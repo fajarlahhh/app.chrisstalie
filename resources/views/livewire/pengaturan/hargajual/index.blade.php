@@ -17,7 +17,7 @@
                     Export</a>
             @endrole
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
+                <select id="barang_id"  class="form-control w-auto" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
                     liveSearch: true,
                     width: 'auto',
                     size: 10,

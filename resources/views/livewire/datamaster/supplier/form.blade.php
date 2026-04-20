@@ -19,28 +19,28 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
+                    <input id="nama"  class="form-control" type="text" wire:model="nama" />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
-                    <input class="form-control" type="text" wire:model="alamat" />
+                    <input id="alamat"  class="form-control" type="text" wire:model="alamat" />
                     @error('alamat')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. Telp.</label>
-                    <input class="form-control" type="text" wire:model="no_hp" />
+                    <input id="no_hp"  class="form-control" type="text" wire:model="no_hp" />
                     @error('no_hp')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kode Akun Hutang</label>
-                    <select class="form-control" wire:model="kode_akun_id">
+                    <select id="kode_akun_id"  class="form-control" wire:model="kode_akun_id">
                         <option value="">Pilih Kode Akun Hutang</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="deskripsi" />
+                    <input id="deskripsi"  class="form-control" type="text" wire:model="deskripsi" />
                     @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

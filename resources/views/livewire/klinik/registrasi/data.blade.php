@@ -13,14 +13,14 @@
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="status">
+                <select id="status"  class="form-control w-auto" wire:model.lazy="status">
                     <option value="1">Belum Bayar</option>
                     <option value="2">Sudah Bayar</option>
                 </select>&nbsp;
                 @if ($status == 2)
-                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal" />&nbsp;
+                    <input id="tanggal"  type="date" class="form-control w-auto" wire:model.lazy="tanggal" />&nbsp;
                 @endif
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>
@@ -84,7 +84,7 @@
                     <div class="modal-body overflow-auto height-500">
                         <div class="form-group">
                             <label for="hak_kewajiban">Hak dan Kewajiban</label>
-                            <textarea class="form-control" wire:model="hak_kewajiban"></textarea>
+                            <textarea id="hak_kewajiban"  class="form-control" wire:model="hak_kewajiban"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

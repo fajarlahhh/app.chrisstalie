@@ -38,8 +38,8 @@
                             @enderror
                         </div>
                         <div class="form-check mb-20px">
-                            <input class="form-check-input" type="checkbox" id="rememberMe" wire:model="remember" />
-                            <label class="form-check-label" for="rememberMe">
+                            <input class="form-check-input" type="checkbox" id="remember" wire:model="remember" />
+                            <label class="form-check-label" for="remember">
                                 Remember Me
                             </label>
                         </div>

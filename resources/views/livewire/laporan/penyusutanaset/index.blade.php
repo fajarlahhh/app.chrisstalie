@@ -14,7 +14,7 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input type="number" autocomplete="off" wire:model.lazy="tahun" min="2025"
+                <input id="tahun"  type="number" autocomplete="off" wire:model.lazy="tahun" min="2025"
                     max="{{ date('Y') }}" class="form-control w-auto">
             </div>
         </div>

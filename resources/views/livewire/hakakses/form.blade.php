@@ -22,7 +22,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
                                 @if (!$this->data->kepegawaian_pegawai_id)
-                                    <input class="form-control" type="text" wire:model="nama"
+                                    <input id="nama"  class="form-control" type="text" wire:model="nama"
                                         @if ($data->exists) disabled @endif />
                                 @else
                                     <input class="form-control" type="text" value="{{ $data->nama }}"
@@ -35,7 +35,7 @@
                         @else
                             <div class="mb-3">
                                 <label class="form-label">Pegawai</label>
-                                <select x-init="$($el).selectpicker({
+                                <select id="kepegawaian_pegawai_id"  x-init="$($el).selectpicker({
                                     liveSearch: true,
                                     width: 'auto',
                                     size: 10,
@@ -57,7 +57,7 @@
                         @endif
                         <div class="mb-3">
                             <label class="form-label">UID</label>
-                            <input class="form-control" type="uid" wire:model="uid"
+                            <input id="uid"  class="form-control" type="uid" wire:model="uid"
                                 @if ($data->exists) disabled @endif />
                             @error('uid')
                                 <span class="text-danger">{{ $message }}</span>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Role</label>
-                            <select data-container="body" class="form-control " wire:model="role"
+                            <select id="role"  data-container="body" class="form-control " wire:model="role"
                                 x-init="$($el).on('change', function() {
                                     $wire.changeRole($($el).val())
                                 })" data-width="100%">

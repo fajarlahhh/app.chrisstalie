@@ -12,11 +12,11 @@
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="date" wire:model.lazy="tanggal1"
+                <input id="tanggal1"  class="form-control w-auto" type="date" wire:model.lazy="tanggal1"
                     max="{{ date('Y-m-d') }}" />&nbsp;
-                <input class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
+                <input id="tanggal2"  class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
                     max="{{ date('Y-m-d') }}" />&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

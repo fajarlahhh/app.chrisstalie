@@ -19,7 +19,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama"
+                    <input id="nama"  class="form-control" type="text" wire:model="nama"
                         @if ($nama == 'Cash') disabled @endif />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kode Akun</label>
-                    <select class="form-control" wire:model.live="kode_akun_id" x-init="$($el).selectpicker({
+                    <select id="kode_akun_id"  class="form-control" wire:model.live="kode_akun_id" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -49,7 +49,7 @@
                 <div class="mb-3">
                     <label class="form-label">Biaya Admin <small class="text-muted">(Biaya admin yang dikenakan pada
                             setiap transaksi)</small></label>
-                    <input class="form-control" type="number" step="any" min="0" wire:model="biaya_admin" />
+                    <input id="biaya_admin"  class="form-control" type="number" step="any" min="0" wire:model="biaya_admin" />
                     @error('biaya_admin')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

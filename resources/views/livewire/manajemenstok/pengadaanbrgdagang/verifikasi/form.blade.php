@@ -33,7 +33,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Status Verifikasi</label>
-                    <select class="form-control" wire:model.live="status">
+                    <select id="status"  class="form-control" wire:model.live="status">
                         <option value="Disetujui">Setuju</option>
                         <option value="Ditolak">Tolak</option>
                     </select>
@@ -75,7 +75,7 @@
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control w-200px" min="0"
+                                            <input id="barang-{{ $index }}-qty_disetujui"  type="number" class="form-control w-200px" min="0"
                                                 step="1" min="0" max="{{ $row['qty'] }}"
                                                 wire:model="barang.{{ $index }}.qty_disetujui"
                                                 autocomplete="off" @if ($status == 'Ditolak') disabled @endif>
@@ -92,7 +92,7 @@
                 @if ($status == 'Ditolak')
                     <div class="mb-3">
                         <label class="form-label">Catatan</label>
-                        <textarea class="form-control" wire:model="catatan"></textarea>
+                        <textarea id="catatan"  class="form-control" wire:model="catatan"></textarea>
                         @error('catatan')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

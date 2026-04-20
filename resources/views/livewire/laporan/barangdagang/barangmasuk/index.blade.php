@@ -17,7 +17,7 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="persediaan">
+                <select id="persediaan"  class="form-control w-auto" wire:model.lazy="persediaan">
                     @role('administrator|supervisor')
                         <option value="">Semua Persediaan</option>
                     @endrole
@@ -26,13 +26,13 @@
                         <option value="Klinik">Persediaan Alat & Bahan</option>
                     @endrole
                 </select>&nbsp;
-                <select class="form-control w-auto" wire:model.lazy="jenis">
+                <select id="jenis"  class="form-control w-auto" wire:model.lazy="jenis">
                     <option value="pertransaksi">Per Transaksi</option>
                     <option value="perbarang">Per Barang</option>
                 </select>&nbsp;
-                <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1"
+                <input id="tanggal1"  type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1"
                     class="form-control w-auto">&nbsp;s/d&nbsp;
-                <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2"
+                <input id="tanggal2"  type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2"
                     class="form-control w-auto">
             </div>
         </div>

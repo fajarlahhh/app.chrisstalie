@@ -22,21 +22,21 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input class="form-control" type="date" wire:model="tanggal" max="{{ date('Y-m-d') }}" />
+                            <input id="tanggal"  class="form-control" type="date" wire:model="tanggal" max="{{ date('Y-m-d') }}" />
                             @error('tanggal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Periode</label>
-                            <input class="form-control" type="month" wire:model.live="periode" max="{{ date('Y-m-d') }}" />
+                            <input id="periode"  class="form-control" type="month" wire:model.live="periode" max="{{ date('Y-m-d') }}" />
                             @error('periode')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Pegawai</label>
-                            <select class="form-control" wire:model.live="pegawai_id" x-init="$($el).selectpicker({
+                            <select id="pegawai_id"  class="form-control" wire:model.live="pegawai_id" x-init="$($el).selectpicker({
                                 liveSearch: true,
                                 width: 'auto',
                                 size: 10,
@@ -53,7 +53,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Metode Pembayaran</label>
-                            <select class="form-control" wire:model="metode_bayar">
+                            <select id="metode_bayar"  class="form-control" wire:model="metode_bayar">
                                 <option selected hidden>-- Pilih Metode Pembayaran --</option>
                                 @foreach (collect($dataKodeAkun) as $item)
                                     <option value="{{ $item['id'] }}">{{ $item['id'] . ' - ' . $item['nama'] }}
@@ -76,7 +76,7 @@
                                                     disabled>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" required
+                                                <input id="detail-{{ $index }}-debet"  type="text" class="form-control" required
                                                     wire:model="detail.{{ $index }}.debet" autocomplete="off"
                                                     disabled>
                                             </td>

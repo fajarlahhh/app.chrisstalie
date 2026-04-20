@@ -64,18 +64,18 @@
                 @else
                     <div class="vertical-input-group">
                         <div class="input-group">
-                            <input class="form-control" type="file" autocomplete="off"
+                            <input id="fileDiupload-{{ $index }}-file"  class="form-control" type="file" autocomplete="off"
                                 accept="image/jpeg,image/jpg,image/png,application/pdf"
                                 wire:model="fileDiupload.{{ $index }}.file"
                                 @error('fileDiupload.' . $index . '.file') style="border-color: #ff5b57!important" @enderror />
                         </div>
                         <div class="input-group">
-                            <input class="form-control" type="text" autocomplete="off" placeholder="Judul"
+                            <input id="fileDiupload-{{ $index }}-judul"  class="form-control" type="text" autocomplete="off" placeholder="Judul"
                                 wire:model="fileDiupload.{{ $index }}.judul"
                                 @error('fileDiupload.' . $index . '.judul') style="border-color: #ff5b57!important" @enderror />
                         </div>
                         <div class="input-group">
-                            <input class="form-control" type="text" autocomplete="off" placeholder="Keterangan"
+                            <input id="fileDiupload-{{ $index }}-keterangan"  class="form-control" type="text" autocomplete="off" placeholder="Keterangan"
                                 wire:model="fileDiupload.{{ $index }}.keterangan"
                                 @error('fileDiupload.' . $index . '.keterangan') style="border-color: #ff5b57!important" @enderror />
                         </div>

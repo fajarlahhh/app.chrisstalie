@@ -18,10 +18,10 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal"  class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal" />
                 &nbsp;
-                <select class="form-control w-auto" wire:model.lazy="pengguna_id">
+                <select id="pengguna_id"  class="form-control w-auto" wire:model.lazy="pengguna_id">
                     <option value="">Semua Pengguna</option>
                     @foreach ($dataPengguna as $item)
                         <option value="{{ $item->id }}">{{ $item->nama }}</option>

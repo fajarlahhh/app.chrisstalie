@@ -17,25 +17,25 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
+                <input id="bulan"  type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
                     max="{{ date('Y-m') }}">
                 &nbsp;
-                <select class="form-control w-auto" wire:model.lazy="persediaan">
+                <select id="persediaan"  class="form-control w-auto" wire:model.lazy="persediaan">
                     <option value="">Semua Persediaan</option>
                     <option value="Apotek">Persediaan Apotek</option>
                     <option value="Klinik">Persediaan Klinik</option>
                 </select>&nbsp;
-                <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
+                <select id="kode_akun_id"  class="form-control w-auto" wire:model.lazy="kode_akun_id">
                     <option value="">Semua Kategori</option>
                     @foreach ($dataKodeAkun as $item)
                         <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                     @endforeach
                 </select>&nbsp;
-                <select class="form-control w-auto" wire:model.lazy="satuan">
+                <select id="satuan"  class="form-control w-auto" wire:model.lazy="satuan">
                     <option value="Utama">Satuan Utama</option>
                     <option value="Terkecil">Satuan Terkecil</option>
                 </select>&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

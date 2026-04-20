@@ -17,9 +17,9 @@
                     Tambah</a>&nbsp;
             @endrole
             <div class="ms-auto d-flex align-items-center">
-                <input class="form-control w-auto" type="month" wire:model.lazy="bulan" min="2025-09"
+                <input id="bulan"  class="form-control w-auto" type="month" wire:model.lazy="bulan" min="2025-09"
                     max="{{ date('Y-m') }}" />&nbsp;
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

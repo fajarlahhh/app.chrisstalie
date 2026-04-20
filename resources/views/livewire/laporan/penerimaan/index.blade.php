@@ -16,12 +16,12 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal1"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal1" class="form-control w-auto">&nbsp;s/d&nbsp;
-                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                <input id="tanggal2"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal2" class="form-control w-auto">
                 &nbsp;
-                <select class="form-control w-auto" wire:model.lazy="pengguna_id">
+                <select id="pengguna_id"  class="form-control w-auto" wire:model.lazy="pengguna_id">
                     @role('administrator|supervisor')
                         <option value="">Semua Pengguna</option>
                     @endrole

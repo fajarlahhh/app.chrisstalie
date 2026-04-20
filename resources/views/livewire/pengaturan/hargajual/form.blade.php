@@ -19,7 +19,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Barang</label>
-                    <select class="form-control" @if ($data->exists) disabled @endif
+                    <select id="barang_id"  class="form-control" @if ($data->exists) disabled @endif
                         wire:model.live="barang_id" x-init="$($el).selectpicker({
                             liveSearch: true,
                             width: 'auto',
@@ -41,7 +41,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama Satuan</label>
-                    <input class="form-control" type="text" wire:model="nama"
+                    <input id="nama"  class="form-control" type="text" wire:model="nama"
                         @if ($data->rasio_dari_terkecil == 1) disabled @endif />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Harga Jual</label>
-                    <input class="form-control" type="text" wire:model="harga_jual" />
+                    <input id="harga_jual"  class="form-control" type="text" wire:model="harga_jual" />
                     @error('harga')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -58,7 +58,7 @@
                     <div class="mb-3" wire:loading.remove wire:target="barang_id">
                         <label class="form-label">Satuan Konversi</label>
                         <div class="input-group">
-                            <select @if ($data->exists) disabled @endif class="form-control"
+                            <select id="satuan_konversi_id"  @if ($data->exists) disabled @endif class="form-control"
                                 wire:model="satuan_konversi_id" data-width="100%" x-init="$($el).selectpicker({
                                     liveSearch: true,
                                     width: 'auto',
@@ -76,7 +76,7 @@
                                         {{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
-                            <input class="form-control" type="text"
+                            <input id="faktor_konversi"  class="form-control" type="text"
                                 placeholder="Jumlah yang ada dalam satuan yg baru terhadap satuan konversi yang dipilih"
                                 wire:model="faktor_konversi" @if ($data->exists) disabled @endif>
                         </div>
@@ -89,7 +89,7 @@
                     </div>
                 @endif
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" wire:model="utama"
+                    <input id="utama"  class="form-check-input" type="checkbox" wire:model="utama"
                         @if ($utama) checked disabled @endif />
                     <label class="form-check-label" for="utama">
                         Utama

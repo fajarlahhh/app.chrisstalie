@@ -12,15 +12,15 @@
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="status">
+                <select id="status"  class="form-control w-auto" wire:model.lazy="status">
                     <option value="1">Belum Proses</option>
                     <option value="2">Sudah Proses</option>
                 </select>&nbsp;
                 @if ($status == 2)
-                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal"
+                    <input id="tanggal"  type="date" class="form-control w-auto" wire:model.lazy="tanggal"
                         max="{{ date('Y-m-d') }}" />&nbsp;
                 @endif
-                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

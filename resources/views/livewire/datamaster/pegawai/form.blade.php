@@ -21,7 +21,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">No. KTP</label>
-                            <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
+                            <input id="nik"  class="form-control" type="number" step="1" maxlength="16" minlength="16"
                                 wire:model="nik" x-model="nik" @if ($status == 'Non Aktif') disabled @endif />
                             @error('nik')
                                 <span class="text-danger">{{ $message }}</span>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama" x-model="nama"
+                            <input id="nama"  class="form-control" type="text" wire:model="nama" x-model="nama"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Panggilan</label>
-                            <input class="form-control" type="text" wire:model="panggilan" x-model="panggilan"
+                            <input id="panggilan"  class="form-control" type="text" wire:model="panggilan" x-model="panggilan"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('panggilan')
                                 <span class="text-danger">{{ $message }}</span>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Alamat</label>
-                            <input class="form-control" type="text" wire:model="alamat" x-model="alamat"
+                            <input id="alamat"  class="form-control" type="text" wire:model="alamat" x-model="alamat"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('alamat')
                                 <span class="text-danger">{{ $message }}</span>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">No. Hp</label>
-                            <input class="form-control" type="text" wire:model="no_hp" x-model="no_hp"
+                            <input id="no_hp"  class="form-control" type="text" wire:model="no_hp" x-model="no_hp"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('no_hp')
                                 <span class="text-danger">{{ $message }}</span>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenis Kelamin</label>
-                            <select data-container="body" class="form-control " wire:model="jenis_kelamin"
+                            <select id="jenis_kelamin"  data-container="body" class="form-control " wire:model="jenis_kelamin"
                                 x-model="jenis_kelamin" data-width="100%"
                                 @if ($status == 'Non Aktif') disabled @endif>
                                 <option selected hidden>-- Tidak Ada Jenis Kelamin --</option>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal Lahir</label>
-                            <input class="form-control" type="date" wire:model="tanggal_lahir"
+                            <input id="tanggal_lahir"  class="form-control" type="date" wire:model="tanggal_lahir"
                                 x-model="tanggal_lahir" @if ($status == 'Non Aktif') disabled @endif />
                             @error('tanggal_lahir')
                                 <span class="text-danger">{{ $message }}</span>
@@ -87,7 +87,7 @@
                                 <img src="{{ Storage::url($data->tanda_tangan) }}" alt="Tanda Tangan"
                                     class="img-fluid">
                             @endif
-                            <input type="file" class="form-control" wire:model="file_ttd" x-model="file_ttd"
+                            <input id="file_ttd"  type="file" class="form-control" wire:model="file_ttd" x-model="file_ttd"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('file_ttd')
                                 <span class="text-danger">{{ $message }}</span>
@@ -101,7 +101,7 @@
                                 <hr>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Masuk</label>
-                                    <input class="form-control" type="date" wire:model="tanggal_masuk"
+                                    <input id="tanggal_masuk"  class="form-control" type="date" wire:model="tanggal_masuk"
                                         x-model="tanggal_masuk" @if ($status == 'Non Aktif') disabled @endif />
                                     @error('tanggal_masuk')
                                         <span class="text-danger">{{ $message }}</span>
@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">NPWP</label>
-                                    <input class="form-control" type="text" wire:model="npwp" x-model="npwp"
+                                    <input id="npwp"  class="form-control" type="text" wire:model="npwp" x-model="npwp"
                                         @if ($status == 'Non Aktif') disabled @endif />
                                     @error('npwp')
                                         <span class="text-danger">{{ $message }}</span>
@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. BPJS Kesehatan</label>
-                                    <input class="form-control" type="text" wire:model="no_bpjs"
+                                    <input id="no_bpjs"  class="form-control" type="text" wire:model="no_bpjs"
                                         x-model="no_bpjs" @if ($status == 'Non Aktif') disabled @endif />
                                     @error('no_bpjs')
                                         <span class="text-danger">{{ $message }}</span>
@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Satuan Tugas</label>
-                                    <input class="form-control" type="text" wire:model="satuan_tugas"
+                                    <input id="satuan_tugas"  class="form-control" type="text" wire:model="satuan_tugas"
                                         x-model="satuan_tugas" @if ($status == 'Non Aktif') disabled @endif />
                                     @error('satuan_tugas')
                                         <span class="text-danger">{{ $message }}</span>
@@ -134,7 +134,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">SIPA</label>
-                                    <input class="form-control" type="text" wire:model="sipa" x-model="sipa"
+                                    <input id="sipa"  class="form-control" type="text" wire:model="sipa" x-model="sipa"
                                         @if ($status == 'Non Aktif') disabled @endif />
                                     @error('sipa')
                                         <span class="text-danger">{{ $message }}</span>
@@ -142,7 +142,7 @@
                                 </div>
                                 @if ($data->exists)
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" wire:model="status"
+                                        <input id="status"  class="form-check-input" type="checkbox" wire:model="status"
                                             x-model="status" @if ($status == 'Aktif') checked @endif />
                                         <label class="form-check-label" for="status">
                                             Aktif
@@ -150,7 +150,7 @@
                                     </div>
                                 @endif
                                 <div class="mb-3">
-                                    <input class="form-check-input" type="checkbox" wire:model="upload"
+                                    <input id="upload"  class="form-check-input" type="checkbox" wire:model="upload"
                                         x-model="upload" @if ($upload == 1) checked disabled @endif />
                                     <label class="form-check-label" for="upload">
                                         Upload Ke Mesin

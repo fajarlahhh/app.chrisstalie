@@ -42,7 +42,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <textarea class="form-control" wire:model="deskripsi" x-model="deskripsi"></textarea>
+                    <textarea id="deskripsi"  class="form-control" wire:model="deskripsi" x-model="deskripsi"></textarea>
                     @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

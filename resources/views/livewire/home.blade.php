@@ -76,7 +76,7 @@
                     <div class="panel-heading ui-sortable-handle">
                         <h4 class="panel-title">Jadwal Shift</h4>
                         <div class="panel-heading-btn">
-                            <input type="month" class="form-control w-auto" wire:model.lazy="bulanShift">
+                            <input id="bulanShift"  type="month" class="form-control w-auto" wire:model.lazy="bulanShift">
                         </div>
                     </div>
                     <div class="row text-center p-2">

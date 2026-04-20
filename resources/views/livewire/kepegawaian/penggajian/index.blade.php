@@ -15,7 +15,7 @@
                     class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
             @endunlessrole
             <div class="ms-auto d-flex align-items-center">
-                <input type="month" class="form-control w-auto" autocomplete="off" wire:model.lazy="bulan" />
+                <input id="bulan"  type="month" class="form-control w-auto" autocomplete="off" wire:model.lazy="bulan" />
             </div>
         </div>
         <div class="panel-body table-responsive">

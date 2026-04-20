@@ -20,7 +20,7 @@
             })" wire:loading.remove class="btn btn-indigo">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
+                <input id="bulan"  type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
                     max="{{ date('Y-m') }}" class="form-control w-auto">
             </div>
         </div>

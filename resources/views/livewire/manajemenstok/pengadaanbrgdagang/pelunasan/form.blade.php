@@ -17,7 +17,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Supplier</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="supplier"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,
@@ -118,7 +118,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Metode Pembayaran</label>
-                    <select class="form-control" x-init="$($el).selectpicker({
+                    <select id="kode_akun_pembayaran_id"  class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
                         size: 10,

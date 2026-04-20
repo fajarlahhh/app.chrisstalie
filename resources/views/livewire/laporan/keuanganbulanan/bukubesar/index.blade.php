@@ -16,7 +16,7 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" x-init="$($el).selectpicker({
+                <select id="kodeAkunId"  class="form-control w-auto" x-init="$($el).selectpicker({
                     liveSearch: true,
                     width: 'auto',
                     size: 10,
@@ -30,7 +30,7 @@
                         <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                     @endforeach
                 </select>&nbsp;
-                <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
+                <input id="bulan"  type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
                     max="{{ date('Y-m') }}" class="form-control w-auto">
             </div>
         </div>

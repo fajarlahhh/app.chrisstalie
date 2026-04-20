@@ -21,7 +21,7 @@
             })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <select class="form-control w-auto" wire:model.lazy="jenis">
+                <select id="jenis"  class="form-control w-auto" wire:model.lazy="jenis">
                     <option value="Rekap">Rekap</option>
                     <option value="Per Pegawai">Per Pegawai</option>
                 </select>
@@ -31,7 +31,7 @@
                 <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal2" id="tanggal" class="form-control w-auto">&nbsp;
                 @if ($jenis == 'Per Pegawai')
-                    <select class="form-control w-auto" wire:model.lazy="kepegawaian_pegawai_id">
+                    <select id="kepegawaian_pegawai_id"  class="form-control w-auto" wire:model.lazy="kepegawaian_pegawai_id">
                         <option value="">-- Pilih Pegawai --</option>
                         @foreach ($dataPegawai as $row)
                             <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>

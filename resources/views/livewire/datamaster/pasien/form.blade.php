@@ -19,14 +19,14 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">RM</label>
-                    <input class="form-control" type="text" wire:model="rm" disabled />
+                    <input id="rm"  class="form-control" type="text" wire:model="rm" disabled />
                     @error('rm')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">NIK</label>
-                    <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
+                    <input id="nik"  class="form-control" type="number" step="1" maxlength="16" minlength="16"
                         wire:model="nik" />
                     @error('nik')
                         <span class="text-danger">{{ $message }}</span>
@@ -34,28 +34,28 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">IHS</label>
-                    <input class="form-control" type="text" wire:model="ihs" disabled />
+                    <input id="ihs"  class="form-control" type="text" wire:model="ihs" disabled />
                     @error('ihs')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
+                    <input id="nama"  class="form-control" type="text" wire:model="nama" />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal Lahir</label>
-                    <input class="form-control" type="date" wire:model="tanggal_lahir" />
+                    <input id="tanggal_lahir"  class="form-control" type="date" wire:model="tanggal_lahir" />
                     @error('tanggal_lahir')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jenis Kelamin</label>
-                    <select data-container="body" class="form-control " wire:model="jenis_kelamin" data-width="100%">
+                    <select id="jenis_kelamin"  data-container="body" class="form-control " wire:model="jenis_kelamin" data-width="100%">
                         <option selected hidden>-- Tidak Ada Jenis Kelamin --</option>
                         <option value="Laki-laki">Laki-laki</option>
                         <option value="Perempuan">Perempuan</option>
@@ -66,14 +66,14 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
-                    <input class="form-control" type="text" wire:model="alamat" />
+                    <input id="alamat"  class="form-control" type="text" wire:model="alamat" />
                     @error('alamat')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. Telp.</label>
-                    <input class="form-control" type="text" wire:model="no_hp" />
+                    <input id="no_hp"  class="form-control" type="text" wire:model="no_hp" />
                     @error('no_hp')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
