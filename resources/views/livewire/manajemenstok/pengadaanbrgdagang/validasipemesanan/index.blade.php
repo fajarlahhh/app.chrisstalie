@@ -5,7 +5,9 @@
         <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
         <li class="breadcrumb-item active">Validasi Pemesanan</li>
     @endsection
-
+    <div class="alert alert-info">Menu ini digunakan untuk melakukan validasi SP terhadap jumlah barang yang datang pada
+        satu waktu. Jika ada perbedaan qty, harga, dan supplier, maka wajib dilakukan koreksi/validasi terhadap SP
+        tersebut.</div>
     <h1 class="page-header">Validasi Pemesanan <small>Pengadaan Barang Dagang</small></h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -16,7 +18,8 @@
                     <option value="Sudah Validasi">Sudah Validasi</option>
                 </select>&nbsp;
                 @if ($status == 'Sudah Validasi')
-                    <input id="bulan" type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+                    <input id="bulan" type="month" class="form-control w-auto" wire:model.lazy="bulan"
+                        max="{{ date('Y-m') }}">
                     &nbsp;
                 @endif
                 <input id="cari" type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
