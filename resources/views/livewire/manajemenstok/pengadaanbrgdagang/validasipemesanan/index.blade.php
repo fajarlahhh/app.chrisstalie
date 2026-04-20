@@ -5,7 +5,7 @@
         <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
         <li class="breadcrumb-item active">Validasi Pemesanan</li>
     @endsection
-    <div class="alert alert-info">Menu ini digunakan untuk melakukan validasi SP terhadap jumlah barang yang datang pada
+    <div class="alert alert-warning">Menu ini digunakan untuk melakukan validasi SP terhadap jumlah barang yang datang pada
         satu waktu. Jika ada perbedaan qty, harga, dan supplier, maka wajib dilakukan koreksi/validasi terhadap SP
         tersebut.</div>
     <h1 class="page-header">Validasi Pemesanan <small>Pengadaan Barang Dagang</small></h1>
