@@ -103,16 +103,6 @@ class Form extends Component
             'tindakan' => 'required|array',
             'tindakan.*.id' => 'required|distinct',
             'tindakan.*.qty' => 'required|min:1',
-            'tindakan.*.dokter_id' => function ($attribute, $value, $fail) {
-                $index = explode('.', $attribute)[1];
-                if (
-                    isset($this->tindakan[$index]['biaya_jasa_dokter']) &&
-                    $this->tindakan[$index]['biaya_jasa_dokter'] > 0 &&
-                    (empty($value) || $value == "" || $value == null)
-                ) {
-                    $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama']);
-                }
-            },
             'bahan.*.qty' => [
                 'required',
                 'numeric',
