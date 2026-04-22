@@ -113,7 +113,7 @@
                     })" wire:model.live="kode_akun_modal_id"
                         data-width="100%" @if ($data->exists) disabled @endif>
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach (collect($dataKodeAkun)->where('parent_id', '50000') as $item)
+                        @foreach (collect($dataKodeAkun)->where('parent_id', '51000') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
