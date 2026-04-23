@@ -4,7 +4,6 @@ namespace App\Livewire\Laporan\Penyusutanaset;
 
 use App\Exports\LaoranpenyusutanasetExport;
 use App\Models\Aset;
-use App\Models\AsetPenyusutan;
 use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
