@@ -17,18 +17,18 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <select id="persediaan"  class="form-control w-auto" wire:model.lazy="persediaan">
+                <select id="persediaan" class="form-control w-auto" wire:model.lazy="persediaan">
                     <option value="">Semua Persediaan</option>
                     <option value="Apotek">Persediaan Barang Dagang</option>
                     <option value="Klinik">Persediaan Alat & Bahan</option>
                 </select>&nbsp;
-                <select id="kode_akun_id"  class="form-control w-auto" wire:model.lazy="kode_akun_id">
+                <select id="kode_akun_id" class="form-control w-auto" wire:model.lazy="kode_akun_id">
                     <option value="">Semua Kategori</option>
                     @foreach ($dataKodeAkun as $item)
                         <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                     @endforeach
                 </select>&nbsp;
-                <input id="cari"  type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                <input id="cari" type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
         </div>

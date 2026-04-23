@@ -21,6 +21,7 @@
             <th class="bg-gray-300 text-white" rowspan="2">No.</th>
             <th class="bg-gray-300 text-white" rowspan="2">Nama</th>
             <th class="bg-gray-300 text-white" rowspan="2">Kategori</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Metode Penyusutan</th>
             <th class="bg-gray-300 text-white" rowspan="2">Tanggal Perolehan</th>
             <th class="bg-gray-300 text-white" rowspan="2">Masa Manfaat</th>
             <th class="bg-gray-300 text-white" rowspan="2">Tanggal Terminasi</th>
@@ -40,6 +41,7 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row['nama'] }}</td>
                 <td>{{ $row['kategori'] }}</td>
+                <td>{{ $row['metode_penyusutan'] }}</td>
                 <td nowrap>{{ $row['tanggal_perolehan'] }}</td>
                 <td class="text-end">{{ $cetak ? $row['masa_manfaat'] : number_format_id($row['masa_manfaat']) }}</td>
                 <td nowrap>{{ $row['tanggal_terminasi'] }}</td>

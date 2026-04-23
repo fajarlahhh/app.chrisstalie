@@ -6,7 +6,7 @@
         <li class="breadcrumb-item active">Penyusutan Aset</li>
     @endsection
 
-    <h1 class="page-header">Aset</h1>
+    <h1 class="page-header">Penyusutan Aset</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
