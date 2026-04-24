@@ -66,7 +66,7 @@ class Form extends Component
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->detail = $this->detail;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;
-            $this->data->kode_akun_penyusutan_id = collect($this->dataKodeAkunPenyusutan)->where('nama', 'Akumulasi Penyusutan ' . collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()['nama'])->first()['id'];
+            $this->data->kode_akun_penyusutan_id = $this->kode_akun_penyusutan_id;
             $this->data->metode_penyusutan = $this->metode_penyusutan;
             $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
             $this->data->nilai_penyusutan = $this->harga_perolehan / $this->masa_manfaat;

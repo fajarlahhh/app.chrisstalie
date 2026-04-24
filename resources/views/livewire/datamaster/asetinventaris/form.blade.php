@@ -102,6 +102,28 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kode Akun Penyusutan</label>
+                            <select id="kode_akun_penyusutan_id"  class="form-control" wire:model="kode_akun_penyusutan_id" x-init="$($el).selectpicker({
+                                liveSearch: true,
+                                width: 'auto',
+                                size: 10,
+                                container: 'body',
+                                style: '',
+                                showSubtext: true,
+                                styleBase: 'form-control'
+                            })"
+                                @if ($data->exists) disabled @endif data-width="100%">
+                                <option hidden selected>-- Tidak Ada Kode Akun --</option>
+                                @foreach ($dataKodeAkunPenyusutan as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('kode_akun_penyusutan_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                         <hr>
                         <div class="mb-3">
                             <label class="form-label">Lokasi</label>
