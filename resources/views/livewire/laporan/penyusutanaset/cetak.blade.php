@@ -59,7 +59,7 @@
             </tr>
         @endforeach
         <tr>
-            <th colspan="6">Total</th>
+            <th colspan="7">Total</th>
             <th class="text-end">{{ $cetak ? $data->sum('harga_perolehan') : number_format_id($data->sum('harga_perolehan')) }}</th>
             @php
                 $nilaiPenyusutan = 0;
