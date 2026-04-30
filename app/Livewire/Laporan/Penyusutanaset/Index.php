@@ -32,10 +32,12 @@ class Index extends Component
     {
         $asetPenyusutan = TindakanAlatBarang::whereNotNull('aset_id')->select(
             'aset_id',
-            DB::raw('DATE_FORMAT(tindakan.created_at, "%Y-%m") as bulan'),
+            DB::raw('DATE_FORMAT(pembayaran.tanggal, "%Y-%m") as bulan'),
             DB::raw('SUM(tindakan_alat_barang.biaya * tindakan_alat_barang.qty) as nilai')
-        )->leftJoin('tindakan', 'tindakan.id', '=', 'tindakan_id')
-            ->whereYear('tindakan.created_at', $this->tahun)->groupBy('aset_id', 'bulan')
+        )->whereNotNull('aset_id')
+            ->leftJoin('tindakan', 'tindakan_alat_barang.tindakan_id', '=', 'tindakan.id')
+            ->leftJoin('pembayaran', 'tindakan.registrasi_id', '=', 'pembayaran.registrasi_id')
+            ->whereYear('pembayaran.tanggal', $this->tahun)->groupBy('aset_id', DB::raw('DATE_FORMAT(pembayaran.tanggal, "%Y-%m")'))
             ->get()->map(function ($q) {
                 return [
                     'aset_id' => $q->aset_id,
