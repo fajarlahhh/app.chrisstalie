@@ -19,50 +19,43 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input id="tanggal"  class="form-control" type="date" wire:model="tanggal" max="{{ date('Y-m-d') }}" />
+                            <input id="tanggal" class="form-control" type="date" wire:model="tanggal"
+                                max="{{ date('Y-m-d') }}" />
                             @error('tanggal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Periode</label>
-                            <input id="periode"  class="form-control" type="month" wire:model.live="periode" max="{{ date('Y-m-d') }}" />
+                            <input id="periode" class="form-control" type="month" wire:model.live="periode"
+                                max="{{ date('Y-m-d') }}" />
                             @error('periode')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Pegawai</label>
-                            <select id="pegawai_id"  class="form-control" wire:model.live="pegawai_id" x-init="$($el).selectpicker({
-                                liveSearch: true,
-                                width: 'auto',
-                                size: 10,
-                                container: 'body',
-                                style: '',
-                                showSubtext: true,
-                                styleBase: 'form-control'
-                            });">
+                            <select id="pegawai_id" class="form-control" wire:model.live="pegawai_id"
+                                x-init="$($el).selectpicker({
+                                    liveSearch: true,
+                                    width: 'auto',
+                                    size: 10,
+                                    container: 'body',
+                                    style: '',
+                                    showSubtext: true,
+                                    styleBase: 'form-control'
+                                });">
                                 <option selected hidden>-- Pilih Pegawai --</option>
                                 @foreach ($dataPegawai as $item)
                                     <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Metode Pembayaran</label>
-                            <select id="metode_bayar"  class="form-control" wire:model="metode_bayar">
-                                <option selected hidden>-- Pilih Metode Pembayaran --</option>
-                                @foreach (collect($dataKodeAkun) as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['id'] . ' - ' . $item['nama'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="alert alert-info">
                             <h4>Komponen Gaji</h4>
                             <hr>
@@ -70,15 +63,36 @@
                                 <tbody>
                                     @foreach ($detail as $index => $row)
                                         <tr>
+                                            <td class="w-100px">
+                                                <input id="detail-{{ $index }}-kredit" type="text"
+                                                    class="form-control" required
+                                                    value="{{ $row['sifat'] == '-' ? 'Potongan' : '' }}"
+                                                    autocomplete="off" disabled>
+                                            </td>
                                             <td>
                                                 <input type="text" class="form-control"
                                                     value="{{ $row['kode_akun_id'] . ' - ' . $row['kode_akun_nama'] }}"
                                                     disabled>
                                             </td>
-                                            <td>
-                                                <input id="detail-{{ $index }}-debet"  type="text" class="form-control" required
-                                                    wire:model="detail.{{ $index }}.debet" autocomplete="off"
+                                            <td class="w-150px">
+                                                <input id="detail-{{ $index }}-debet" type="text"
+                                                    class="form-control text-end" required
+                                                    value="{{ number_format_id($row['debet']) }}" autocomplete="off"
                                                     disabled>
+                                                @error('detail.{{ $index }}.debet')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            <td>
+                                                <select id="detail-{{ $index }}-kode_akun_sumber_dana_id"
+                                                    class="form-control"
+                                                    wire:model="detail.{{ $index }}.kode_akun_sumber_dana_id">
+                                                    <option value="">-- Pilih Sumber Dana --</option>
+                                                    @foreach ($dataKodeAkun as $item)
+                                                        <option value="{{ $item['id'] }}">
+                                                            {{ $item['id'] . ' - ' . $item['nama'] }}</option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -104,9 +118,9 @@
                 </button>
                 <x-alert />
             </div>
-        
-        <x-modal.konfirmasi />
-    </form>
+
+            <x-modal.konfirmasi />
+        </form>
     </div>
 
     <div wire:loading>
