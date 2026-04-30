@@ -120,7 +120,7 @@ class Form extends Component
     public function mount(KepegawaianPegawai $data)
     {
 
-        $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Beban')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->unsurGaji = $this->data->kepegawaianPegawaiUnsurGaji->map(fn($q) => [
