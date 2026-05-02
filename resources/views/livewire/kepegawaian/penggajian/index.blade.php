@@ -29,6 +29,7 @@
                         <th>Tanggal Bayar</th>
                         <th>Pegawai</th>
                         <th>Detail</th>
+                        <th>Metode Bayar</th>
                         <th>Total</th>
                         <th>No. Jurnal</th>
                         @unlessrole('guest')
@@ -52,24 +53,23 @@
                                             <tr>
                                                 <th class="p-1">Kode Akun</th>
                                                 <th class="p-1">Nilai</th>
-                                                <th class="p-1">Status</th>
+                                                <th class="p-1">Sifat</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($row->detail as $item)
                                                 <tr>
-                                                    <td class="p-1" nowrap>
-                                                        {{ $item['kode_akun_id'] . ' - ' . $item['kode_akun_nama'] ?? null }}
+                                                    <td class="p-1" nowrap>{{ $item['kode_akun_id'] ?? null }} - {{ $item['kode_akun_nama'] ?? null }}
                                                     </td>
                                                     <td class="text-end p-1" nowrap>
                                                         {{ number_format_id($item['debet'] ?? 0) }}</td>
                                                     <td class="p-1" nowrap>
-                                                        @if (array_key_exists('kode_akun_sumber_dana_id', $item) && $item['kode_akun_sumber_dana_id'])
-                                                            {{ $item['kode_akun_sumber_dana_id'] . ' - ' . $item['kode_akun_sumber_dana_nama'] ?? null }}
+                                                        @if (array_key_exists('sifat', $item))
+                                                            {{ $item['sifat'] == '+' ? 'Unsur Gaji' : 'Potongan' }}
                                                         @else
-                                                            {{ $row->kode_akun_pembayaran_id }} -
-                                                            {{ $row->kodeAkunPembayaran->nama ?? null }}
+                                                            -
                                                         @endif
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -108,6 +108,9 @@
                                         </tbody>
                                     </table>
                                 @endif
+                            </td>
+                            <td nowrap>{{ $row->kode_akun_pembayaran_id }} -
+                                {{ $row->kodeAkunPembayaran->nama ?? null }}
                             </td>
                             <td class="text-end">
                                 @if ($row->kepegawaian_pegawai_id)

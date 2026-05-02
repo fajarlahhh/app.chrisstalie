@@ -19,7 +19,7 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
                             <input id="tanggal" class="form-control" type="date" wire:model="tanggal"
@@ -54,49 +54,88 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Total Yang Diterima</label>
+                            <input id="total_gaji" type="text" class="form-control text-end" required
+                                value="{{ number_format_id(collect($detail)->sum('debet') - collect($detail)->sum('kredit')) }}"
+                                autocomplete="off" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Metode Pembayaran</label>
+                            <select id="metode_bayar" class="form-control" wire:model="metode_bayar">
+                                <option selected hidden>-- Pilih Metode Pembayaran --</option>
+                                @foreach (collect($dataKodeAkun) as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] . ' - ' . $item['nama'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="alert alert-info">
                             <h4>Komponen Gaji</h4>
                             <hr>
                             <table class="table">
                                 <tbody>
-                                    @foreach ($detail as $index => $row)
+                                    @foreach (collect($detail)->where('sifat', '+') as $index => $row)
                                         <tr>
-                                            <td class="w-100px">
-                                                <input id="detail-{{ $index }}-kredit" type="text"
-                                                    class="form-control" required
-                                                    value="{{ $row['sifat'] == '-' ? 'Potongan' : '' }}"
-                                                    autocomplete="off" disabled>
-                                            </td>
                                             <td>
                                                 <input type="text" class="form-control"
                                                     value="{{ $row['kode_akun_id'] . ' - ' . $row['kode_akun_nama'] }}"
                                                     disabled>
                                             </td>
-                                            <td class="w-150px">
+                                            <td>
                                                 <input id="detail-{{ $index }}-debet" type="text"
-                                                    class="form-control text-end" required
+                                                    class="form-control text-end"
                                                     value="{{ number_format_id($row['debet']) }}" autocomplete="off"
                                                     disabled>
-                                                @error('detail.{{ $index }}.debet')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td>
-                                                <select id="detail-{{ $index }}-kode_akun_sumber_dana_id"
-                                                    class="form-control"
-                                                    wire:model="detail.{{ $index }}.kode_akun_sumber_dana_id">
-                                                    <option value="">-- Pilih Sumber Dana --</option>
-                                                    @foreach ($dataKodeAkun as $item)
-                                                        <option value="{{ $item['id'] }}">
-                                                            {{ $item['id'] . ' - ' . $item['nama'] }}</option>
-                                                    @endforeach
-                                                </select>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>
+                                            <input id="total-kredit" type="text" class="form-control text-end" required
+                                                value="{{ number_format_id(collect($detail)->where('sifat', '+')->sum('debet')) }}"
+                                                autocomplete="off" disabled>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="alert alert-warning">
+                            <h4>Potongan</h4>
+                            <hr>
+                            <table class="table">
+                                <tbody>
+                                    @foreach (collect($detail)->where('sifat', '-') as $index => $row)
+                                        <tr>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $row['kode_akun_id'] . ' - ' . $row['kode_akun_nama'] }}"
+                                                    disabled>
+                                            </td>
+                                            <td>
+                                                <input id="detail-{{ $index }}-kredit" type="text"
+                                                    class="form-control text-end" required
+                                                    value="{{ number_format_id($row['kredit']) }}"autocomplete="off"
+                                                    disabled>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>
+                                            <input id="total-kredit" type="text" class="form-control text-end" required
+                                                value="{{ number_format_id(collect($detail)->where('sifat', '-')->sum('kredit')) }}"
+                                                autocomplete="off" disabled>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
