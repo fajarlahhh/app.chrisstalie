@@ -192,7 +192,7 @@ class Index extends Component
     public function submit()
     {
         set_time_limit(0);
-        if (KeuanganSaldo::where('periode', $this->bulan . '-01')->where('tutup_buku', 0)->count() > 0) {
+        if (KeuanganSaldo::where('periode', $this->bulan . '-01')->where('tutup_buku', 0)->count() > 0 && $this->tutup_buku == 1) {
             session()->flash('danger', '<strong>Gagal</strong>. Rekapitulasi bulanan bulan sebelumnya belum dilakukan tutup buku');
             return;
         }
