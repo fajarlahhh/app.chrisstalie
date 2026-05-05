@@ -39,7 +39,7 @@ class Index extends Component
             ->with('barangSatuanUtama')
             ->get();
             
-        Stok::where('tanggal_keluar', '<', $periodeTigaBulanSebelumnya->format('Y-m-t'))->delete();
+        Stok::where('tanggal_keluar', '<', $periodeTigaBulanSebelumnya->format('Y-m-t'))->whereNotNull('stok_keluar_id')->delete();
         StokAwal::where('tanggal', $periodeSelanjutnya->format('Y-m-01'))->delete();
         StokAwal::insert($data->map(
             fn($row) =>
