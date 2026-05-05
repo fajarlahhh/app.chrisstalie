@@ -117,9 +117,9 @@ class Form extends Component
                 }
             ],
         ]);
+        // Rewrite for improved performance: avoid holding large arrays in memory,
+        // insert each batch immediately to reduce risk of upstream timeout (110 error).
         DB::transaction(function () {
-            $stok = [];
-
             foreach ($this->barang as $key => $value) {
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk = new StokMasuk();
@@ -138,10 +138,14 @@ class Form extends Component
                     $stokMasuk->save();
 
                     $totalLoop = $value['rasio_dari_terkecil'] * $value['qty_masuk'];
-                    if ($totalLoop > 70000) {
-                        $mid = intdiv($totalLoop, 2);
-                        for ($i = 0; $i < $mid; $i++) {
-                            $stok[] = [
+
+                    // Use batch size of 1000 to minimize DB round-trips and memory usage
+                    $batchSize = 1000;
+                    for ($start = 0; $start < $totalLoop; $start += $batchSize) {
+                        $end = min($start + $batchSize, $totalLoop);
+                        $stokBatch = [];
+                        for ($i = $start; $i < $end; $i++) {
+                            $stokBatch[] = [
                                 'id' => $value['id'] . '-' . $value['no_batch'] . '-' . $value['tanggal_kedaluarsa'] . '-' . $stokMasuk->id . '-' . $value['harga_beli_terkecil'] . '-' . $i . '-' . $this->pengadaan_pemesanan_id,
                                 'barang_id' => $value['id'],
                                 'no_batch' => $value['no_batch'],
@@ -154,43 +158,8 @@ class Form extends Component
                                 'updated_at' => now(),
                             ];
                         }
-                        foreach (array_chunk($stok, 1000) as $chunk) {
-                            Stok::insert($chunk);
-                        }
-                        for ($i = $mid; $i < $totalLoop; $i++) {
-                            $stok[] = [
-                                'id' => $value['id'] . '-' . $value['no_batch'] . '-' . $value['tanggal_kedaluarsa'] . '-' . $stokMasuk->id . '-' . $value['harga_beli_terkecil'] . '-' . $i . '-' . $this->pengadaan_pemesanan_id,
-                                'barang_id' => $value['id'],
-                                'no_batch' => $value['no_batch'],
-                                'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
-                                'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                                'stok_masuk_id' => $stokMasuk->id,
-                                'tanggal_masuk' => now(),
-                                'harga_beli' => $value['harga_beli_terkecil'],
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
-                        foreach (array_chunk($stok, 1000) as $chunk) {
-                            Stok::insert($chunk);
-                        }
-                    } else {
-                        for ($i = 0; $i < $totalLoop; $i++) {
-                            $stok[] = [
-                                'id' => $value['id'] . '-' . $value['no_batch'] . '-' . $value['tanggal_kedaluarsa'] . '-' . $stokMasuk->id . '-' . $value['harga_beli_terkecil'] . '-' . $i . '-' . $this->pengadaan_pemesanan_id,
-                                'barang_id' => $value['id'],
-                                'no_batch' => $value['no_batch'],
-                                'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
-                                'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                                'stok_masuk_id' => $stokMasuk->id,
-                                'tanggal_masuk' => now(),
-                                'harga_beli' => $value['harga_beli_terkecil'],
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
-                        foreach (array_chunk($stok, 1000) as $chunk) {
-                            Stok::insert($chunk);
+                        if (count($stokBatch) > 0) {
+                            Stok::insert($stokBatch);
                         }
                     }
 
