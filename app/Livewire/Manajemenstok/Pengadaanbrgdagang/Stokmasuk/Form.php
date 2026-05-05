@@ -142,7 +142,7 @@ class Form extends Component
                         $mid = intdiv($totalLoop, 2);
                         for ($i = 0; $i < $mid; $i++) {
                             $stok[] = [
-                                'id' => Str::uuid(),
+                                'id' => $value['id'] . '-' . $value['no_batch'] . '-' . $value['tanggal_kedaluarsa'] . '-' . $stokMasuk->id . '-' . $value['harga_beli_terkecil'] . '-' . $i . '-' . $this->pengadaan_pemesanan_id,
                                 'barang_id' => $value['id'],
                                 'no_batch' => $value['no_batch'],
                                 'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
@@ -159,7 +159,7 @@ class Form extends Component
                         }
                         for ($i = $mid; $i < $totalLoop; $i++) {
                             $stok[] = [
-                                'id' => Str::uuid(),
+                                'id' => $value['id'] . '-' . $value['no_batch'] . '-' . $value['tanggal_kedaluarsa'] . '-' . $stokMasuk->id . '-' . $value['harga_beli_terkecil'] . '-' . $i . '-' . $this->pengadaan_pemesanan_id,
                                 'barang_id' => $value['id'],
                                 'no_batch' => $value['no_batch'],
                                 'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
@@ -177,7 +177,7 @@ class Form extends Component
                     } else {
                         for ($i = 0; $i < $totalLoop; $i++) {
                             $stok[] = [
-                                'id' => Str::uuid(),
+                                'id' => $value['id'] . '-' . $value['no_batch'] . '-' . $value['tanggal_kedaluarsa'] . '-' . $stokMasuk->id . '-' . $value['harga_beli_terkecil'] . '-' . $i . '-' . $this->pengadaan_pemesanan_id,
                                 'barang_id' => $value['id'],
                                 'no_batch' => $value['no_batch'],
                                 'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
@@ -193,7 +193,7 @@ class Form extends Component
                             Stok::insert($chunk);
                         }
                     }
-               
+
                     $detail = [
                         [
                             'kode_akun_id' => $value['kode_akun_id'],
