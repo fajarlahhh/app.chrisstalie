@@ -197,6 +197,11 @@ class Index extends Component
             return;
         }
 
+        if ($this->bulan > date('Y-m')) {
+            session()->flash('danger', '<strong>Gagal</strong>. Bulan tidak boleh lebih dari bulan ini');
+            return;
+        }
+
         $periode = Carbon::parse($this->bulan . '-01');
         // $diff = Carbon::parse($this->bulan . '-01')->diffInMonths(date('Y-m-01'));
         // if ($diff > 12) {

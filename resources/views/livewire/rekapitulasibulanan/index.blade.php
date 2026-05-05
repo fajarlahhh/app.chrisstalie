@@ -15,7 +15,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Bulan</label>
-                    <input id="bulan"  type="month" class="form-control" wire:model="bulan" min="2025-09">
+                    <input id="bulan"  type="month" class="form-control" wire:model="bulan" min="2025-09" max="{{ date('Y-m') }}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tutup Buku</label>
