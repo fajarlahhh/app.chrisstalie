@@ -32,14 +32,14 @@ class Index extends Component
     {
         $periodeSekarang = $periode->copy();
         $periodeSelanjutnya = $periodeSekarang->copy()->addMonth();
-        $periodeTigaBulanSebelumnya = $periodeSekarang->copy()->subMonth(3);
+        $periodeTigaBulanSebelumnya = $periodeSekarang->copy()->subMonth(1);
         $data = Barang::with(['stokAwal' => fn($q) => $q->where('tanggal', $periodeSekarang)])
             ->with(['stokMasuk' => fn($q) => $q->where('tanggal', 'like',  substr($periodeSekarang, 0, 7) . '%')])
             ->with(['stokKeluar' => fn($q) => $q->where('tanggal', 'like',  substr($periodeSekarang, 0, 7) . '%')])
             ->with('barangSatuanUtama')
             ->get();
             
-        Stok::where('tanggal_keluar', '<', $periodeTigaBulanSebelumnya->format('Y-m-t'))->whereNotNull('stok_keluar_id')->delete();
+        Stok::where('tanggal_keluar', '<', $periodeTigaBulanSebelumnya->format('Y-m-01'))->whereNotNull('stok_keluar_id')->delete();
         StokAwal::where('tanggal', $periodeSelanjutnya->format('Y-m-01'))->delete();
         StokAwal::insert($data->map(
             fn($row) =>
