@@ -138,7 +138,7 @@ class Form extends Component
                     $stokMasuk->save();
 
                     $totalLoop = $value['rasio_dari_terkecil'] * $value['qty_masuk'];
-                    if ($totalLoop > 10000) {
+                    if ($totalLoop > 70000) {
                         $mid = intdiv($totalLoop, 2);
                         for ($i = 0; $i < $mid; $i++) {
                             $stok[] = [
