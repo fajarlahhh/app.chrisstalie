@@ -137,21 +137,63 @@ class Form extends Component
                     $stokMasuk->updated_at = now();
                     $stokMasuk->save();
 
-                    for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty_masuk']; $i++) {
-                        $stok[] = [
-                            'id' => Str::uuid(),
-                            'barang_id' => $value['id'],
-                            'no_batch' => $value['no_batch'],
-                            'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
-                            'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                            'stok_masuk_id' => $stokMasuk->id,
-                            'tanggal_masuk' => now(),
-                            'harga_beli' => $value['harga_beli_terkecil'],
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ];
+                    $totalLoop = $value['rasio_dari_terkecil'] * $value['qty_masuk'];
+                    if ($totalLoop > 10000) {
+                        $mid = intdiv($totalLoop, 2);
+                        for ($i = 0; $i < $mid; $i++) {
+                            $stok[] = [
+                                'id' => Str::uuid(),
+                                'barang_id' => $value['id'],
+                                'no_batch' => $value['no_batch'],
+                                'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
+                                'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                                'stok_masuk_id' => $stokMasuk->id,
+                                'tanggal_masuk' => now(),
+                                'harga_beli' => $value['harga_beli_terkecil'],
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ];
+                        }
+                        foreach (array_chunk($stok, 1000) as $chunk) {
+                            Stok::insert($chunk);
+                        }
+                        for ($i = $mid; $i < $totalLoop; $i++) {
+                            $stok[] = [
+                                'id' => Str::uuid(),
+                                'barang_id' => $value['id'],
+                                'no_batch' => $value['no_batch'],
+                                'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
+                                'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                                'stok_masuk_id' => $stokMasuk->id,
+                                'tanggal_masuk' => now(),
+                                'harga_beli' => $value['harga_beli_terkecil'],
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ];
+                        }
+                        foreach (array_chunk($stok, 1000) as $chunk) {
+                            Stok::insert($chunk);
+                        }
+                    } else {
+                        for ($i = 0; $i < $totalLoop; $i++) {
+                            $stok[] = [
+                                'id' => Str::uuid(),
+                                'barang_id' => $value['id'],
+                                'no_batch' => $value['no_batch'],
+                                'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
+                                'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                                'stok_masuk_id' => $stokMasuk->id,
+                                'tanggal_masuk' => now(),
+                                'harga_beli' => $value['harga_beli_terkecil'],
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ];
+                        }
+                        foreach (array_chunk($stok, 1000) as $chunk) {
+                            Stok::insert($chunk);
+                        }
                     }
-
+               
                     $detail = [
                         [
                             'kode_akun_id' => $value['kode_akun_id'],
@@ -170,9 +212,6 @@ class Form extends Component
                         $detail
                     );
                 }
-            }
-            foreach (array_chunk($stok, 1000) as $chunk) {
-                Stok::insert($chunk);
             }
             session()->flash('success', 'Berhasil menyimpan data');
         });

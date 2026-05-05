@@ -2,19 +2,20 @@
 
 namespace App\Livewire\Rekapitulasibulanan;
 
-use Carbon\Carbon;
-use App\Models\Aset;
-use App\Models\Barang;
-use Livewire\Component;
-use App\Models\KodeAkun;
-use App\Models\StokAwal;
-use Livewire\Attributes\Url;
-use App\Models\KeuanganSaldo;
-use App\Models\AsetPenyusutan;
-use App\Models\KeuanganJurnal;
 use App\Class\JurnalkeuanganClass;
-use Illuminate\Support\Facades\DB;
+use App\Models\Aset;
+use App\Models\AsetPenyusutan;
+use App\Models\Barang;
+use App\Models\KeuanganJurnal;
+use App\Models\KeuanganSaldo;
+use App\Models\KodeAkun;
+use App\Models\Stok;
+use App\Models\StokAwal;
 use App\Traits\KodeakuntransaksiTrait;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class Index extends Component
 {
@@ -31,12 +32,14 @@ class Index extends Component
     {
         $periodeSekarang = $periode->copy();
         $periodeSelanjutnya = $periodeSekarang->copy()->addMonth();
+        $periodeTigaBulanSebelumnya = $periodeSekarang->copy()->subMonth(3);
         $data = Barang::with(['stokAwal' => fn($q) => $q->where('tanggal', $periodeSekarang)])
             ->with(['stokMasuk' => fn($q) => $q->where('tanggal', 'like',  substr($periodeSekarang, 0, 7) . '%')])
             ->with(['stokKeluar' => fn($q) => $q->where('tanggal', 'like',  substr($periodeSekarang, 0, 7) . '%')])
             ->with('barangSatuanUtama')
             ->get();
-
+            
+        Stok::where('tanggal_keluar', '<', $periodeTigaBulanSebelumnya->format('Y-m-t'))->delete();
         StokAwal::where('tanggal', $periodeSelanjutnya->format('Y-m-01'))->delete();
         StokAwal::insert($data->map(
             fn($row) =>
@@ -193,7 +196,7 @@ class Index extends Component
             session()->flash('danger', '<strong>Gagal</strong>. Rekapitulasi bulanan bulan sebelumnya belum dilakukan tutup buku');
             return;
         }
-        
+
         $periode = Carbon::parse($this->bulan . '-01');
         // $diff = Carbon::parse($this->bulan . '-01')->diffInMonths(date('Y-m-01'));
         // if ($diff > 12) {
