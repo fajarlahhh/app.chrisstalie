@@ -18,7 +18,7 @@ class Index extends Component
     {
         try {
             Shift::findOrFail($id)
-                ->forceDelete();
+                ->delete();
             session()->flash('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
             session()->flash('danger', 'Gagal menghapus data');
