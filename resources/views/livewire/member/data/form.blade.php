@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Registrasi')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Member</li>

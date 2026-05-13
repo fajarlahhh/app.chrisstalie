@@ -1,5 +1,5 @@
 <div x-data="siteMarkingForm()" x-init="init()" x-ref="alpineRoot">
-    @section('title', 'Site Marking')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Klinik</li>

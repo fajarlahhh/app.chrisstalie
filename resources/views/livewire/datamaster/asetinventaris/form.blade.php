@@ -1,5 +1,5 @@
 <div x-ref="alpineRoot">
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Aset/Inventaris')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>

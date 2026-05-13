@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    @section('title', 'Login')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
     @include('includes.head')
     @livewireStyles
 </head>

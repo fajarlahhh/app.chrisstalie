@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Laporan Laba Rugi')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>

@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Laporan Neraca')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
@@ -28,7 +28,7 @@
             <x-alert />
             @if ($kodeAkunBelumMasuk->count() > 0)
                 <div class="alert alert-warning">
-                    <strong>Warning:</strong> Ada kode akun yang belum masuk ke dalam laba rugi.
+                    <strong>Warning:</strong> Ada kode akun yang belum masuk ke dalam neraca.
                     <ul>
                         @foreach ($kodeAkunBelumMasuk as $item)
                             <li>{{ $item->id }} - {{ $item->nama }}</li>

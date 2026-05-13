@@ -1,5 +1,5 @@
 <div x-data="form()" x-init="init()" x-ref="alpineRoot">
-    @section('title', 'Pemesanan')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pengadaan Barang Dagang</li>

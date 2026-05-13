@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Home')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     <!-- BEGIN page-header -->
     <h1 class="page-header">Hai, Selamat @php

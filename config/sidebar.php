@@ -83,6 +83,27 @@ return [
                     "title" => "Diskon",
                     "method" => ["Index"],
                 ],
+                [
+                    "title" => "Laporan Bulanan",
+                    "urutkan" => true,
+                    "sub_menu" => [
+                        [
+                            "title" => "Laba Rugi",
+                            "urutkan" => true,
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Neraca",
+                            "urutkan" => true,
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Arus Kas",
+                            "urutkan" => true,
+                            "method" => ["Index"],
+                        ],
+                    ]
+                ],
             ]
         ],
         // [

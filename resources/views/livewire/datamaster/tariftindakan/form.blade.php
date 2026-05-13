@@ -1,5 +1,5 @@
 <div x-data="tarifTindakanForm()" x-init="init()" x-ref="alpineRoot">
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Tarif Tindakan')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>

@@ -1,5 +1,5 @@
 <div x-data="diagnosisForm()" x-ref="alpineRoot">
-    @section('title', 'Input Diagnosis')
+    @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Klinik</li>
