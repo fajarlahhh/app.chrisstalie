@@ -7,7 +7,7 @@
         <li class="breadcrumb-item active">Laba Rugi</li>
     @endsection
 
-    <h1 class="page-header">Laporan Bulanan Laba Rugi</h1>
+    <h1 class="page-header">Laba Rugi</h1>
     <form wire:submit.prevent="simpan">
         <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
             <!-- begin panel-heading -->
@@ -89,8 +89,8 @@
                     <tfoot>
                         <tr>
                             <td colspan="6" class="text-center">
-                                <button type="button" class="btn btn-sm btn-primary" wire:click="addAktiva">Tambah
-                                    Aktiva</button>
+                                <button type="button" class="btn btn-sm btn-primary" wire:click="addData">Tambah
+                                    Laba Rugi</button>
                             </td>
                         </tr>
                     </tfoot>

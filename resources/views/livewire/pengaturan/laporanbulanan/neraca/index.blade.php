@@ -7,7 +7,7 @@
         <li class="breadcrumb-item active">Neraca</li>
     @endsection
 
-    <h1 class="page-header">Laporan Bulanan Neraca</h1>
+    <h1 class="page-header">Neraca</h1>
     @if ($kodeAkunBelumMasuk->count() > 0)
         <div class="alert alert-warning">
             <strong>Warning:</strong> Ada kode akun yang belum masuk ke dalam neraca.
