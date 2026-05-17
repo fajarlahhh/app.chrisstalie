@@ -19,17 +19,17 @@
                     <div class="col-md-6">
                         <ul class="nav nav-tabs bg-gray-100">
                             <li class="nav-item">
-                                <a href="#default-tab-1" data-bs-toggle="tab" class="nav-link active"
-                                    wire:click="resetPasien" wire:ignore.self>
-                                    <span class="d-sm-none">Pasien Baru</span>
-                                    <span class="d-sm-block d-none">Pasien Baru</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#default-tab-2" data-bs-toggle="tab" class="nav-link" wire:click="resetPasien"
+                                <a href="#default-tab-1" data-bs-toggle="tab" class="nav-link active" wire:click="resetPasien"
                                     wire:ignore.self>
                                     <span class="d-sm-none">Pasien Lama</span>
                                     <span class="d-sm-block d-none">Pasien Lama</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#default-tab-2" data-bs-toggle="tab" class="nav-link "
+                                    wire:click="resetPasien" wire:ignore.self>
+                                    <span class="d-sm-none">Pasien Baru</span>
+                                    <span class="d-sm-block d-none">Pasien Baru</span>
                                 </a>
                             </li>
                         </ul>
@@ -37,7 +37,7 @@
                         <!-- BEGIN tab-content -->
                         <div class="tab-content panel rounded-0 p-3 m-0 bg-gray-100">
                             <!-- BEGIN tab-pane -->
-                            <div class="tab-pane fade active show" id="default-tab-1" wire:ignore.self>
+                            <div class="tab-pane fade " id="default-tab-2" wire:ignore.self>
                                 <h4 class="mt-10px">Data Pasien</h4>
                                 <hr>
                                 <div class="mb-3">
@@ -90,7 +90,7 @@
                             </div>
                             <!-- END tab-pane -->
                             <!-- BEGIN tab-pane -->
-                            <div class="tab-pane fade" id="default-tab-2" wire:ignore.self>
+                            <div class="tab-pane fade active show" id="default-tab-1" wire:ignore.self>
                                 <h4 class="mt-10px">Data Pasien</h4>
                                 <hr>
                                 @if (!$pasien_id)
