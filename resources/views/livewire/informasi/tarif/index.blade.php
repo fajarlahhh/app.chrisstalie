@@ -165,6 +165,18 @@
                                             <td class="w-10px">:</td>
                                             <td nowrap>{!! nl2br(e($data->uraian)) !!}</td>
                                         </tr>
+                                        <tr>
+                                            <td>Jenis</td>
+                                            <td class="w-10px">:</td>
+                                            <td>{{ $data->jenis }}</td>
+                                        </tr>
+                                        @if ($data->jenis == 'Non Bundling')
+                                            <tr>
+                                                <td>Masa Aktif</td>
+                                                <td class="w-10px">:</td>
+                                                <td>{{ $data->masa_aktif }} Hari</td>
+                                            </tr>
+                                        @endif
                                     </table>
                                 </div>
                             </div>
