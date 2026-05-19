@@ -3,11 +3,11 @@
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item">Tarif Tindakan</li>
+        <li class="breadcrumb-item">Paket Perawatan</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
 
-    <h1 class="page-header">Tarif Tindakan <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
+    <h1 class="page-header">Paket Perawatan <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading ui-sortable-handle">
