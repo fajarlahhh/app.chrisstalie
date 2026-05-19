@@ -140,7 +140,7 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Tarif Tindakan",
+                    "title" => "Tarif",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],

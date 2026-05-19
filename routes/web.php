@@ -1,11 +1,12 @@
 <?php
 
-use App\Models\Icd10;
 use App\Models\Barang;
+use App\Models\Icd10;
+use App\Models\PaketPerawatan;
 use App\Models\Pasien;
 use App\Models\Registrasi;
-use Illuminate\Http\Request;
 use App\Models\TarifTindakan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,11 +103,20 @@ Route::middleware(['auth'])->group(function () {
                 'text' => $q->nama,
             ])->toArray();
         });
-        Route::get('tariftindakan', function (Request $req) {
-            return TarifTindakan::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
-                'id' => $q->id,
-                'text' => $q->nama,
+        Route::get('tarif', function (Request $req) {
+            $tindakan = TarifTindakan::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
+                'id' => $q->id . '-tindakan',
+                'text' => $q->nama . ' (Tindakan)',
+                'kategori' => 'Tindakan',
+                'tarif' => $q->tarif,
             ])->toArray();
+            $paket = PaketPerawatan::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
+                'id' => $q->id . '-paket',
+                'text' => $q->nama . ' (Paket)',
+                'kategori' => 'Paket',
+                'tarif' => $q->tarif,
+            ])->toArray();
+            return array_merge($tindakan, $paket);
         });
         Route::get('registrasi', function (Request $req) {
             return Registrasi::whereHas('pasien', function ($query) use ($req) {
