@@ -429,5 +429,28 @@ return [
             "icon" => "<i class='fa fa-cog'></i>",
             "method" => ["Index", "Form"],
         ],
+        [
+            "title" => "Website",
+            "icon" => "<i class='fas fa-users'></i>",
+            "urutkan" => true,
+            "sub_menu" => [
+                [
+                    "title" => "Carousel",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Dokter",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Paket",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Blog",
+                    "method" => ["Index", "Form"],
+                ]
+            ]
+        ],
     ]
 ];
