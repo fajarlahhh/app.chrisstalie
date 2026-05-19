@@ -84,6 +84,10 @@ return [
                     "method" => ["Index"],
                 ],
                 [
+                    "title" => "Kode Akun Transaksi",
+                    "method" => ["Index"],
+                ],
+                [
                     "title" => "Laporan Bulanan",
                     "urutkan" => true,
                     "sub_menu" => [

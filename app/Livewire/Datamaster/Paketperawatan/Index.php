@@ -36,7 +36,7 @@ class Index extends Component
     {
         $query = PaketPerawatan::with([
             'pengguna',
-            'paketPerawatanDetail',
+            'paketPerawatanDetail.tarifTindakan',
         ])
             ->where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%'))

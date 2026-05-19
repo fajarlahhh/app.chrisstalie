@@ -19,26 +19,50 @@
                     <div class="col-lg-4">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input id="nama"  class="form-control" type="text" wire:model="nama" x-model="nama" />
+                            <input id="nama" class="form-control" type="text" wire:model="nama"
+                                x-model="nama" />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Uraian</label>
-                            <input id="uraian"  class="form-control" type="text" wire:model="uraian" x-model="uraian" />
+                            <input id="uraian" class="form-control" type="text" wire:model="uraian"
+                                x-model="uraian" />
                             @error('uraian')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tarif</label>
-                            <input id="tarif"  class="form-control" type="number" step="1" min="0" wire:model="tarif"
-                                x-model.number="tarif" @keyup="hitungKeuntungan()" />
+                            <input id="tarif" class="form-control" type="number" step="1" min="0"
+                                wire:model="tarif" x-model.number="tarif" @keyup="hitungKeuntungan()" />
                             @error('tarif')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jenis</label>
+                            <select id="jenis" class="form-control" wire:model="jenis" x-model="jenis" @change="updatedJenis()"
+                                @if ($data->exists) disabled @endif data-width="100%">
+                                <option value="" selected>-- Pilih Jenis --</option>
+                                <option value="Bundling">Bundling</option>
+                                <option value="Non Bundling">Non Bundling</option>
+                            </select>
+                            @error('jenis')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <template x-if="jenis == 'Non Bundling'">
+                            <div class="mb-3">
+                                <label class="form-label">Masa Aktif <small>(Hari)</small></label>
+                                <input id="masa_aktif" class="form-control" type="number" step="1" min="0"
+                                    wire:model="masa_aktif" x-model.number="masa_aktif" />
+                                @error('masa_aktif')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </template>
                     </div>
                     <div class="col-lg-8">
                         <!-- TABEL ALAT -->
@@ -104,8 +128,10 @@
                                                         });">
                                                         <option value="" selected>-- Tidak Ada Tindakan --
                                                         </option>
-                                                        <template x-for="tindakan in dataTindakan" :key="tindakan.id">
-                                                            <option :value="tindakan.id" :selected="row.id == tindakan.id"
+                                                        <template x-for="tindakan in dataTindakan"
+                                                            :key="tindakan.id">
+                                                            <option :value="tindakan.id"
+                                                                :selected="row.id == tindakan.id"
                                                                 x-text="`${tindakan.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(tindakan.tarif)})`">
                                                             </option>
                                                         </template>
@@ -122,9 +148,12 @@
                                                     :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-danger" @click="hapusTindakan(index)">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
+                                                <template x-if="jenis == 'Bundling'">
+                                                    <button type="button" class="btn btn-danger"
+                                                        @click="hapusTindakan(index)">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </template>
                                             </td>
                                         </tr>
                                     </template>
@@ -138,20 +167,24 @@
                                         <th></th>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4">
-                                            <div class="text-center">
-                                                <button type="button" class="btn btn-secondary" @click="addTindakan">
-                                                    Tambah Tindakan
-                                                </button>
-                                                <template x-if="$store.wireErrors?.tindakan">
-                                                    <span class="text-danger" x-text="$store.wireErrors.tindakan"></span>
-                                                </template>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tfoot>
+                                <template x-if="jenis == 'Bundling'">
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="text-center">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        @click="addTindakan">
+                                                        Tambah Tindakan
+                                                    </button>
+                                                    <template x-if="$store.wireErrors?.tindakan">
+                                                        <span class="text-danger"
+                                                            x-text="$store.wireErrors.tindakan"></span>
+                                                    </template>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </template>
                             </table>
                         </div>
                     </div>
@@ -195,15 +228,29 @@
                 tarif: @js($tarif),
                 uraian: @js($uraian),
                 nama: @js($nama),
+                jenis: @js($jenis),
+                masa_aktif: @js($masa_aktif),
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
                     return `${new Intl.NumberFormat('id-ID').format(val)}`;
                 },
                 hitungKeuntungan() {
-                    this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                    this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) ||
+                        0), 0);
                     this.keuntungan =
                         (parseFloat(this.tarif) || 0) -
                         (parseFloat(this.total_biaya_tindakan) || 0);
+                },
+                updatedJenis() {
+                    this.tindakan = [];
+                    if (this.jenis == 'Non Bundling') {
+                        this.tindakan.push({
+                            id: null,
+                            qty: 1,
+                            tarif: 0,
+                            subtotal: 0,
+                        });
+                    }
                 },
                 syncToLivewire() {
                     if (window.Livewire && window.Livewire.find) {
@@ -234,7 +281,8 @@
                     });
                 },
                 init() {
-                    this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                    this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) ||
+                        0), 0);
                     this.hitungKeuntungan();
 
                     this.$watch('tarif', () => {
