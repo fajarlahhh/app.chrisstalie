@@ -6,59 +6,6 @@
         <li class="breadcrumb-item active">Registrasi</li>
     @endsection
 
-    @push('css')
-        <style>
-            .nav-tabs-custom {
-                border-bottom: 2px solid #e2e8f0;
-                background: #f8fafc;
-                border-radius: 8px 8px 0 0;
-                padding: 4px 4px 0 4px;
-            }
-
-            .nav-tabs-custom .nav-link {
-                border: none !important;
-                color: #64748b;
-                font-weight: 600;
-                padding: 10px 16px;
-                border-radius: 6px 6px 0 0;
-                transition: all 0.2s ease;
-            }
-
-            .nav-tabs-custom .nav-link.active {
-                color: #3b82f6 !important;
-                background: #fff !important;
-                border-bottom: 3px solid #3b82f6 !important;
-                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.02);
-            }
-
-            .nav-tabs-custom .nav-link:hover:not(.active) {
-                color: #1e293b;
-                background: #f1f5f9;
-            }
-
-            .tab-content-custom {
-                border: 1px solid #e2e8f0;
-                border-top: none;
-                border-radius: 0 0 8px 8px;
-                background: #fff;
-                padding: 24px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            }
-
-            .transition-all {
-                transition: all 0.2s ease-in-out;
-            }
-
-            .hover-bg-light:hover {
-                background-color: #f8fafc !important;
-            }
-
-            .w-15px {
-                width: 15px !important;
-            }
-        </style>
-    @endpush
-
     <h1 class="page-header">Registrasi</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
@@ -262,30 +209,28 @@
                                         <h4 class="panel-title"><i class="fa fa-history me-2"></i>History Registrasi
                                         </h4>
                                     </div>
-                                    <div class="panel-body overflow-auto p-3" style="max-height: 250px;">
+                                    <div class="panel-body overflow-auto p-1" style="max-height: 250px;">
                                         <div class="list-group list-group-flush">
                                             @foreach ($pasien->rekamMedis as $row)
                                                 <div
-                                                    class="list-group-item p-3 border-bottom mb-1 bg0 transition-all bg-gray-100">
+                                                    class="list-group-item border-bottom mb-1 bg0 transition-all bg-gray-100">
                                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                                         <span class="fw-bold text-dark fs-12px">
                                                             <i class="fa fa-calendar-alt text-muted me-1"></i>
                                                             {{ $row->created_at->format('d M Y') }}
                                                         </span>
-                                                        <span class="badge bg-primary text-white rounded-pill fs-10px">
+                                                        <span class="badge bg-secondary text-white rounded-pill fs-10px">
                                                             #{{ $row->id }}
                                                         </span>
                                                     </div>
                                                     @if ($row->ketemu_dokter == 1)
                                                         <div class="fs-12px mb-1">
-                                                            <i
-                                                                class="fa fa-user-md text-info me-1 w-15px text-center"></i>
                                                             Dokter: <strong
                                                                 class="text-dark">{{ $row->nakes?->nama ?? 'Tidak Ada Dokter' }}</strong>
                                                         </div>
                                                     @endif
                                                     <div
-                                                        class="fs-12px text-muted bg-light p-2 rounded mt-2 border-start border-primary border-3">
+                                                        class="fs-12px text-muted bg-light p-2 rounded mt-2">
                                                         <strong>Keluhan Awal:</strong>
                                                         <div class="text-dark mt-1">{{ $row->keluhan_awal ?: '-' }}
                                                         </div>
