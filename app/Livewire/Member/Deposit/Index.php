@@ -3,7 +3,6 @@
 namespace App\Livewire\Member\Deposit;
 
 use Livewire\Component;
-use App\Models\Member;
 use App\Models\MemberSaldo;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;

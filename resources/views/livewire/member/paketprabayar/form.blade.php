@@ -1,72 +1,20 @@
-<div>
+<div x-data="form()" x-init="init()" x-ref="alpineRoot">
     @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Klinik</li>
-        <li class="breadcrumb-item active">Registrasi</li>
+        <li class="breadcrumb-item">Member</li>
+        <li class="breadcrumb-item">Paket Prabayar</li>
+        <li class="breadcrumb-item active">Tambah</li>
     @endsection
 
-    @push('css')
-        <style>
-            .nav-tabs-custom {
-                border-bottom: 2px solid #e2e8f0;
-                background: #f8fafc;
-                border-radius: 8px 8px 0 0;
-                padding: 4px 4px 0 4px;
-            }
-
-            .nav-tabs-custom .nav-link {
-                border: none !important;
-                color: #64748b;
-                font-weight: 600;
-                padding: 10px 16px;
-                border-radius: 6px 6px 0 0;
-                transition: all 0.2s ease;
-            }
-
-            .nav-tabs-custom .nav-link.active {
-                color: #3b82f6 !important;
-                background: #fff !important;
-                border-bottom: 3px solid #3b82f6 !important;
-                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.02);
-            }
-
-            .nav-tabs-custom .nav-link:hover:not(.active) {
-                color: #1e293b;
-                background: #f1f5f9;
-            }
-
-            .tab-content-custom {
-                border: 1px solid #e2e8f0;
-                border-top: none;
-                border-radius: 0 0 8px 8px;
-                background: #fff;
-                padding: 24px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            }
-
-            .transition-all {
-                transition: all 0.2s ease-in-out;
-            }
-
-            .hover-bg-light:hover {
-                background-color: #f8fafc !important;
-            }
-
-            .w-15px {
-                width: 15px !important;
-            }
-        </style>
-    @endpush
-
-    <h1 class="page-header">Registrasi</h1>
+    <h1 class="page-header">Paket Prabayar <small>Tambah</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
         </div>
-        <form wire:submit.prevent="submit">
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -255,95 +203,163 @@
                         <!-- END tab-content -->
                     </div>
                     <div class="col-md-6">
-                        @if ($pasien)
-                            @if ($pasien->rekamMedis->count() > 0)
-                                <div class="panel panel-inverse mb-3 border">
-                                    <div class="panel-heading ui-sortable-handle">
-                                        <h4 class="panel-title"><i class="fa fa-history me-2"></i>History Registrasi
-                                        </h4>
-                                    </div>
-                                    <div class="panel-body overflow-auto p-3" style="max-height: 250px;">
-                                        <div class="list-group list-group-flush">
-                                            @foreach ($pasien->rekamMedis as $row)
-                                                <div
-                                                    class="list-group-item p-3 border-bottom mb-1 bg0 transition-all bg-gray-100">
-                                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                                        <span class="fw-bold text-dark fs-12px">
-                                                            <i class="fa fa-calendar-alt text-muted me-1"></i>
-                                                            {{ $row->created_at->format('d M Y') }}
-                                                        </span>
-                                                        <span class="badge bg-primary text-white rounded-pill fs-10px">
-                                                            #{{ $row->id }}
-                                                        </span>
-                                                    </div>
-                                                    @if ($row->ketemu_dokter == 1)
-                                                        <div class="fs-12px mb-1">
-                                                            <i
-                                                                class="fa fa-user-md text-info me-1 w-15px text-center"></i>
-                                                            Dokter: <strong
-                                                                class="text-dark">{{ $row->nakes?->nama ?? 'Tidak Ada Dokter' }}</strong>
-                                                        </div>
-                                                    @endif
-                                                    <div
-                                                        class="fs-12px text-muted bg-light p-2 rounded mt-2 border-start border-primary border-3">
-                                                        <strong>Keluhan Awal:</strong>
-                                                        <div class="text-dark mt-1">{{ $row->keluhan_awal ?: '-' }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal</label>
-                            <input id="tanggal" class="form-control" type="date" wire:model="tanggal"
-                                min="{{ date('Y-m-d') }}" />
-                            @error('tanggal')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div x-data="{ ketemuDokter: @entangle('ketemu_dokter').defer }">
+                        @role('administrator|supervisor')
                             <div class="mb-3">
-                                <label class="form-label">Ketemu Dokter</label>
-                                <select id="ketemu_dokter" data-container="body" class="form-control"
-                                    x-model="ketemuDokter" wire:model="ketemu_dokter" data-width="100%">
-                                    <option value="0">Tidak</option>
-                                    <option value="1">Ya</option>
-                                </select>
-                            </div>
-                            <div class="mb-3" x-show="ketemuDokter == 1" x-cloak>
-                                <label class="form-label">Dokter</label>
-                                <select id="nakes_id" data-container="body" class="form-control"
-                                    x-init="$($el).selectpicker({
-                                        liveSearch: true,
-                                        width: 'auto',
-                                        size: 10,
-                                        container: 'body',
-                                        style: '',
-                                        showSubtext: true,
-                                        styleBase: 'form-control'
-                                    })" wire:model="nakes_id" data-width="100%">
-                                    <option selected value="">-- Pilih Dokter --</option>
-                                    @foreach ($dataNakes as $row)
-                                        <option value="{{ $row['id'] }}">
-                                            {{ $row['nama'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('nakes_id')
+                                <label class="form-label">Tanggal</label>
+                                <input id="tanggal" class="form-control" type="date" wire:model="tanggal"
+                                    x-model="tanggal" />
+                                @error('tanggal')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
+                        @endrole
                         <div class="mb-3">
-                            <label class="form-label">Keluhan Awal</label>
-                            <textarea id="keluhan_awal" class="form-control" wire:model="keluhan_awal" rows="5"></textarea>
-                            @error('keluhan_awal')
+                            <label class="form-label">Paket Perawatan</label>
+                            <select id="paket_perawatan_id" data-container="body" class="form-control"
+                                x-init="$($el).selectpicker({
+                                    liveSearch: true,
+                                    width: 'auto',
+                                    size: 10,
+                                    container: 'body',
+                                    style: '',
+                                    showSubtext: true,
+                                    styleBase: 'form-control'
+                                });
+                                $($el).on('change', function(e) {
+                                    updatePaketPerawatan(this.value);
+                                });" wire:model.live="paket_perawatan_id"
+                                x-model="paket_perawatan_id" data-width="100%">
+                                <option selected value="">-- Pilih Paket Perawatan --</option>
+                                @foreach ($dataPaketPerawatan as $row)
+                                    <option value="{{ $row['id'] }}">
+                                        {{ $row['nama'] }}, Rp. {{ number_format_id($row['tarif']) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('paket_perawatan_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
+                        </div>
+                        @if ($paket_perawatan_id)
+                            <div class="note alert-primary mb-3 border-0 shadow-sm"
+                                style="border-left: 4px solid var(--bs-primary) !important; border-radius: 8px;">
+                                <div class="note-content w-100">
+                                    <h5 class="mb-3 d-flex align-items-center text-primary fw-bold">
+                                        <i class="fa fa-box-open me-2 fs-16px text-primary"></i> Detail Paket Perawatan
+                                    </h5>
+
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-4">
+                                            <div class="bg-white bg-opacity-70 p-2 rounded border h-100 text-center"
+                                                style="border-color: rgba(var(--bs-primary-rgb), 0.15) !important;">
+                                                <small class="text-muted d-block uppercase fw-bold mb-1"
+                                                    style="font-size: 10px; letter-spacing: 0.5px;">Masa
+                                                    Berlaku</small>
+                                                <span
+                                                    class="fs-13px fw-bold text-dark">{{ $paketPerawatan->masa_aktif }}
+                                                    Hari</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="bg-white bg-opacity-70 p-2 rounded border h-100 text-center"
+                                                style="border-color: rgba(var(--bs-primary-rgb), 0.15) !important;">
+                                                <small class="text-muted d-block uppercase fw-bold mb-1"
+                                                    style="font-size: 10px; letter-spacing: 0.5px;">Sampai
+                                                    Dengan</small>
+                                                <span
+                                                    class="fs-13px fw-bold text-dark">{{ date('Y-m-d', strtotime($tanggal . ' + ' . $paketPerawatan->masa_aktif . ' days')) }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="bg-white bg-opacity-70 p-2 rounded border h-100 text-center"
+                                                style="border-color: rgba(var(--bs-primary-rgb), 0.15) !important;">
+                                                <small class="text-muted d-block uppercase fw-bold mb-1"
+                                                    style="font-size: 10px; letter-spacing: 0.5px;">Tarif Paket</small>
+                                                <span class="fs-13px fw-bold text-primary">Rp.
+                                                    {{ number_format_id($paketPerawatan->tarif) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white bg-opacity-80 rounded border p-2"
+                                        style="border-color: rgba(var(--bs-primary-rgb), 0.15) !important;">
+                                        <div
+                                            class="px-2 py-1 bg-light rounded mb-2 d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold text-muted uppercase"
+                                                style="font-size: 10px; letter-spacing: 0.5px;"><i
+                                                    class="fa fa-list-ul me-1"></i> Tindakan Tercover</span>
+                                            <span class="badge bg-primary rounded-pill"
+                                                style="font-size: 9px;">{{ count($paketPerawatan->paketPerawatanDetail) }}
+                                                Item</span>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover mb-0" style="font-size: 12px;">
+                                                <thead>
+                                                    <tr class="text-muted border-bottom">
+                                                        <th class="ps-2 py-1 border-0 fw-semibold">Nama Tindakan</th>
+                                                        <th class="text-end pe-2 py-1 border-0 fw-semibold w-80px">Qty
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($paketPerawatan->paketPerawatanDetail as $row)
+                                                        <tr>
+                                                            <td class="ps-2 py-2 border-0 text-dark fw-medium">
+                                                                {{ $row->tarifTindakan->nama }}</td>
+                                                            <td
+                                                                class="text-end pe-2 py-2 border-0 fw-bold text-primary">
+                                                                {{ $row->qty }}x</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        <div class="mb-3">
+                            <label class="form-label">Total Tagihan</label>
+                            <input type="text" class="form-control text-end fs-16px text-bold"
+                                :value="formatNumber(total_tagihan)" disabled>
+                        </div>
+                        <div class="note alert-success mb-2">
+                            <div class="note-content">
+                                <h5>Pembayaran</h5>
+                                <hr>
+                                <div class="mb-3">
+                                    <label class="form-label">Metode Bayar</label>
+                                    <div class="input-group">
+                                        <select id="metode_bayar" class="form-control" wire:model="metode_bayar"
+                                            x-model="metode_bayar" data-width="100%">
+                                            <option hidden>-- Pilih Metode Bayar --</option>
+                                            <template x-for="item in dataMetodeBayar" :key="item.id">
+                                                <option :value="item.id" x-text="item.nama"
+                                                    :selected="metode_bayar == item.id"></option>
+                                            </template>
+                                        </select>
+                                        <input id="total_bayar" class="form-control text-end fs-16px text-bold"
+                                            type="number" wire:model="total_bayar" x-model.number="total_bayar" />
+                                    </div>
+                                    @error('total_bayar')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <hr>
+                                <div class="mb-3">
+                                    <label class="form-label">Uang Kembali</label>
+                                    <input class="form-control text-end" type="text" disabled
+                                        :value="formatNumber((total_bayar > parseInt(total_tagihan || 0)) ? total_bayar -
+                                            parseInt(total_tagihan || 0) : 0)" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea id="keterangan" class="form-control" type="text" wire:model="keterangan" x-model="keterangan"></textarea>
+                                    @error('keterangan')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -379,3 +395,50 @@
         <x-loading />
     </div>
 </div>
+@push('scripts')
+    <script>
+        function form() {
+            return {
+                dataMetodeBayar: @js($dataMetodeBayar ?? []),
+                dataPaketPerawatan: @js($dataPaketPerawatan ?? []),
+                total_bayar: @js($total_bayar),
+                paket_perawatan_id: @js($paket_perawatan_id),
+                metode_bayar: @js($metode_bayar),
+                tanggal: @js($tanggal),
+                total_tagihan: @js($total_tagihan),
+                keterangan: @js($keterangan),
+                formatNumber(val) {
+                    if (val === null || val === undefined || isNaN(val)) return '0';
+                    return `${new Intl.NumberFormat('id-ID').format(val)}`;
+                },
+                updatePaketPerawatan(id) {
+                    let selected = this.dataPaketPerawatan.find(b => b.id == id);
+                    if (selected) {
+                        this.total_tagihan = selected.tarif;
+                    }
+                },
+                syncToLivewire() {
+                    // sinkronkan data ke livewire
+                    if (window.Livewire && window.Livewire.find) {
+                        let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                        if (componentId) {
+                            let $wire = window.Livewire.find(componentId);
+                            if ($wire && typeof $wire.set === 'function') {
+                                $wire.set('total_tagihan', this.total_tagihan, true);
+                                $wire.set('paket_perawatan_id', this.paket_perawatan_id, true);
+                                $wire.set('tanggal', this.tanggal, true);
+                                $wire.set('cash', this.cash, true);
+                                $wire.set('metode_bayar', this.metode_bayar, true);
+                                $wire.set('keterangan', this.keterangan, true);
+                                $wire.set('total_bayar', this.total_bayar, true);
+                            }
+                        }
+                    }
+                },
+                init() {}
+
+
+            }
+        }
+    </script>
+@endpush

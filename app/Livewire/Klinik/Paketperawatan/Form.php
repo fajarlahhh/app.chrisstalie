@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Livewire\Klinik\Paketperawatan;
+
+use App\Class\BarangClass;
+use App\Models\BarangSatuan;
+use App\Models\Nakes;
+use App\Models\Registrasi;
+use App\Models\Stok;
+use App\Models\TarifTindakan;
+use App\Models\TarifTindakanAlatBarang;
+use App\Models\Tindakan;
+use App\Models\TindakanAlatBarang;
+use App\Traits\CustomValidationTrait;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+
+class Form extends Component
+{
+    use CustomValidationTrait;
+
+    public $tindakan = [], $dataTindakan = [], $dataNakes = [];
+    public $data, $nakes_id;
+    public $bahan = [];
+    public $dataBarang = [];
+    public $paket_perawatan = [];
+
+    public function mount(Registrasi $data)
+    {
+        $this->data = $data;
+        $this->nakes_id = $data->nakes_id;
+
+        $this->dataBarang = collect(BarangClass::getBarang());
+        if ($this->data->pembayaran) {
+            return abort(404);
+        }
+        $this->dataTindakan = TarifTindakan::with('tarifTindakanAlatBarang.barangSatuan')->orderBy('nama')->get()->map(fn($q) => [
+            'id' => $q->id,
+            'nama' => $q->nama,
+            'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+            'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+            'biaya_alat_barang' => $q->biaya_alat_barang,
+            'tarif' => $q->tarif
+        ])->toArray();
+        if ($data->tindakan->count() > 0) {
+            $this->tindakan = $data->tindakan->map(fn($q) => [
+                'id' => $q->tarif_tindakan_id,
+                'qty' => $q->qty,
+                'harga' => $q->harga,
+                'catatan' => $q->catatan,
+                'membutuhkan_inform_consent' => $q->membutuhkan_inform_consent == 1 ? true : false,
+                'membutuhkan_sitemarking' => $q->membutuhkan_sitemarking == 1 ? true : false,
+                'dokter_id' => $q->dokter_id,
+                'perawat_id' => $q->perawat_id,
+                'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+                'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+                'biaya_alat_barang' => $q->biaya_alat_barang,
+                'biaya' => $q->biaya,
+            ])->toArray();
+        } else {
+            $this->tindakan[] = [
+                'id' => null,
+                'qty' => 1,
+                'harga' => null,
+                'catatan' => null,
+                'membutuhkan_inform_consent' => false,
+                'membutuhkan_sitemarking' => false,
+                'dokter_id' => $this->data->nakes_id,
+                'perawat_id' => null,
+                'biaya_jasa_dokter' => 0,
+                'biaya_jasa_perawat' => 0,
+                'biaya_alat_barang' => 0,
+                'biaya' => 0,
+            ];
+        }
+        $this->dataNakes = Nakes::with('kepegawaianPegawai')->orderBy('nama')->get()->map(fn($q) => [
+            'id' => $q->id,
+            'dokter' => $q->dokter,
+            'nama' => $q->kepegawaianPegawai ? $q->kepegawaianPegawai->nama : $q->nama,
+        ])->toArray();
+    }
+
+    public function submit()
+    {
+        if ($this->data->pembayaran) {
+            return abort(404);
+        }
+        $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
+            $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
+            return [
+                'barang_id' => $barang['barang_id'],
+                'nama' => $barang['nama'],
+                'satuan' => $barang['satuan'],
+                'kode_akun_id' => $barang['kode_akun_id'],
+                'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
+                'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
+                'qty' => $q->qty,
+                'biaya' => $q->biaya,
+                'barang_satuan_id' => $q->barang_satuan_id,
+                'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            ];
+        })->toArray();
+        $this->validateWithCustomMessages([
+            'tindakan' => 'required|array',
+            'tindakan.*.id' => 'required|distinct',
+            'tindakan.*.qty' => 'required|min:1',
+            'bahan.*.qty' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $index = explode('.', $attribute)[1];
+                    $bahan = $this->bahan[$index] ?? null;
+                    if (!$bahan) return;
+
+                    $stokTersedia = Stok::where('barang_id', $bahan['barang_id'])
+                        ->available()
+                        ->count();
+                    if (($value * ($bahan['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $bahan['rasio_dari_terkecil'];
+                        $fail("Stok bahan {$bahan['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$bahan['satuan']}. Yang dibutuhkan untuk tindakan  {$value} {$bahan['satuan']}.");
+                    }
+                }
+            ],
+        ], [
+            'tindakan.required' => 'Minimal satu tindakan harus dipilih.',
+            'tindakan.array' => 'Format data tindakan tidak valid.',
+            'tindakan.*.id.required' => 'Tindakan wajib dipilih.',
+            'tindakan.*.id.distinct' => 'Terdapat tindakan yang duplikat.',
+            'tindakan.*.qty.required' => 'Jumlah tindakan wajib diisi.',
+            'tindakan.*.qty.min' => 'Jumlah tindakan minimal 1.',
+        ]);
+
+        DB::transaction(function () {
+            Tindakan::where('registrasi_id', $this->data->id)->delete();
+
+            $tindakanAlatBarang = [];
+            $dataTarifTindakanAlatBarang = TarifTindakanAlatBarang::whereIn('tarif_tindakan_id', collect($this->tindakan)->pluck('id'))->get();
+            $dataBarangSatuan = BarangSatuan::whereIn('id', collect($dataTarifTindakanAlatBarang)->pluck('barang_satuan_id'))->get();
+
+            foreach (collect($this->tindakan) as $q) {
+                $tindakan = new Tindakan();
+                $tindakan->registrasi_id = $this->data->id;
+                $tindakan->tarif_tindakan_id = $q['id'];
+                $tindakan->pasien_id = $this->data->pasien_id;
+                $tindakan->biaya = $q['biaya'];
+                $tindakan->catatan = $q['catatan'];
+                $tindakan->membutuhkan_inform_consent = $q['membutuhkan_inform_consent'];
+                $tindakan->membutuhkan_sitemarking = $q['membutuhkan_sitemarking'];
+                $tindakan->biaya_jasa_dokter = $q['biaya_jasa_dokter'];
+                $tindakan->biaya_jasa_perawat = $q['biaya_jasa_perawat'];
+                $tindakan->biaya_alat_barang = $q['biaya_alat_barang'];
+                $tindakan->dokter_id = $q['dokter_id'] && $q['dokter_id'] != "" ? $q['dokter_id'] : null;
+                $tindakan->perawat_id = $q['perawat_id'] ? $q['perawat_id'] : null;
+                $tindakan->qty = $q['qty'];
+                $tindakan->pengguna_id = auth()->id();
+                $tindakan->save();
+
+                $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['id']);
+
+                foreach ($tarifTindakanAlatBarang as $r) {
+                    $barangSatuan = $r->aset_id ? null : $dataBarangSatuan->firstWhere('id', $r->barang_satuan_id);
+
+                    $tindakanAlatBarang[] = [
+                        'tindakan_id' => $tindakan->id,
+                        'aset_id' => $r->aset_id,
+                        'qty' => $q['qty'] * $r->qty,
+                        'biaya' => $q['qty'] * $r->biaya,
+                        'barang_satuan_id' => $r->barang_satuan_id,
+                        'barang_id' => $barangSatuan ? $barangSatuan['barang_id'] : null,
+                        'rasio_dari_terkecil' => $barangSatuan ? $barangSatuan['rasio_dari_terkecil'] : null,
+                        'tarif_tindakan_id' => $q['id'],
+                    ];
+                }
+            }
+            TindakanAlatBarang::insert($tindakanAlatBarang);
+            session()->flash('success', 'Berhasil menyimpan data');
+        });
+    }
+
+    public function render()
+    {
+        return view('livewire.klinik.paketperawatan.form');
+    }
+}

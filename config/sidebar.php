@@ -165,6 +165,11 @@ return [
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
+                [
+                    "title" => "Paket Prabayar",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
             ]
         ],
         [
@@ -370,6 +375,10 @@ return [
                 ],
                 [
                     "title" => "Diagnosis",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Paket Perawatan",
                     "method" => ["Index", "Form"],
                 ],
                 [

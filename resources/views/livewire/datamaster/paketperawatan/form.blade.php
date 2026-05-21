@@ -1,4 +1,4 @@
-<div x-data="tarifTindakanForm()" x-init="init()" x-ref="alpineRoot">
+<div x-data="paketPerawatan()" x-init="init()" x-ref="alpineRoot">
     @section('title', ucwords(str_replace('/', ' ', request()->getRequestUri())))
 
     @section('breadcrumb')
@@ -43,17 +43,40 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenis</label>
-                            <select id="jenis" class="form-control" wire:model="jenis" x-model="jenis" @change="updatedJenis()"
-                                @if ($data->exists) disabled @endif data-width="100%">
+                            <select id="jenis" class="form-control" wire:model="jenis" x-model="jenis"
+                                @change="updatedJenis()" @if ($data->exists) disabled @endif
+                                data-width="100%">
                                 <option value="" selected>-- Pilih Jenis --</option>
                                 <option value="Bundling">Bundling</option>
-                                <option value="Non Bundling">Non Bundling</option>
+                                <option value="Prabayar">Prabayar</option>
                             </select>
                             @error('jenis')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <template x-if="jenis == 'Non Bundling'">
+                        <template x-if="jenis == 'Prabayar'">
+                            <div class="mb-3">
+                                <label class="form-label">Kode Akun</label>
+                                <select id="kode_akun_id" class="form-control" wire:model="kode_akun_id"
+                                    x-init="$($el).selectpicker({
+                                        liveSearch: true,
+                                        width: 'auto',
+                                        size: 10,
+                                        container: 'body',
+                                        style: '',
+                                        showSubtext: true,
+                                        styleBase: 'form-control'
+                                    })" data-width="100%">
+                                    <option hidden selected>-- Tidak Ada Kode Akun --</option>
+                                    @foreach ($dataKodeAkun as $item)
+                                        <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kode_akun_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">Masa Aktif <small>(Hari)</small></label>
                                 <input id="masa_aktif" class="form-control" type="number" step="1" min="0"
@@ -65,7 +88,6 @@
                         </template>
                     </div>
                     <div class="col-lg-8">
-                        <!-- TABEL ALAT -->
                         <div class="alert alert-secondary table-responsive" x-data="{
                             addTindakan() {
                                     this.tindakan.push({
@@ -218,7 +240,7 @@
 
 @push('scripts')
     <script>
-        function tarifTindakanForm() {
+        function paketPerawatan() {
             return {
                 tindakan: @js($tindakan).map(row => ({
                     ...row,
@@ -232,18 +254,18 @@
                 masa_aktif: @js($masa_aktif),
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
-                    return `${new Intl.NumberFormat('id-ID').format(val)}`;
+                    return new Intl.NumberFormat('id-ID').format(val);
                 },
+
                 hitungKeuntungan() {
                     this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) ||
                         0), 0);
-                    this.keuntungan =
-                        (parseFloat(this.tarif) || 0) -
-                        (parseFloat(this.total_biaya_tindakan) || 0);
+                    this.keuntungan = (parseFloat(this.tarif) || 0) - this.total_biaya_tindakan;
                 },
+
                 updatedJenis() {
                     this.tindakan = [];
-                    if (this.jenis == 'Non Bundling') {
+                    if (this.jenis === 'Prabayar') {
                         this.tindakan.push({
                             id: null,
                             qty: 1,
@@ -252,27 +274,29 @@
                         });
                     }
                 },
+
                 syncToLivewire() {
-                    if (window.Livewire && window.Livewire.find) {
+                    if (window.Livewire) {
                         let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
-                        if (componentId) {
-                            let $wire = window.Livewire.find(componentId);
-                            if ($wire && typeof $wire.set === 'function') {
-                                $wire.set('tindakan', JSON.parse(JSON.stringify(this.tindakan)), false);
-                                $wire.set('nama', this.nama, false);
-                                $wire.set('uraian', this.uraian, false);
-                                $wire.set('tarif', this.tarif, false);
-                            }
+                        let $wire = componentId ? window.Livewire.find(componentId) : null;
+
+                        if ($wire && typeof $wire.set === 'function') {
+                            $wire.set('tindakan', JSON.parse(JSON.stringify(this.tindakan)), false);
+                            $wire.set('nama', this.nama, false);
+                            $wire.set('uraian', this.uraian, false);
+                            $wire.set('tarif', this.tarif, false);
                         }
                     }
                 },
+
                 refreshSelect2() {
                     let root = this.$root ?? document;
                     $(root).find('select.form-control').each(function(i, el) {
-                        if ($(el).hasClass('select2-hidden-accessible')) {
-                            $(el).select2('destroy');
+                        let $el = $(el);
+                        if ($el.hasClass('select2-hidden-accessible')) {
+                            $el.select2('destroy');
                         }
-                        $(el).select2({
+                        $el.select2({
                             width: '100%'
                         });
                         el.dispatchEvent(new CustomEvent('updateSelect2Value', {
@@ -280,17 +304,12 @@
                         }));
                     });
                 },
+
                 init() {
-                    this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) ||
-                        0), 0);
                     this.hitungKeuntungan();
 
-                    this.$watch('tarif', () => {
-                        this.hitungKeuntungan();
-                    });
-                    this.$watch('tindakan', () => {
-                        this.hitungKeuntungan();
-                    });
+                    this.$watch('tarif', () => this.hitungKeuntungan());
+                    this.$watch('tindakan', () => this.hitungKeuntungan());
                 }
             }
         }
