@@ -10,17 +10,17 @@
             @endif
         </div>
         <div>
-            <h5 class="mb-0 text-white fw-bold">{{ $data->pasien->nama }}</h5>
+            <h5 class="mb-0 text-white fw-bold text-nowrap">{{ $data->pasien->nama }}</h5>
             <span class="badge bg-white bg-opacity-20 text-white mt-1 fs-10px">
                 No. RM: {{ $data->pasien->id }}
             </span>
         </div>
-        <div class="text-end w-100 fw-bold fs-18px text-white">#{{ $data->id }}</div>
+        <div class="text-end w-100 fw-bold fs-14px text-white">#{{ $data->id }}</div>
     </div>
 
     <div class="card-body">
         <div class="row g-3">
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="info-box">
                     <div class="info-box-content">
                         <div class="info-box-label fs-11px text-secondary">No. KTP</div>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="info-box">
                     <div class="info-box-content">
                         <div class="info-box-label fs-11px text-secondary">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="info-box">
                     <div class="info-box-content">
                         <div class="info-box-label fs-11px text-secondary">Jenis Kelamin / Usia</div>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="info-box">
                     <div class="info-box-content">
                         <div class="info-box-label fs-11px text-secondary">Tanggal Lahir</div>
@@ -99,36 +99,5 @@
                 </div>
             </div>
         @endif
-    </div>
-
-    <div class="card-body bg-light">
-        <div class="row g-3">
-            <div class="col-6">
-                <div class="info-box-label fs-11px text-secondary">No. Registrasi</div>
-                <div class="info-box-value">#{{ $data->id }}</div>
-            </div>
-        </div>
-
-        <div class="patient-divider"></div>
-
-        <div class="row g-3">
-            <div class="col-6">
-                <div class="info-box-label fs-11px text-secondary">Usia</div>
-                <div class="info-box-value">{{ $data->pasien->umur }} Tahun</div>
-            </div>
-            <div class="col-6">
-                <div class="info-box-label fs-11px text-secondary">Jenis Kelamin</div>
-                <div class="info-box-value">
-                    @if (str_starts_with(strtolower($data->pasien->jenis_kelamin ?? ''), 'l'))
-                        <span class="text-info"><i class="fa fa-mars me-1"></i>Laki-laki</span>
-                    @elseif(str_starts_with(strtolower($data->pasien->jenis_kelamin ?? ''), 'p'))
-                        <span class="text-danger" style="color: #ec4899 !important;"><i
-                                class="fa fa-venus me-1"></i>Perempuan</span>
-                    @else
-                        <span>{{ $data->pasien->jenis_kelamin }}</span>
-                    @endif
-                </div>
-            </div>
-        </div>
     </div>
 </div>

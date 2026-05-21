@@ -8,71 +8,78 @@
     @endsection
 
     @push('css')
-    <style>
-        .history-pa-timeline {
-            position: relative;
-            padding-left: 20px;
-            margin-left: 10px;
-            border-left: 2px dashed #cbd5e1;
-        }
-        .history-pa-item {
-            position: relative;
-            margin-bottom: 24px;
-        }
-        .history-pa-item::before {
-            content: "";
-            position: absolute;
-            left: -27px;
-            top: 12px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #00acac;
-            border: 3px solid #fff;
-            box-shadow: 0 0 0 2px rgba(0, 172, 172, 0.2);
-            z-index: 2;
-            transition: all 0.2s ease-in-out;
-        }
-        .history-pa-item:hover::before {
-            background-color: #ff5b57;
-            box-shadow: 0 0 0 4px rgba(255, 91, 87, 0.2);
-            transform: scale(1.2);
-        }
-        .history-pa-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: all 0.2s ease-in-out;
-        }
-        .history-pa-card:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .section-title-pa {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #475569;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 6px;
-        }
-        @media (min-width: 768px) {
-            .border-end-md {
-                border-right: 1px solid #f1f5f9 !important;
-                padding-right: 15px;
+        <style>
+            .history-pa-timeline {
+                position: relative;
+                padding-left: 20px;
+                margin-left: 10px;
+                border-left: 2px dashed #cbd5e1;
             }
-        }
-    </style>
+
+            .history-pa-item {
+                position: relative;
+                margin-bottom: 24px;
+            }
+
+            .history-pa-item::before {
+                content: "";
+                position: absolute;
+                left: -27px;
+                top: 12px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: #00acac;
+                border: 3px solid #fff;
+                box-shadow: 0 0 0 2px rgba(0, 172, 172, 0.2);
+                z-index: 2;
+                transition: all 0.2s ease-in-out;
+            }
+
+            .history-pa-item:hover::before {
+                background-color: #ff5b57;
+                box-shadow: 0 0 0 4px rgba(255, 91, 87, 0.2);
+                transform: scale(1.2);
+            }
+
+            .history-pa-card {
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                background: #fff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                transition: all 0.2s ease-in-out;
+            }
+
+            .history-pa-card:hover {
+                border-color: #cbd5e1;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+
+            .section-title-pa {
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #475569;
+                letter-spacing: 0.05em;
+                margin-bottom: 12px;
+                border-bottom: 1px solid #f1f5f9;
+                padding-bottom: 6px;
+            }
+
+            @media (min-width: 768px) {
+                .border-end-md {
+                    border-right: 1px solid #f1f5f9 !important;
+                    padding-right: 15px;
+                }
+            }
+        </style>
     @endpush
 
     <h1 class="page-header">Diagnosis <small>Input</small></h1>
 
+    @include('livewire.klinik.informasipasien', ['data' => $data])
     <div class="row">
         <div class="col-md-5">
-            @include('livewire.klinik.informasipasien', ['data' => $data])
 
             <div class="panel panel-inverse mb-4" style="height: 400px; display: flex; flex-direction: column;">
                 <div class="panel-heading">
@@ -82,11 +89,11 @@
                     @php
                         $historyDiagnosisCount = 0;
                     @endphp
-                    
+
                     <div class="history-pa-timeline">
                         @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
-                            @if ($row->diagnosis)
-                                @php $historyDiagnosisCount++; @endphp
+@if ($row->diagnosis)
+@php $historyDiagnosisCount++; @endphp
                                 <div class="history-pa-item">
                                     <div class="history-pa-card p-3 shadow-sm border border-1 border-gray-200">
                                         <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
@@ -105,13 +112,13 @@
                                                 <div class="section-title-pa"><i class="fa fa-stethoscope me-2 text-danger"></i>Diagnosis (ICD-10)</div>
                                                 <ul class="list-unstyled ps-0 mb-0">
                                                     @forelse ($row->diagnosis->icd10_uraian as $item)
-                                                        <li class="fs-12px text-dark mb-2 d-flex align-items-start">
+<li class="fs-12px text-dark mb-2 d-flex align-items-start">
                                                             <span class="badge bg-danger-transparent text-danger border border-danger me-2 px-2 py-1 rounded font-monospace fs-11px" style="background: rgba(255, 91, 87, 0.1); border-color: rgba(255, 91, 87, 0.2) !important;">{{ $item->id }}</span>
                                                             <span class="align-self-center">{{ $item->uraian }}</span>
                                                         </li>
                                                     @empty
                                                         <li class="fs-11px text-muted italic">Tidak ada ICD-10</li>
-                                                    @endforelse
+@endforelse
                                                 </ul>
                                             </div>
                                             
@@ -128,7 +135,7 @@
                                                 <div class="section-title-pa"><i class="fa fa-file-alt me-2 text-success"></i>Dokumentasi</div>
                                                 <div class="row g-2">
                                                     @forelse ($row->diagnosis->file as $item)
-                                                        <div class="col-6 col-sm-4 col-lg-6">
+<div class="col-6 col-sm-4 col-lg-6">
                                                             <div class="card h-100 border-1 border-gray-200">
                                                                 <a href="{{ Storage::url($item->link) }}" target="_blank" class="d-block text-center bg-gray-100 p-1">
                                                                     <img src="{{ Storage::url($item->link) }}" class="img-fluid rounded" style="max-height: 80px; object-fit: contain;">
@@ -143,21 +150,21 @@
                                                         <div class="col-12">
                                                             <span class="fs-11px text-muted italic">Tidak ada file dokumentasi</span>
                                                         </div>
-                                                    @endforelse
+@endforelse
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                        @endforeach
+@endif
+@endforeach
                         
                         @if ($historyDiagnosisCount === 0)
-                            <div class="text-center text-muted my-4">
+<div class="text-center text-muted my-4">
                                 <i class="fa fa-notes-medical fa-3x mb-3 text-gray-300"></i>
                                 <p class="mb-0 fs-13px">Belum ada history diagnosis sebelumnya</p>
                             </div>
-                        @endif
+@endif
                     </div>
                 </div>
             </div>
@@ -180,10 +187,9 @@
                                 <template x-for="(row, index) in icd10" :key="index">
                                     <tr>
                                         <th class="p-0" wire:ignore>
-                                            <select class="form-control" x-model="row.id" x-init="
-                                            $($el).select2({ 
+                                            <select class="form-control" x-model="row.id" x-init="$($el).select2({
                                                 width: '100%',
-                                                dropdownAutoWidth: true 
+                                                dropdownAutoWidth: true
                                             });
                                             $($el).on('change', function(e) {
                                                 row.id = e.target.value;
@@ -193,8 +199,7 @@
                                                 if (value !== $($el).val()) {
                                                     $($el).val(value).trigger('change');
                                                 }
-                                            });
-                                        ">
+                                            });">
                                         
                                                 <option value="" selected>-- Pilih ICD 10 --</option>
                                                 <template x-for="item in dataIcd10" :key="item.id">
@@ -232,108 +237,108 @@
                             <textarea id="diagnosis_banding" class="form-control" wire:model="diagnosis_banding"
                                 placeholder="Tuliskan kemungkinan diagnosis lain yang perlu dipertimbangkan..."></textarea>
                             @error('diagnosis_banding')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="p-3 bg-light border rounded">
-                            Dokumentasi :
-                            <x-upload :fileDiupload="$fileDiupload" :fileDihapus="$fileDihapus" />
-                        </div>
+<div class="text-danger">{{ $message }}</div>
+@enderror
                     </div>
-                    <div class="panel-footer">
-                        @role('administrator|supervisor|operator')
-                            <button type="button" x-init="$($el).on('click', function() {
-                                $('#modal-konfirmasi').modal('show');
-                            })" class="btn btn-success" wire:loading.attr="disabled">
+                    <div class="p-3 bg-light border rounded">
+                        Dokumentasi :
+                        <x-upload :fileDiupload="$fileDiupload" :fileDihapus="$fileDihapus" />
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    @role('administrator|supervisor|operator')
+<button type="button" x-init="$($el).on('click', function() {
+    $('#modal-konfirmasi').modal('show');
+})" class="btn btn-success" wire:loading.attr="disabled">
                                 <span wire:loading class="spinner-border spinner-border-sm"></span>
                                 Submit
                             </button>
-                        @endrole
-                        @if (isset($data->diagnosis) && $data->diagnosis->count() > 0)
-                            <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                                onclick="window.location.href='/klinik/tindakan/form/{{ $data->id }}'">
-                                <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                Lanjut Tindakan
-                            </button>
-                        @endif
-                        <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
-                            onclick="window.location.href='/klinik/diagnosis'">
+@endrole
+                    @if (isset($data->diagnosis) && $data->diagnosis->count() > 0)
+<button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
+                            onclick="window.location.href='/klinik/tindakan/form/{{ $data->id }}'">
                             <span wire:loading class="spinner-border spinner-border-sm"></span>
-                            Data
+                            Lanjut Tindakan
+                        </button>
+@endif
+                        <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
+                        onclick="window.location.href='/klinik/diagnosis'">
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
+                        Data
                         </button>
                         <x-alert />
-                    </div>
-                </div>
-            
-                <x-modal.konfirmasi />
-            </form>
-        </div>
-    </div>
-    
-    <div wire:loading>
-        <x-loading />
-    </div>
-</div>
+                        </div>
+                        </div>
 
-@push('scripts')
-    <script>
-        function diagnosisForm() {
-            return {
-                icd10: @js($icd10).map(row => ({
-                    ...row,
-                })),
-                dataIcd10: @js($dataIcd10),
-                diagnosis_banding: @js($diagnosis_banding),
-                fileDiupload: @js($fileDiupload),
-                addDiagnosis() {
-                    this.icd10.push({
-                        id: '',
-                    }); 
-                    this.$nextTick(() => {
-                        this.refreshSelect2();
-                    });
-                },
-                hapusDiagnosis(index) {
-                    this.icd10.splice(index, 1);
-                    this.$nextTick(() => {
-                        this.refreshSelect2();
-                    });
-                },
-                updateRow(index) {
-                    let row = this.icd10[index];
-                    let selectedIcd10 = this.dataIcd10.find(i => i.id == row.id);
-                    if (selectedIcd10) {
-                        row.uraian = selectedIcd10.uraian;
-                    } else {
-                        row.uraian = '';
-                    }
-                },
-                refreshSelect2() {
-                    let root = this.$root ?? document;
-                    $(root).find('select.form-control').each(function(i, el) {
-                        if ($(el).hasClass('select2-hidden-accessible')) {
-                            $(el).select2('destroy');
-                        }
-                        $(el).select2({
-                            width: '100%'
-                        });
-                        el.dispatchEvent(new CustomEvent('updateSelect2Value', {
-                            bubbles: true
-                        }));
-                    });
-                },
-                syncToLivewire() {
-                    if (window.Livewire && window.Livewire.find) {
-                        let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
-                        if (componentId) {
-                            let $wire = window.Livewire.find(componentId);
-                            if ($wire && typeof $wire.set === 'function') {
-                                $wire.set('icd10', JSON.parse(JSON.stringify(this.icd10)), true);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-@endpush
+                        <x-modal.konfirmasi />
+                        </form>
+                        </div>
+                        </div>
+
+                        <div wire:loading>
+                        <x-loading />
+                        </div>
+                        </div>
+
+                        @push('scripts')
+                            <script>
+                                function diagnosisForm() {
+                                    return {
+                                        icd10: @js($icd10).map(row => ({
+                                            ...row,
+                                        })),
+                                        dataIcd10: @js($dataIcd10),
+                                        diagnosis_banding: @js($diagnosis_banding),
+                                        fileDiupload: @js($fileDiupload),
+                                        addDiagnosis() {
+                                            this.icd10.push({
+                                                id: '',
+                                            });
+                                            this.$nextTick(() => {
+                                                this.refreshSelect2();
+                                            });
+                                        },
+                                        hapusDiagnosis(index) {
+                                            this.icd10.splice(index, 1);
+                                            this.$nextTick(() => {
+                                                this.refreshSelect2();
+                                            });
+                                        },
+                                        updateRow(index) {
+                                            let row = this.icd10[index];
+                                            let selectedIcd10 = this.dataIcd10.find(i => i.id == row.id);
+                                            if (selectedIcd10) {
+                                                row.uraian = selectedIcd10.uraian;
+                                            } else {
+                                                row.uraian = '';
+                                            }
+                                        },
+                                        refreshSelect2() {
+                                            let root = this.$root ?? document;
+                                            $(root).find('select.form-control').each(function(i, el) {
+                                                if ($(el).hasClass('select2-hidden-accessible')) {
+                                                    $(el).select2('destroy');
+                                                }
+                                                $(el).select2({
+                                                    width: '100%'
+                                                });
+                                                el.dispatchEvent(new CustomEvent('updateSelect2Value', {
+                                                    bubbles: true
+                                                }));
+                                            });
+                                        },
+                                        syncToLivewire() {
+                                            if (window.Livewire && window.Livewire.find) {
+                                                let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                                                if (componentId) {
+                                                    let $wire = window.Livewire.find(componentId);
+                                                    if ($wire && typeof $wire.set === 'function') {
+                                                        $wire.set('icd10', JSON.parse(JSON.stringify(this.icd10)), true);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            </script>
+                        @endpush)
