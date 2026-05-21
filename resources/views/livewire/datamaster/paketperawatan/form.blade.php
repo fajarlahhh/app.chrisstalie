@@ -77,6 +77,8 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                        </template>
+                        <template x-if="jenis == 'Prabayar'">
                             <div class="mb-3">
                                 <label class="form-label">Masa Aktif <small>(Hari)</small></label>
                                 <input id="masa_aktif" class="form-control" type="number" step="1" min="0"
