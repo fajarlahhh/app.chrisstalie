@@ -13,15 +13,15 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public PaketPerawatan $data;
-    public array $dataTindakan = [];
-    public string $nama;
-    public string $uraian;
-    public int $tarif;
-    public ?int $masa_aktif;
-    public array $tindakan = [];
-    public string $jenis;
-    public array $dataKodeAkun;
-    public ?string $kode_akun_id;
+    public $dataTindakan = [];
+    public $nama;
+    public $uraian;
+    public $tarif;
+    public $masa_aktif;
+    public $tindakan = [];
+    public $jenis;
+    public $dataKodeAkun;
+    public $kode_akun_id;
 
     public function submit()
     {
