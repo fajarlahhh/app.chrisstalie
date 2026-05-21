@@ -325,14 +325,10 @@
                                                 <small
                                                     class="visit-nav-doctor text-secondary d-block fs-10px text-truncate"
                                                     style="max-width: 130px;">
-                                                    {{ $row->nakes?->nama ?: 'Tidak ada Dokter' }}
+                                                    #{{ $row->id }}
                                                 </small>
                                             </div>
                                         </div>
-                                        <span
-                                            class="badge bg-light text-dark border visit-nav-badge fs-10px flex-shrink-0">
-                                            #{{ $row->id }}
-                                        </span>
                                     </button>
                                 @endforeach
                             </div>
