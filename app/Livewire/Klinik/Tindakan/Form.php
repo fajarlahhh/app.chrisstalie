@@ -45,7 +45,7 @@ class Form extends Component
             $this->tindakan = $data->tindakan->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
                 'paket_perawatan_id' => $q->paket_perawatan_id,
-                'paket_perawatan_nama' => $q->paketPerawatan->nama,
+                'paket_perawatan_nama' => $q->paketPerawatan?->nama,
                 'qty' => $q->qty,
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
@@ -57,10 +57,13 @@ class Form extends Component
                 'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
                 'biaya_alat_barang' => $q->biaya_alat_barang,
                 'biaya' => $q->biaya,
+                'registrasi_paket_perawatan_id' => $q->registrasi_paket_perawatan_id
             ])->toArray();
         } else {
             $this->tindakan[] = [
                 'id' => null,
+                'paket_perawatan_id' => null,
+                'paket_perawatan_nama' => null,
                 'qty' => 1,
                 'harga' => null,
                 'catatan' => null,
@@ -72,6 +75,7 @@ class Form extends Component
                 'biaya_jasa_perawat' => 0,
                 'biaya_alat_barang' => 0,
                 'biaya' => 0,
+                'registrasi_paket_perawatan_id' => null
             ];
         }
         $this->dataNakes = Nakes::with('kepegawaianPegawai')->orderBy('nama')->get()->map(fn($q) => [
@@ -154,6 +158,8 @@ class Form extends Component
                 $tindakan->dokter_id = $q['dokter_id'] && $q['dokter_id'] != "" ? $q['dokter_id'] : null;
                 $tindakan->perawat_id = $q['perawat_id'] ? $q['perawat_id'] : null;
                 $tindakan->qty = $q['qty'];
+                $tindakan->registrasi_paket_perawatan_id = $q['registrasi_paket_perawatan_id'];
+                $tindakan->paket_perawatan_id = $q['paket_perawatan_id'];
                 $tindakan->pengguna_id = auth()->id();
                 $tindakan->save();
 

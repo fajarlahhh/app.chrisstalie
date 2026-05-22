@@ -213,9 +213,9 @@
                         @endrole
                         @if (isset($data->registrasiPaketPerawatan) && $data->registrasiPaketPerawatan->count() > 0)
                             <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                                onclick="window.location.href='/klinik/resepobat/form/{{ $data->id }}'">
+                                onclick="window.location.href='/klinik/tindakan/form/{{ $data->id }}'">
                                 <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                Lanjut Resep Obat
+                                Lanjut Tindakan
                             </button>
                         @endif
                         <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
