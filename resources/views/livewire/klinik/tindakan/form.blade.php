@@ -245,6 +245,9 @@
                         biaya_jasa_perawat: 0,
                         biaya_alat_barang: 0,
                         biaya: 0,
+                        registrasi_paket_perawatan_id: null,
+                        paket_perawatan_id: null,
+                        paket_perawatan_nama: null,
                     });
                 },
 
