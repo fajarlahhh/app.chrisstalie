@@ -75,31 +75,65 @@
                     <div class="panel-heading ui-sortable-handle">
                         <h4 class="panel-title">Form</h4>
                     </div>
-                    <div class="panel-body">                
+                    <div class="panel-body">
+                        <template x-if="Object.keys(tindakan_paket).length > 0">
+                            <table class="table table-borderless p-0">
+                                <tr>
+                                    <td class="p-0">
+                                        <template x-for="(entry, index) in Object.entries(tindakan_paket)" :key="entry[0]">
+                                            <div class="border p-3 position-relative bg-light-200 mb-2" :class="index > 0 ? 'mt-3' : ''">
+                                                <h5>Paket Perawatan <span x-text="entry[0]"></span></h5>
+                                                <template x-for="(row, idx) in entry[1]" :key="idx">
+                                                    <div class="border p-2 bg-light-500 position-relative" :class="idx > 0 ? 'mt-3' : ''">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="flex-1">
+                                                                <strong x-text="row.tindakan_nama"></strong>
+                                                                <p class="mb-0 text-muted" x-text="`${row.qty}x`"></p>
+                                                            </div>
+                                                            <div class="flex-1">
+                                                                <template x-if="row.biaya_jasa_dokter > 0">
+                                                                    <select class="form-control form-control-sm mb-2" x-model="row.dokter_id">
+                                                                        <option value="">-- Pilih Dokter --</option>
+                                                                        <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)" :key="nakes.id">
+                                                                            <option :value="nakes.id" x-text="nakes.nama" :selected="row.dokter_id == nakes.id"></option>
+                                                                        </template>
+                                                                    </select>
+                                                                </template>
+                                                                <template x-if="row.biaya_jasa_perawat > 0">
+                                                                    <select class="form-control form-control-sm" x-model="row.perawat_id">
+                                                                        <option value="">-- Pilih Perawat --</option>
+                                                                        <template x-for="nakes in dataNakes" :key="nakes.id">
+                                                                            <option :value="nakes.id" x-text="nakes.nama" :selected="row.perawat_id == nakes.id"></option>
+                                                                        </template>
+                                                                    </select>
+                                                                </template>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </table>
+                        </template>
                         <table class="table table-borderless p-0">
                             <tr>
                                 <td class="p-0">
                                     <template x-for="(row, index) in tindakan" :key="index">
                                         <div class="border p-3 position-relative" :class="index > 0 ? 'mt-3' : ''">
-                                            <template x-if="index > 0">
-                                                <template x-if="row.paket_perawatan_id == null">
-                                                    <button type="button" class="btn btn-danger btn-xs position-absolute"
-                                                        style="top: 5px; right: 5px; z-index: 10;" @click="hapusTindakan(index)">
-                                                        &nbsp;x&nbsp;
-                                                    </button>
-                                                </template>
+                                            <template x-if="Object.keys(tindakan_paket).length > 0 || index > 0">
+                                                <button type="button" class="btn btn-danger btn-xs position-absolute"
+                                                    style="top: 5px; right: 5px; z-index: 10;" @click="hapusTindakan(index)">
+                                                    &nbsp;x&nbsp;
+                                                </button>
                                             </template>
                                             <div class="mb-3">
                                                 <div class="row g-2 align-items-center">
                                                     <div class="col-md-10" wire:ignore>
                                                         <div wire:ignore>
-                                                            <template x-if="row.paket_perawatan_id == null">
-                                                                <label class="form-label" x-text="`Tindakan ${index + 1}`"></label>
-                                                            </template>
-                                                            <template x-if="row.paket_perawatan_id != null">
-                                                                <label class="form-label" x-text="`Tindakan untuk Paket ${row.paket_perawatan_nama}`"></label>
-                                                            </template>
-                                                            <select class="form-control" x-model="row.id" :disabled="row.paket_perawatan_id != null" wire:ignore
+                                                            <label class="form-label" x-text="`Tindakan ${index + 1}`"></label>
+                                                            <select class="form-control" x-model="row.id"wire:ignore
                                                                 x-init="$($el).select2({
                                                                     width: '100%',
                                                                     dropdownAutoWidth: true
@@ -225,13 +259,14 @@
     <script>
         function tindakanForm() {
             return {
+                tindakan_paket: @js($tindakan_paket),
                 tindakan: @js($tindakan),
                 dataTindakan: @js($dataTindakan),
                 dataNakes: @js($dataNakes),
                 nakes_id: @js($nakes_id),
 
+
                 tambahTindakan() {
-                    console.log(this.nakes_id);
                     this.tindakan.push({
                         id: null,
                         qty: 1,
@@ -241,6 +276,7 @@
                         membutuhkan_sitemarking: false,
                         dokter_id: this.nakes_id,
                         perawat_id: null,
+                        tindakan_nama: null,
                         biaya_jasa_dokter: 0,
                         biaya_jasa_perawat: 0,
                         biaya_alat_barang: 0,
@@ -285,6 +321,7 @@
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
                                 $wire.set('tindakan', JSON.parse(JSON.stringify(this.tindakan)), true);
+                                $wire.set('tindakan_paket', JSON.parse(JSON.stringify(this.tindakan_paket)), true);
                             }
                         }
                     }

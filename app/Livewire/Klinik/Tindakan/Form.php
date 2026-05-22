@@ -42,10 +42,29 @@ class Form extends Component
             'tarif' => $q->tarif
         ])->toArray();
         if ($data->tindakan->count() > 0) {
-            $this->tindakan = $data->tindakan->map(fn($q) => [
+            $this->tindakan_paket = $data->tindakan->whereNotNull('paket_perawatan_id')->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
                 'paket_perawatan_id' => $q->paket_perawatan_id,
                 'paket_perawatan_nama' => $q->paketPerawatan?->nama,
+                'tindakan_nama' => collect($this->dataTindakan)->where('id', $q->tarif_tindakan_id)->first()['nama'],
+                'qty' => $q->qty,
+                'harga' => $q->harga,
+                'catatan' => $q->catatan,
+                'membutuhkan_inform_consent' => $q->membutuhkan_inform_consent == 1 ? true : false,
+                'membutuhkan_sitemarking' => $q->membutuhkan_sitemarking == 1 ? true : false,
+                'dokter_id' => $q->dokter_id,
+                'perawat_id' => $q->perawat_id,
+                'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+                'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+                'biaya_alat_barang' => $q->biaya_alat_barang,
+                'biaya' => $q->biaya,
+                'registrasi_paket_perawatan_id' => $q->registrasi_paket_perawatan_id
+            ])->groupBy('paket_perawatan_nama')->toArray();
+            $this->tindakan = $data->tindakan->whereNull('paket_perawatan_id')->map(fn($q) => [
+                'id' => $q->tarif_tindakan_id,
+                'paket_perawatan_id' => $q->paket_perawatan_id,
+                'paket_perawatan_nama' => $q->paketPerawatan?->nama,
+                'tindakan_nama' => null,
                 'qty' => $q->qty,
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
@@ -65,6 +84,7 @@ class Form extends Component
                 'paket_perawatan_id' => null,
                 'paket_perawatan_nama' => null,
                 'qty' => 1,
+                'tindakan_nama' => null,
                 'harga' => null,
                 'catatan' => null,
                 'membutuhkan_inform_consent' => false,
@@ -90,6 +110,8 @@ class Form extends Component
         if ($this->data->pembayaran) {
             return abort(404);
         }
+        $tindakan_paket_flat = collect($this->tindakan_paket)->collapse()->toArray();
+        $this->tindakan = array_merge($this->tindakan, $tindakan_paket_flat);
         $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
             $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
             return [

@@ -32,7 +32,7 @@ class Index extends Component
     public $tanggal;
     public $total_bayar = 0;
 
-    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $resep = [], $bahan = [], $alat = [], $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
+    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
 
     public function setRegistrasi($id)
     {
@@ -43,6 +43,22 @@ class Index extends Component
         } else {
             $this->barang = [];
             $this->pasien_id = $this->registrasi->pasien_id;
+
+            $this->paket_perawatan = $this->registrasi->registrasiPaketPerawatan->map(function ($q) {
+                return [
+                    'id' => $q->id,
+                    'nama' => $q->paketPerawatan->nama,
+                    'qty' => $q->qty,
+                    'harga' => $q->harga,
+                    'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
+                        return $q->qty * $q->biaya;
+                    }),
+                    'biaya_alat_barang' => $q->biaya_alat_barang,
+                    'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+                    'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+                    'biaya' => $q->biaya,
+                ];
+            })->toArray();
 
             $this->tindakan = $this->registrasi->tindakan->map(function ($q) {
                 return [
