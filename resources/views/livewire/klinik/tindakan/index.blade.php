@@ -60,10 +60,15 @@
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if ($status == 1)
-                                        <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
-                                            class="btn btn-primary btn-sm">
-                                            Input
-                                        </a>
+                                        @if ($row->tindakan->count() > 0)
+                                            <x-action :row="$row" :detail="false" :edit="true"
+                                                :information="true" :print="false" :permanentdelete="false" :restore="false"
+                                                :delete="true" />
+                                        @else
+                                            <x-action :row="$row" :detail="false" :edit="true"
+                                                :information="false" :print="false" :permanentdelete="false" :restore="false"
+                                                :delete="false" />
+                                        @endif
                                     @else
                                         @php
                                             $custom =

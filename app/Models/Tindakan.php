@@ -56,4 +56,14 @@ class Tindakan extends Model
     {
         return $this->belongsTo(Nakes::class)->with('kepegawaianPegawai')->withTrashed();
     }
+
+    public function registrasiPaketPerawatan()
+    {
+        return $this->belongsTo(RegistrasiPaketPerawatan::class);
+    }
+
+    public function paketPerawatan()
+    {
+        return $this->belongsTo(PaketPerawatan::class);
+    }
 }

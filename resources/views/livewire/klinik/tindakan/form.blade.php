@@ -7,131 +7,67 @@
         <li class="breadcrumb-item active">Input</li>
     @endsection
 
-    @push('css')
-    <style>
-        .history-timeline {
-            position: relative;
-            padding-left: 20px;
-            margin-left: 10px;
-            border-left: 2px dashed #cbd5e1;
-        }
-        .history-timeline-item {
-            position: relative;
-            margin-bottom: 24px;
-        }
-        .history-timeline-item::before {
-            content: "";
-            position: absolute;
-            left: -27px;
-            top: 12px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #348fe2;
-            border: 3px solid #fff;
-            box-shadow: 0 0 0 2px #348fe233;
-            z-index: 2;
-            transition: all 0.2s ease-in-out;
-        }
-        .history-timeline-item:hover::before {
-            background-color: #ff5b57;
-            box-shadow: 0 0 0 4px #ff5b5733;
-            transform: scale(1.2);
-        }
-        .history-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: all 0.2s ease-in-out;
-        }
-        .history-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            border-color: #cbd5e1;
-        }
-        .tindakan-item {
-            transition: background-color 0.15s ease-in-out;
-        }
-        .w-15px {
-            width: 15px !important;
-        }
-    </style>
-    @endpush
-
-
     <h1 class="page-header">Tindakan <small>Input</small></h1>
+    @include('livewire.klinik.informasipasien', ['data' => $data])
 
     <div class="row">
-        <div class="col-md-4">
-            @include('livewire.klinik.informasipasien', ['data' => $data])
-            <div class="panel panel-inverse mb-3" style="height: 600px; display: flex; flex-direction: column;">
-                <div class="panel-heading">
-                    <h4 class="panel-title"><i class="fa fa-history me-2"></i>History Tindakan</h4>
-                </div>
-                <div class="panel-body overflow-auto p-3" style="flex: 1; background-color: #f8fafc; min-height: 0;">
-                    @php
-                        $historyCount = 0;
-                    @endphp
-                    
-                    <div class="history-timeline">
-                        @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
-                            @if ($row->tindakan->count() > 0)
-                                @php $historyCount++; @endphp
-                                <div class="history-timeline-item">
-                                    <div class="history-card p-3">
-                                        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                                            <span class="fw-bold text-dark fs-12px">
-                                                <i class="fa fa-calendar-alt text-primary me-2"></i>
-                                                {{ $row->tindakan->first()?->created_at?->format('d M Y') }}
+        <div class="col-md-4 ps-5">
+            @php
+                $historyCount = 0;
+            @endphp
+            
+            @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
+                @if ($row->tindakan->count() > 0)
+                    @php $historyCount++; @endphp
+                    <div class="history-timeline-item">
+                        <div class="history-card p-3">
+                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                                <span class="fw-bold text-dark fs-12px">
+                                    <i class="fa fa-calendar-alt text-primary me-2"></i>
+                                    {{ $row->tindakan->first()?->created_at?->format('d M Y') }}
+                                </span>
+                                <span class="badge bg-primary text-white px-2 py-1 rounded-pill fs-10px">
+                                    {{ $row->tindakan->count() }} Tindakan
+                                </span>
+                            </div>
+                                @foreach ($row->tindakan as $item)
+                                    <div class="history-item {{ !$loop->last ? 'border-bottom pb-2 mb-2' : '' }}">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <span class="fw-semibold text-dark fs-12px">
+                                                {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }}
                                             </span>
-                                            <span class="badge bg-primary text-white px-2 py-1 rounded-pill fs-10px">
-                                                {{ $row->tindakan->count() }} Tindakan
+                                            <span class="badge bg-secondary text-white fs-10px">
+                                                {{ $item->qty }}x
                                             </span>
                                         </div>
-                                        <div class="tindakan-list">
-                                            @foreach ($row->tindakan as $item)
-                                                <div class="tindakan-item {{ !$loop->last ? 'border-bottom pb-2 mb-2' : '' }}">
-                                                    <div class="d-flex justify-content-between align-items-start">
-                                                        <span class="fw-semibold text-dark fs-12px">
-                                                            {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }}
-                                                        </span>
-                                                        <span class="badge bg-secondary text-white fs-10px">
-                                                            {{ $item->qty }}x
-                                                        </span>
-                                                    </div>
-                                                    
-                                                    <div class="mt-2 ps-3 text-muted fs-11px">
-                                                        @if ($item->dokter?->nama)
-                                                            <div class="d-flex align-items-start mb-1">
-                                                                <i class="fa fa-user-md me-2 text-info w-15px text-center mt-0.5"></i>
-                                                                <span>Dokter: <strong class="text-dark">{{ $item->dokter->nama }}</strong></span>
-                                                            </div>
-                                                        @endif
-                                                        @if ($item->perawat?->nama)
-                                                            <div class="d-flex align-items-start">
-                                                                <i class="fa fa-user-nurse me-2 text-success w-15px text-center mt-0.5"></i>
-                                                                <span>Perawat: <strong class="text-dark">{{ $item->perawat->nama }}</strong></span>
-                                                            </div>
-                                                        @endif
-                                                    </div>
+                                        
+                                        <div class="mt-2 ps-3 text-muted fs-11px">
+                                            @if ($item->dokter?->nama)
+                                                <div class="d-flex align-items-start mb-1">
+                                                    <i class="fa fa-user-md me-2 text-info w-15px text-center mt-0.5"></i>
+                                                    <span>Dokter: <strong class="text-dark">{{ $item->dokter->nama }}</strong></span>
                                                 </div>
-                                            @endforeach
+                                            @endif
+                                            @if ($item->perawat?->nama)
+                                                <div class="d-flex align-items-start">
+                                                    <i class="fa fa-user-nurse me-2 text-success w-15px text-center mt-0.5"></i>
+                                                    <span>Perawat: <strong class="text-dark">{{ $item->perawat->nama }}</strong></span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
-                                </div>
-                            @endif
-                        @endforeach
-
-                        @if ($historyCount === 0)
-                            <div class="text-center text-muted my-5">
-                                <i class="fa fa-folder-open fa-3x mb-3 text-gray-300"></i>
-                                <p class="mb-0 fs-13px">Belum ada history tindakan sebelumnya</p>
-                            </div>
-                        @endif
+                                @endforeach
+                        </div>
                     </div>
+                @endif
+            @endforeach
+
+            @if ($historyCount === 0)
+                <div class="text-center text-muted my-5">
+                    <i class="fa fa-folder-open fa-3x mb-3 text-gray-300"></i>
+                    <p class="mb-0 fs-13px">Belum ada history tindakan sebelumnya</p>
                 </div>
-            </div>
+            @endif
         </div>
         <div class="col-md-8">
             <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
@@ -143,50 +79,53 @@
                         <table class="table table-borderless p-0">
                             <tr>
                                 <td class="p-0">
-                                    @php
-                                        $i = 0;
-                                    @endphp
                                     <template x-for="(row, index) in tindakan" :key="index">
                                         <div class="border p-3 position-relative" :class="index > 0 ? 'mt-3' : ''">
                                             <template x-if="index > 0">
-                                                <button type="button" class="btn btn-danger btn-xs position-absolute"
-                                                    style="top: 5px; right: 5px; z-index: 10;" @click="hapusTindakan(index)">
-                                                    &nbsp;x&nbsp;
-                                                </button>
+                                                <template x-if="row.paket_perawatan_id == null">
+                                                    <button type="button" class="btn btn-danger btn-xs position-absolute"
+                                                        style="top: 5px; right: 5px; z-index: 10;" @click="hapusTindakan(index)">
+                                                        &nbsp;x&nbsp;
+                                                    </button>
+                                                </template>
                                             </template>
                                             <div class="mb-3">
                                                 <div class="row g-2 align-items-center">
                                                     <div class="col-md-10" wire:ignore>
                                                         <div wire:ignore>
-                                                            <label class="form-label" x-text="`Tindakan ${index + 1}`"></label>
-                                                        <select class="form-control" x-model="row.id" wire:ignore
-                                                            x-init="$($el).select2({
-                                                                width: '100%',
-                                                                dropdownAutoWidth: true
-                                                            });
-                                                            $($el).on('change', function(e) {
-                                                                row.id = e.target.value;
-                                                                updateTindakan(index);
-                                                            });
-                                                            $watch('row.id', (value) => {
-                                                                if (value !== $($el).val()) {
-                                                                    $($el).val(value).trigger('change');
-                                                                }
-                                                            });">
-                                                            <option value="" selected>-- Tidak Ada Tindakan --</option>
-                                                            <template x-for="item in dataTindakan" :key="item.id">
-                                                                <option :value="item.id" :selected="row.id == item.id"
-                                                                    x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.tarif)})`">
-                                                                </option>
+                                                            <template x-if="row.paket_perawatan_id == null">
+                                                                <label class="form-label" x-text="`Tindakan ${index + 1}`"></label>
                                                             </template>
-                                                        </select>
-                                                        </div>
-                                                        
+                                                            <template x-if="row.paket_perawatan_id != null">
+                                                                <label class="form-label" x-text="`Tindakan untuk Paket ${row.paket_perawatan_nama}`"></label>
+                                                            </template>
+                                                            <select class="form-control" x-model="row.id" :disabled="row.paket_perawatan_id != null" wire:ignore
+                                                                x-init="$($el).select2({
+                                                                    width: '100%',
+                                                                    dropdownAutoWidth: true
+                                                                });
+                                                                $($el).on('change', function(e) {
+                                                                    row.id = e.target.value;
+                                                                    updateTindakan(index);
+                                                                });
+                                                                $watch('row.id', (value) => {
+                                                                    if (value !== $($el).val()) {
+                                                                        $($el).val(value).trigger('change');
+                                                                    }
+                                                                });">
+                                                                <option value="" selected>-- Tidak Ada Tindakan --</option>
+                                                                <template x-for="item in dataTindakan" :key="item.id">
+                                                                    <option :value="item.id" :selected="row.id == item.id"
+                                                                        x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.tarif)})`">
+                                                                    </option>
+                                                                </template>
+                                                            </select>
+                                                        </div>                                                        
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label class="form-label">Qty</label>
                                                         <input type="number" min="1" class="form-control"
-                                                            placeholder="Qty" x-model.number="row.qty">
+                                                            placeholder="Qty" x-model.number="row.qty" :disabled="row.paket_perawatan_id != null">
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,9 +174,6 @@
                                                     Butuh Sitemarking</label>
                                             </div>
                                         </div>
-                                        @php
-                                            $i++;
-                                        @endphp
                                     </template>
                                 </td>
                             </tr>

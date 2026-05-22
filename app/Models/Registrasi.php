@@ -54,6 +54,11 @@ class Registrasi extends Model
         return $this->hasOne(Tug::class, 'id');
     }
 
+    public function registrasiPaketPerawatan(): HasMany
+    {
+        return $this->hasMany(RegistrasiPaketPerawatan::class);
+    }
+
     public function tindakan(): HasMany
     {
         return $this->hasMany(Tindakan::class);

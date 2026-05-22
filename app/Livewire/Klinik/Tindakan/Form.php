@@ -19,7 +19,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
 
-    public $tindakan = [], $dataTindakan = [], $dataNakes = [];
+    public $tindakan = [], $tindakan_paket = [], $dataTindakan = [], $dataNakes = [];
     public $data, $nakes_id;
     public $bahan = [];
     public $dataBarang = [];
@@ -44,6 +44,8 @@ class Form extends Component
         if ($data->tindakan->count() > 0) {
             $this->tindakan = $data->tindakan->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
+                'paket_perawatan_id' => $q->paket_perawatan_id,
+                'paket_perawatan_nama' => $q->paketPerawatan->nama,
                 'qty' => $q->qty,
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
