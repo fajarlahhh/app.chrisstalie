@@ -321,7 +321,7 @@
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
                                 $wire.set('tindakan', JSON.parse(JSON.stringify(this.tindakan)), true);
-                                $wire.set('tindakan_paket', JSON.parse(JSON.stringify(this.tindakan_paket)), true);
+                                $wire.set('tindakan_paket', JSON.parse(JSON.stringify(this.tindakan_paket)), false);
                             }
                         }
                     }
