@@ -67,8 +67,29 @@ class Index extends Component
     {
         $dataPendapatan = $this->getPendapatan();
         $dataPengeluaran = $this->getPengeluaran();
+
+        $pendapatan = [];
+        foreach ($this->getPendapatan()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)) as $key => $value) {
+            $pendapatan[] = [
+                'metode_bayar' => $value['metode_bayar'],
+                'total_tagihan' => $value['bayar'] - $value['selisih'],
+                'total_diskon_barang' => $value['total_diskon_barang'],
+                'total_diskon_tindakan' => $value['total_diskon_tindakan'],
+                'diskon' => $value['diskon']
+            ];
+            if ($value['metode_bayar_2'] != null) {
+                $pendapatan[] = [
+                    'metode_bayar' => $value['metode_bayar_2'],
+                    'total_tagihan' => $value['bayar_2'],
+                    'total_diskon_barang' => 0,
+                    'total_diskon_tindakan' => 0,
+                    'diskon' => 0
+                ];
+            }
+        }
+
         return view('livewire.laporan.laporanhariankas.index', [
-            'dataPendapatan' =>  $this->getPendapatan()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
+            'dataPendapatan' =>  collect($pendapatan),
             'dataPengeluaran' =>  $this->getPengeluaran()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
             'dataPengguna' => Pengguna::whereIn('id', (array_merge($dataPendapatan->pluck('pengguna_id')->unique()->toArray(), $dataPengeluaran->pluck('pengguna_id')->unique()->toArray())))->get()
         ]);
