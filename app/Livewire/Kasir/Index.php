@@ -613,7 +613,6 @@ class Index extends Component
             'kode_akun_jasa_perawat_id' => $q->kode_akun_jasa_perawat_id,
         ])->toArray();
         $this->tanggal = date('Y-m-d');
-        $this->setRegistrasi('20260521143525');
     }
 
     public function render()
