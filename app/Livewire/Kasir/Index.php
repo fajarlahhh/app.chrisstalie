@@ -373,7 +373,7 @@ class Index extends Component
 
     private function paketPerawatan()
     {
-        foreach ($this->registrasi_paket_perawatan->where('jenis', 'Prabayar') as $key => $value) {
+        foreach (collect($this->registrasi_paket_perawatan)->where('jenis', 'Prabayar') as $key => $value) {
             RegistrasiPaketPerawatan::where('id', $value['id'])->update([
                 'terbayar' => 1,
             ]);
