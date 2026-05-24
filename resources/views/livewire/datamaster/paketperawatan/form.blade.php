@@ -34,14 +34,6 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Tarif</label>
-                            <input id="tarif" class="form-control" type="number" step="1" min="0"
-                                wire:model="tarif" x-model.number="tarif" @keyup="hitungKeuntungan()" />
-                            @error('tarif')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Jenis</label>
                             <select id="jenis" class="form-control" wire:model="jenis" x-model="jenis"
                                 @change="updatedJenis()" @if ($data->exists) disabled @endif
@@ -56,8 +48,8 @@
                         </div>
                         <template x-if="jenis == 'Prabayar'">
                             <div class="mb-3">
-                                <label class="form-label">Kode Akun</label>
-                                <select id="kode_akun_id" class="form-control" wire:model="kode_akun_id"
+                                <label class="form-label">Kode Akun Kewajiban</label>
+                                <select id="kode_akun_kewajiban_id" class="form-control" wire:model="kode_akun_kewajiban_id"
                                     x-init="$($el).selectpicker({
                                         liveSearch: true,
                                         width: 'auto',
@@ -73,7 +65,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('kode_akun_id')
+                                @error('kode_akun_kewajiban_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -109,15 +101,17 @@
                                     let selectedTindakan = this.dataTindakan.find(g => g.id == row.id);
                                     if (selectedTindakan) {
                                         row.tarif = selectedTindakan.tarif;
+                                        row.harga_jual = selectedTindakan.tarif;
                                     } else {
                                         row.tarif = 0;
+                                        row.harga_jual = 0;
                                     }
                                     this.calculateTindakan(index);
                                     this.hitungKeuntungan();
                                 },
                                 calculateTindakan(index) {
                                     let row = this.tindakan[index];
-                                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.tarif) || 0) || 0;
+                                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.harga_jual) || 0) || 0;
                                     this.total_biaya_tindakan = this.tindakan.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
                                     this.hitungKeuntungan();
                                 },
@@ -126,8 +120,9 @@
                                 <thead>
                                     <tr>
                                         <th>Tindakan</th>
+                                        <th class="w-150px">Harga Jual</th>
                                         <th class="w-100px">Qty</th>
-                                        <th class="w-150px">Sub Total</th>
+                                        <th class="w-100px">Sub Total</th>
                                         <th class="w-5px"></th>
                                     </tr>
                                 </thead>
@@ -163,12 +158,17 @@
                                                 </div>
                                             </td>
                                             <td>
+                                                <input type="number" class="form-control w-150px" min="1"
+                                                    step="any" x-model.number="row.harga_jual"
+                                                    @input="calculateTindakan(index)">
+                                            </td>
+                                            <td>
                                                 <input type="number" class="form-control w-100px" min="1"
                                                     step="any" x-model.number="row.qty"
                                                     @input="calculateTindakan(index)">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control text-end w-150px"
+                                                <input type="text" class="form-control text-end w-100px"
                                                     :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
@@ -182,7 +182,7 @@
                                         </tr>
                                     </template>
                                     <tr>
-                                        <th colspan="2" class="text-end align-middle">Total Biaya Tindakan
+                                        <th colspan="3" class="text-end align-middle">Biaya Paket
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"

@@ -21,7 +21,7 @@ class Form extends Component
     public $tindakan = [];
     public $jenis;
     public $dataKodeAkun;
-    public $kode_akun_id;
+    public $kode_akun_kewajiban_id;
 
     public function submit()
     {
@@ -31,7 +31,7 @@ class Form extends Component
                 'uraian' => 'required',
                 'tarif' => 'required|numeric',
                 'jenis' => 'required',
-                'kode_akun_id' => $this->jenis == 'Prabayar' ? 'required' : 'nullable',
+                'kode_akun_pendapatan_id' => 'required',
                 'masa_aktif' => $this->jenis == 'Prabayar' ? 'required|numeric' : 'nullable|numeric',
             ]
         );
@@ -39,23 +39,25 @@ class Form extends Component
             function () {
                 $this->data->nama = $this->nama;
                 $this->data->uraian = $this->uraian;
-                $this->data->tarif = $this->tarif;
+                $this->data->tarif = collect($this->tindakan)->sum(fn($q) => $q['harga_jual'] * $q['qty']);
                 $this->data->masa_aktif = $this->masa_aktif;
+                $this->data->qty = $this->jenis == 'Prabayar' ? collect($this->tindakan)->sum('qty') : null;
                 $this->data->jenis = $this->jenis;
-                $this->data->kode_akun_id = $this->kode_akun_id;
+                $this->data->kode_akun_kewajiban_id = $this->kode_akun_kewajiban_id;
                 $this->data->pengguna_id = auth()->id();
                 $this->data->save();
 
                 $this->data->paketPerawatanDetail()->delete();
                 $this->data->paketPerawatanDetail()->insert(
                     collect($this->tindakan)->map(
-                        fn ($q) => [
+                        fn($q) => [
                             'paket_perawatan_id' => $this->data->id,
                             'tarif_tindakan_id' => $q['id'],
                             'qty' => $q['qty'],
+                            'harga_jual' => $q['harga_jual'],
                         ]
                     )
-                    ->toArray()
+                        ->toArray()
                 );
                 session()->flash('success', 'Berhasil menyimpan data');
             }
@@ -71,11 +73,12 @@ class Form extends Component
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
             $this->tindakan = $this->data->paketPerawatanDetail->map(
-                fn ($q) => [
+                fn($q) => [
                     'id' => $q->tarif_tindakan_id,
                     'qty' => $q->qty,
                     'tarif' => $q->tarifTindakan->tarif,
-                    'subtotal' => $q->tarifTindakan->tarif * $q->qty,
+                    'harga_jual' => $q->harga_jual,
+                    'subtotal' => $q->harga_jual * $q->qty,
                 ]
             )->toArray();
         }
