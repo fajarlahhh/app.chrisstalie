@@ -120,7 +120,25 @@
             <th class="p-0 text-end">Total<br><br></th>
         </tr>
         @if ($data->registrasi)
-            @foreach ($data->registrasi->tindakan as $tindakan)
+            @foreach ($data->registrasi->registrasiPaketPerawatan->where('terbayar', 1) as $value)
+                <tr>
+                    <td class="p-0">
+                        {{ $value->paketPerawatan->nama }}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format_id($value->biaya) }} 
+                        @if ($value->jenis == 'Prabayar')
+                            - <small>{{ $value->jenis }}</small>
+                        @endif
+                    </td>
+                    <td class="p-0 ps-2 text-center w-10px" nowrap>
+                        1
+                    </td>
+                    <td class="p-0 text-end w-50px" nowrap>
+                        {{ number_format_id($value->biaya) }}
+                        
+                    </td>
+                </tr>
+            @endforeach
+            @foreach ($data->registrasi->tindakan->whereNull('paket_perawatan_id') as $tindakan)
                 <tr>
                     <td class="p-0">
                         {{ $tindakan->tarifTindakan->nama }}<br>
@@ -170,6 +188,12 @@
     </table>
     <hr>
     <table class="table table-borderless fs-10px">
+        <tr>
+            <td class="p-0">Total Paket Perawatan</td>
+            <td class="p-0 text-end" nowrap>
+                {{ number_format_id($data->total_registrasi_paket_perawatan) }}
+            </td>
+        </tr>
         <tr>
             <td class="p-0">Total Tindakan</td>
             <td class="p-0 text-end" nowrap>

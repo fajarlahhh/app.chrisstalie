@@ -66,8 +66,8 @@
                             <td nowrap>
                                 <small>
                                     <ul>
-                                        <li>Total Tindakan :
-                                            <strong>{{ number_format_id($row->total_paket_perawatan) }}</strong>
+                                        <li>Total Paket Perawatan :
+                                            <strong>{{ number_format_id($row->total_registrasi_paket_perawatan) }}</strong>
                                         </li>
                                         <li>Total Tindakan :
                                             <strong>{{ number_format_id($row->total_tindakan + $row->diskon) }}</strong>
