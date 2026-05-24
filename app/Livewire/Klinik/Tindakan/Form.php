@@ -5,6 +5,7 @@ namespace App\Livewire\Klinik\Tindakan;
 use App\Class\BarangClass;
 use App\Models\BarangSatuan;
 use App\Models\Nakes;
+use App\Models\PaketPerawatan;
 use App\Models\Registrasi;
 use App\Models\Stok;
 use App\Models\TarifTindakan;
@@ -42,10 +43,11 @@ class Form extends Component
             'tarif' => $q->tarif
         ])->toArray();
         if ($data->tindakan->count() > 0) {
+            $dataPaketPerawatan = PaketPerawatan::whereIn('id', $data->tindakan->pluck('paket_perawatan_id'))->get();
             $this->tindakan_paket = $data->tindakan->whereNotNull('paket_perawatan_id')->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
                 'paket_perawatan_id' => $q->paket_perawatan_id,
-                'paket_perawatan_nama' => $q->paketPerawatan?->nama,
+                'paket_perawatan_nama' => $dataPaketPerawatan->firstWhere('id', $q->paket_perawatan_id)?->nama,
                 'tindakan_nama' => collect($this->dataTindakan)->where('id', $q->tarif_tindakan_id)->first()['nama'],
                 'qty' => $q->qty,
                 'harga' => $q->harga,

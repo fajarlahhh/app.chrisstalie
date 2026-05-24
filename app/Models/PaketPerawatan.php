@@ -18,6 +18,16 @@ class PaketPerawatan extends Model
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
+    public function kodeAkunPendapatan(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class);
+    }
+
+    public function kodeAkunKewajiban(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class);
+    }
+
     public function paketPerawatanDetail(): HasMany
     {
         return $this->hasMany(PaketPerawatanDetail::class);

@@ -76,7 +76,19 @@
                 <div class="alert alert-light table-responsive border">
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="w-10px bg-gray-100">No.</th>
+                                    <th class="bg-gray-100">Uraian</th>
+                                    <th class="text-end w-150px bg-gray-100">Harga</th>
+                                    <th class="w-100px bg-gray-100">Qty</th>
+                                    <th class="w-150px bg-gray-100">Diskon <small class="text-muted">(Rp.)</small></th>
+                                    <th class="text-end w-150px bg-gray-100">Sub Total</th>
+                                    <th class="w-5px bg-gray-100"></th>
+                                </tr>
+                            </thead>
                             <tbody>
+                                @include('livewire.kasir.paket')
                                 @include('livewire.kasir.tindakan')
                                 @include('livewire.kasir.resep')
                                 @include('livewire.kasir.barang')
@@ -131,6 +143,33 @@
         window.Livewire.on('pasien-resep', (data) => {
             this.resep = data;
         });
+        window.Livewire.on('pasien-paket-perawatan', (data) => {
+            this.registrasi_paket_perawatan = data;
+        });
+    });
+
+    document.addEventListener('set-registrasi-paket-perawatan', function(event) {
+        const data = event?.detail?.data ?? [];
+        let root = document.querySelector('[x-data]');
+        if (root) {
+            let alpineData = Alpine?.closestDataStack ? Alpine.closestDataStack(root)?.[0] : root.__x?.$data;
+            if (alpineData && 'registrasi_paket_perawatan' in alpineData) {
+                alpineData.registrasi_paket_perawatan = data;
+                alpineData.hitungTotalRegistrasiPaketPerawatan();
+            }
+        }
+    });
+
+    document.addEventListener('set-tindakan', function(event) {
+        const data = event?.detail?.data ?? [];
+        let root = document.querySelector('[x-data]');
+        if (root) {
+            let alpineData = Alpine?.closestDataStack ? Alpine.closestDataStack(root)?.[0] : root.__x?.$data;
+            if (alpineData && 'tindakan' in alpineData) {
+                alpineData.tindakan = data;
+                alpineData.hitungTotalTindakan();
+            }
+        }
     });
 
     document.addEventListener('set-tindakan', function(event) {
@@ -169,11 +208,13 @@
             dataMetodeBayar: @js($dataMetodeBayar ?? []),
             total_diskon_tindakan: @js($total_diskon_tindakan),
             total_diskon_barang: @js($total_diskon_barang),
+            total_registrasi_paket_perawatan: @js($total_registrasi_paket_perawatan),
             total_barang: @js($total_barang),
             total_tindakan: @js($total_tindakan),
             total_resep: @js($total_resep),
             total_tagihan: @js($total_tagihan),
             tindakan: @js($tindakan),
+            registrasi_paket_perawatan: @js($registrasi_paket_perawatan),
             resep: @js($resep),
             cash: @js($cash),
             cash_2: @js($cash_2),
@@ -184,8 +225,14 @@
                 if (val === null || val === undefined || isNaN(val)) return '0';
                 return `${new Intl.NumberFormat('id-ID').format(val)}`;
             },
+            hitungTotalRegistrasiPaketPerawatan() {
+                this.total_registrasi_paket_perawatan = this.registrasi_paket_perawatan.reduce((sum, row) => {
+                    return sum + (row.biaya * row.qty - row.diskon);
+                }, 0);
+                this.hitungTotalTagihan();
+            },
             hitungTotalTindakan() {
-                this.total_tindakan = this.tindakan.reduce((sum, row) => {
+                this.total_tindakan = this.tindakan.filter(row => !row.paket_perawatan_id).reduce((sum, row) => {
                     return sum + (row.biaya * row.qty - row.diskon);
                 }, 0);
                 this.total_diskon_tindakan = this.tindakan.reduce((sum, row) => {
@@ -214,7 +261,7 @@
                 this.hitungTotalTagihan();
             },
             hitungTotalTagihan() {
-                this.total_tagihan = this.total_barang + this.total_tindakan + this.total_resep;
+                this.total_tagihan = this.total_barang + this.total_tindakan + this.total_resep + this.total_registrasi_paket_perawatan;
             },
             tambahBarang() {
                 this.barang.push({
@@ -276,7 +323,8 @@
                     if (componentId) {
                         let $wire = window.Livewire.find(componentId);
                         if ($wire && typeof $wire.set === 'function') {
-                            $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), true);
+                            $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), false);
+                            $wire.set('registrasi_paket_perawatan', JSON.parse(JSON.stringify(this.registrasi_paket_perawatan)), false);
                             $wire.set('tindakan', JSON.parse(JSON.stringify(this.tindakan)), false);
                             $wire.set('resep', JSON.parse(JSON.stringify(this.resep)), false);
                             $wire.set('total_tagihan', this.total_tagihan, true);
@@ -285,6 +333,7 @@
                             $wire.set('total_barang', this.total_barang, true);
                             $wire.set('total_diskon_tindakan', this.total_diskon_tindakan, true);
                             $wire.set('total_diskon_barang', this.total_diskon_barang, true);
+                            $wire.set('total_registrasi_paket_perawatan', this.total_registrasi_paket_perawatan, true);
                             $wire.set('tanggal', this.tanggal, true);
                             $wire.set('keterangan', this.keterangan, true);
                             $wire.set('cash', this.cash, true);

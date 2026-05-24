@@ -1,12 +1,3 @@
-<tr>
-    <th class="w-10px">No.</th>
-    <th>Item</th>
-    <th class="text-end w-150px">Harga</th>
-    <th class="w-100px">Qty</th>
-    <th class="w-150px">Diskon <small class="text-muted">(Rp.)</small></th>
-    <th class="text-end w-150px">Sub Total</th>
-    <th class="w-5px"></th>
-</tr>
 <template x-for="(row, z) in barang" :key="z" id="barang">
     <tr>
         <td x-text="tindakan.length + resep.length + z + 1"></td>
@@ -53,7 +44,7 @@
         </td>
     </tr>
 </template>
-<tr class="bg-gray-100">
+<tr class="bg-light-500">
     <td colspan="4">
         <button type="button" wire:loading.attr="disabled" class="btn btn-secondary " @click="tambahBarang">
             <span wire:loading class="spinner-border spinner-border-sm"></span>
@@ -64,7 +55,7 @@
             <span class="text-danger" x-text="$store.wireErrors.barang"></span>
         </template>
     </td>
-    <td class="text-end">Total Harga Barang</td>
+    <td class="text-end"><strong>Total Harga Barang</strong></td>
     <td>
         <input type="text" class="form-control text-end" :value="formatNumber(total_barang)" disabled>
     </td>

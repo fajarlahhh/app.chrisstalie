@@ -77,14 +77,63 @@
                     <div class="panel-heading ui-sortable-handle">
                         <h4 class="panel-title">Form</h4>
                     </div>
-                    <div class="panel-body">                
+                    <div class="panel-body">           
+                        <!-- Grid Pemilihan Paket Prabayar -->
+                        <template x-if="dataPasienPaketPrabayar && dataPasienPaketPrabayar.length > 0">
+                            <div class="mb-4">
+                                <label class="form-label text-dark fw-bold mb-2 fs-13px">
+                                    <i class="fa fa-ticket-alt text-teal me-1"></i> Paket Prabayar Pasien
+                                </label>
+                                <div class="row g-2">
+                                    <template x-for="(row, index) in dataPasienPaketPrabayar" :key="index">
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="card border-1 cursor-pointer transition-all position-relative overflow-hidden"
+                                                :style="isPaketTerpilih(row) 
+                                                    ? 'border-color: #00acac !important; background-color: #f2fbfb; border-radius: 8px; cursor: pointer; transition: all 0.15s ease-in-out; box-shadow: 0 2px 4px rgba(0, 172, 172, 0.1);' 
+                                                    : 'border-color: #d8dde6; background-color: #ffffff; border-radius: 8px; cursor: pointer; transition: all 0.15s ease-in-out;'"
+                                                @click="togglePaket(row)"
+                                                @mouseover="$el.style.transform = 'translateY(-1px)'"
+                                                @mouseout="$el.style.transform = 'translateY(0)'">
+                                                
+                                                <!-- Indikator Pojok Terpilih -->
+                                                <template x-if="isPaketTerpilih(row)">
+                                                    <div class="position-absolute" style="top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 28px 28px 0; border-color: transparent #00acac transparent transparent;">
+                                                        <i class="fa fa-check text-white position-absolute" style="top: 2px; right: -25px; font-size: 9px; z-index: 1;"></i>
+                                                    </div>
+                                                </template>
+                                                
+                                                <div class="card-body d-flex align-items-center">
+                                                    <!-- Kotak Centangan -->
+                                                    <div class="me-3 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                                        <span :class="isPaketTerpilih(row) ? 'text-teal' : 'text-gray-400'">
+                                                            <i class="fa" :class="isPaketTerpilih(row) ? 'fa-check-square fs-18px' : 'fa-square fs-18px'"></i>
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <div class="flex-grow-1 pr-3">
+                                                        <div class="fw-bold text-dark fs-12px mb-0" x-text="row.nama"></div>
+                                                        <div class="text-muted fs-11px" x-text="row.tarif_tindakan_nama"></div>
+                                                        <div class="mt-2 d-flex align-items-center">
+                                                            <span class="badge bg-teal-100 text-teal-800 border border-teal-200 px-2 py-0.5 rounded fs-10px fw-semibold">
+                                                                Sisa Qty: <strong x-text="row.qty - row.qty_terpakai"></strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
                         <table class="table table-borderless p-0">
                             <tr>
                                 <td class="p-0">
                                     @php
                                         $i = 0;
                                     @endphp
-                                    <template x-for="(row, index) in registrasi_paket_perawatan" :key="index">
+                                    <template x-for="(row, index) in registrasi_paket_perawatan.filter(r => !r.pasien_paket_prabayar_id)" :key="index">
                                         <div class="border p-3 position-relative" :class="index > 0 ? 'mt-3' : ''">
                                             <template x-if="index > 0">
                                                 <button type="button" class="btn btn-danger btn-xs position-absolute"
@@ -94,9 +143,9 @@
                                             </template>
                                             <div class="mb-3">
                                                 <div class="row g-2 align-items-center">
-                                                    <div class="col-md-10" wire:ignore>
+                                                    <div class="col-md-12" wire:ignore>
                                                         <div wire:ignore>
-                                                            <label class="form-label" x-text="`Paket Perawatan ${index + 1}`"></label>
+                                                        <label class="form-label" x-text="`Paket Perawatan ${index + 1}`"></label>
                                                             <select class="form-control" x-model="row.id" wire:ignore
                                                                 x-init="$($el).select2({
                                                                     width: '100%',
@@ -112,18 +161,13 @@
                                                                     }
                                                                 });">
                                                                 <option value="" selected>-- Tidak Ada Paket Perawatan --</option>
-                                                                <template x-for="item in dataPaketPerawatan" :key="item.id">
+                                                                <template x-for="item in dataPaketPerawatan.filter(i => i.jenis == 'Bundling')" :key="item.id">
                                                                     <option :value="item.id" :selected="row.id == item.id"
                                                                         x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.tarif)})`">
                                                                     </option>
                                                                 </template>
                                                             </select>
-                                                        </div>                                                        
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label class="form-label">Qty</label>
-                                                        <input type="number" min="1" class="form-control"
-                                                            placeholder="Qty" x-model.number="row.qty">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,23 +178,13 @@
                                                             return dataPaketPerawatan.find(t => t.id == row.id);
                                                         }
                                                     }">
-                                                        <h5 class="mb-3 d-flex align-items-center text-primary fw-bold">
-                                                            <i class="fa fa-box-open me-2 fs-16px text-primary"></i> Detail Paket Perawatan
-                                                        </h5>
-
-                                                        <div class="row g-2 mb-3">
-                                                            <div class="col-4">
-                                                                <div class="bg-white bg-opacity-70 p-2 rounded border h-100 text-center"
-                                                                    style="border-color: rgba(var(--bs-primary-rgb), 0.15) !important;">
-                                                                    <small class="text-muted d-block uppercase fw-bold mb-1"
-                                                                        style="font-size: 10px; letter-spacing: 0.5px;">Tarif Paket</small>
-                                                                    <span class="fs-13px fw-bold text-primary" x-text="'Rp. ' + new Intl.NumberFormat('id-ID').format(selectedPkg.tarif)"></span>
-                                                                </div>
-                                                            </div>
+                                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                                            <h5 class="mb-0 d-flex align-items-center text-primary fw-bold">
+                                                                <i class="fa fa-box-open me-2 fs-16px text-primary"></i> Detail Paket Perawatan
+                                                            </h5>
+                                                            <h5 class="fw-bold text-primary" x-text="'Rp. ' + new Intl.NumberFormat('id-ID').format(selectedPkg.tarif)"></h5>
                                                         </div>
-
-                                                        <div class="bg-white bg-opacity-80 rounded border p-2"
-                                                            style="border-color: rgba(var(--bs-primary-rgb), 0.15) !important;">
+                                                        <div class="bg-white bg-opacity-80 rounded border p-2">                                                            
                                                             <div
                                                                 class="px-2 py-1 bg-light rounded mb-2 d-flex justify-content-between align-items-center">
                                                                 <span class="fw-bold text-muted uppercase"
@@ -166,6 +200,8 @@
                                                                             <th class="ps-2 py-1 border-0 fw-semibold">Nama Tindakan</th>
                                                                             <th class="text-end pe-2 py-1 border-0 fw-semibold w-80px">Qty
                                                                             </th>
+                                                                            <th class="text-end pe-2 py-1 border-0 fw-semibold w-150px">Harga Normal
+                                                                            </th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -173,10 +209,14 @@
                                                                             <tr>
                                                                                 <td class="ps-2 py-2 border-0 text-dark fw-medium" x-text="detailItem.nama"></td>
                                                                                 <td class="text-end pe-2 py-2 border-0 fw-bold text-primary" x-text="`${detailItem.qty}x`"></td>
+                                                                                <td class="text-end pe-2 py-2 border-0 fw-bold text-primary" x-text="'Rp. ' + new Intl.NumberFormat('id-ID').format(detailItem.tarif * detailItem.qty)"></td>
                                                                             </tr>
                                                                         </template>
                                                                     </tbody>
                                                                 </table>
+                                                            </div>
+                                                            <div class="bg-light p-2 rounded text-center mt-2">
+                                                                <span class="text-muted" style="font-size: 11px;">Hemat: <span class="fw-bold text-danger" x-text="'Rp. ' + new Intl.NumberFormat('id-ID').format((selectedPkg.detail.reduce((acc, item) => acc + (item.tarif * item.qty), 0)) - selectedPkg.tarif)"></span></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -242,13 +282,16 @@
             return {
                 registrasi_paket_perawatan: @js($registrasi_paket_perawatan),
                 dataPaketPerawatan: @js($dataPaketPerawatan),
+                dataPasienPaketPrabayar: @js($dataPasienPaketPrabayar),
 
                 tambahTindakan() {
                     this.registrasi_paket_perawatan.push({
                         id: null,
-                        qty: 1,
                         biaya: null,
                         catatan: null,
+                        jenis: 'Bundling',
+                        kode_akun_id :null,
+                        pasien_paket_prabayar_id: null,
                     });
                 },
 
@@ -267,6 +310,45 @@
                     } else {
                         row.biaya = null;
                     }
+                },
+
+                isPaketTerpilih(row) {
+                    return this.registrasi_paket_perawatan.some(item => 
+                        item.jenis === 'Prabayar' && item.pasien_paket_prabayar_id == row.id
+                    );
+                },
+
+                togglePaket(row) {
+                    let index = this.registrasi_paket_perawatan.findIndex(item => 
+                        item.jenis === 'Prabayar' && item.pasien_paket_prabayar_id == row.id
+                    );
+                    if (index !== -1) {
+                        this.registrasi_paket_perawatan.splice(index, 1);
+                    } else {
+                        this.registrasi_paket_perawatan.push({
+                            id: row.paket_perawatan_id,
+                            biaya: row.tarif,
+                            harga_jual: row.tarif,
+                            catatan: '',
+                            jenis: 'Prabayar',
+                            kode_akun_id: row.kode_akun_id,
+                            pasien_paket_prabayar_id: row.id
+                        });
+                    }
+                    
+                    if (this.registrasi_paket_perawatan.length === 0) {
+                        this.tambahTindakan();
+                    } else {
+                        let emptyIndex = this.registrasi_paket_perawatan.findIndex(item => 
+                            item.id === null && item.jenis === 'Bundling' && item.qty === 1 && !item.catatan
+                        );
+                        if (emptyIndex !== -1 && this.registrasi_paket_perawatan.length > 1) {
+                            this.registrasi_paket_perawatan.splice(emptyIndex, 1);
+                        }
+                    }
+                    this.$nextTick(() => {
+                        this.refreshSelect2();
+                    });
                 },
 
                 syncToLivewire() {

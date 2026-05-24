@@ -163,12 +163,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <template x-if="row.biaya_jasa_dokter > 0">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Dokter</label>
-                                                    <select class="form-control" x-model="row.dokter_id">
-                                                        <option value="">-- Tidak Ada Dokter --</option>
-                                                        <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
+                                                <div class="row g-2 align-items-center">
+                                                    <div class="col-md-6">
+                                                        <template x-if="row.biaya_jasa_dokter > 0">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Dokter</label>
+                                                                <select class="form-control" x-model="row.dokter_id">
+                                                                    <option value="">-- Tidak Ada Dokter --</option>
+                                                                    <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
                                                             :key="nakes.id">
                                                             <option :value="nakes.id" :selected="row.dokter_id == nakes.id"
                                                                 x-text="nakes.nama"></option>
@@ -176,6 +178,8 @@
                                                     </select>
                                                 </div>
                                             </template>
+                                                </div>
+                                                    <div class="col-md-6">
                                             <template x-if="row.biaya_jasa_perawat > 0">
                                                 <div class="mb-3">
                                                     <label class="form-label">Perawat</label>
@@ -189,6 +193,8 @@
                                                     </select>
                                                 </div>
                                             </template>
+                                                </div>
+                                                </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Catatan</label>
                                                 <textarea class="form-control" x-model="row.catatan"></textarea>

@@ -27,6 +27,11 @@ class PasienPaketPrabayar extends Model
         return $this->belongsTo(Pengguna::class, 'pengguna_id');
     }
 
+    public function registrasiPaketPerawatan()
+    {
+        return $this->hasMany(RegistrasiPaketPerawatan::class, 'pasien_paket_prabayar_id');
+    }
+
     public function scopeAktif($query)
     {
         $query->where('tanggal_berakhir', '>', date('Y-m-d 00:00:00'));
@@ -35,5 +40,10 @@ class PasienPaketPrabayar extends Model
     public function scopeTidakAktif($query)
     {
         $query->where('tanggal_berakhir', '<', date('Y-m-d 00:00:00'));
+    }
+
+    public function getQtyTerpakaiAttribute()
+    {
+        return $this->registrasiPaketPerawatan->where('terbayar', 1)->count();
     }
 }

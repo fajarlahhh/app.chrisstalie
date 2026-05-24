@@ -1,20 +1,11 @@
 @if (count($tindakan) > 0)
-    <tr>
-        <th class="w-10px">No.</th>
-        <th>Tindakan</th>
-        <th class="text-end w-150px">Harga</th>
-        <th class="w-100px">Qty</th>
-        <th class="w-150px">Diskon <small class="text-muted">(Rp.)</small></th>
-        <th class="text-end w-150px">Sub Total</th>
-        <th class="w-5px"></th>
-    </tr>
-    <template x-for="(row, x) in tindakan" :key="x" id="tindakan">
+    <template x-for="(row, x) in tindakan.filter(i => !i.paket_perawatan_id)" :key="x" id="tindakan">
         <tr>
-            <td x-text="x + 1"></td>
+            <td x-text="registrasi_paket_perawatan.length + x + 1"></td>
             <td nowrap>
-                <span x-text="row.nama"></span>
+                <strong>Tindakan : </strong><span x-text="row.nama"></span>
                 <br>
-                <span class="text-muted">
+                <small class="text-muted">
                     &nbsp;&nbsp;&nbsp;- Dokter : <span
                         x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : '-'"></span>
                     <br>
@@ -22,7 +13,7 @@
                         x-text="row.perawat_id ? dataNakes.find(n => n.id == row.perawat_id)?.nama : '-'"></span>
                     <br>
                     Catatan : <span x-text="row.catatan ? row.catatan : '-'"></span>
-                </span>
+                </small>
             </td>
             <td>
                 <input type="text" class="form-control text-end" :value="formatNumber(row.biaya)" disabled>
@@ -40,8 +31,8 @@
             <td></td>
         </tr>
     </template>
-    <tr class="bg-gray-100">
-        <td colspan="5" class="text-end">Total Harga Tindakan</td>
+    <tr class="bg-light-500">
+        <td colspan="5" class="text-end"><strong>Total Harga Tindakan</strong></td>
         <td>
             <input type="text" class="form-control text-end" :value="formatNumber(total_tindakan)" disabled>
         </td>

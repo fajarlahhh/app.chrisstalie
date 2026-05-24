@@ -67,6 +67,9 @@
                                 <small>
                                     <ul>
                                         <li>Total Tindakan :
+                                            <strong>{{ number_format_id($row->total_paket_perawatan) }}</strong>
+                                        </li>
+                                        <li>Total Tindakan :
                                             <strong>{{ number_format_id($row->total_tindakan + $row->diskon) }}</strong>
                                         </li>
                                         <li>Total Resep : <strong>{{ number_format_id($row->total_resep) }}</strong></li>

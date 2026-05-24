@@ -11,7 +11,10 @@ use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
 use App\Class\JurnalkeuanganClass;
+use App\Models\PaketPerawatanDetail;
 use App\Models\Pasien;
+use App\Models\PasienPaketPrabayar;
+use App\Models\RegistrasiPaketPerawatan;
 use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -32,7 +35,8 @@ class Index extends Component
     public $tanggal;
     public $total_bayar = 0;
 
-    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
+    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $registrasi_paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_registrasi_paket_perawatan = 0, $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
+
 
     public function setRegistrasi($id)
     {
@@ -44,23 +48,25 @@ class Index extends Component
             $this->barang = [];
             $this->pasien_id = $this->registrasi->pasien_id;
 
-            $this->paket_perawatan = $this->registrasi->registrasiPaketPerawatan->map(function ($q) {
+            $this->registrasi_paket_perawatan = $this->registrasi->registrasiPaketPerawatan->map(function ($q) {
                 return [
                     'id' => $q->id,
                     'nama' => $q->paketPerawatan->nama,
                     'qty' => $q->qty,
-                    'harga' => $q->harga,
-                    'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
-                        return $q->qty * $q->biaya;
-                    }),
-                    'biaya_alat_barang' => $q->biaya_alat_barang,
-                    'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
-                    'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
-                    'biaya' => $q->biaya,
+                    'kode_akun_pendapatan_id' => $q->paketPerawatan->kode_akun_pendapatan_id,
+                    'kode_akun_pembayaran_id' => $q->paketPerawatan->kode_akun_kewajiban_id,
+                    'kode_akun_pembayaran_nama' => $q->paketPerawatan->kodeAkunKewajiban?->nama,
+                    'paket_perawatan_id' => $q->paket_perawatan_id,
+                    'pasien_paket_prabayar_id' => $q->pasien_paket_prabayar_id,
+                    'biaya' => $q->jenis == "Bundling" ? $q->biaya : 0,
+                    'prabayar' => $q->jenis == "Bundling" ? 0 : $q->biaya,
+                    'diskon' => 0,
+                    'jenis' => $q->jenis,
                 ];
             })->toArray();
+            $dataPaketPerawatanDetail = PaketPerawatanDetail::whereIn('paket_perawatan_id', collect($this->registrasi_paket_perawatan)->pluck('paket_perawatan_id'))->get();
 
-            $this->tindakan = $this->registrasi->tindakan->map(function ($q) {
+            $this->tindakan = $this->registrasi->tindakan->map(function ($q) use ($dataPaketPerawatanDetail) {
                 return [
                     'id' => $q->id,
                     'tarif_tindakan_id' => $q->tarif_tindakan_id,
@@ -72,13 +78,16 @@ class Index extends Component
                     'catatan' => $q->catatan,
                     'dokter_id' => $q->dokter_id,
                     'perawat_id' => $q->perawat_id,
+                    'paket_perawatan_id' => $q->paket_perawatan_id,
+                    'registrasi_paket_perawatan_id' => $q->registrasi_paket_perawatan_id,
                     'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
                         return $q->qty * $q->biaya;
                     }),
                     'biaya_alat_barang' => $q->biaya_alat_barang,
                     'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
                     'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
-                    'biaya' => $q->biaya,
+                    'biaya' => $q->paket_perawatan_id ? $dataPaketPerawatanDetail->where('tarif_tindakan_id', $q->tarif_tindakan_id)->first()->harga_jual * $q->qty : $q->biaya,
+                    'biaya_asli' => $q->biaya,
                 ];
             })->toArray();
 
@@ -121,6 +130,7 @@ class Index extends Component
                 })
                 ->values()->toArray();
 
+
             $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
                 $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
                 return [
@@ -149,13 +159,24 @@ class Index extends Component
                     'kode_akun_id' => $q->alat->kode_akun_id,
                 ];
             })->toArray();
-            if (count($this->tindakan) > 0) {
-                $this->dispatch('set-tindakan', data: $this->tindakan);
+
+            if (count($this->registrasi_paket_perawatan) > 0) {
+                $this->dispatch('set-registrasi-paket-perawatan', data: $this->registrasi_paket_perawatan);
             }
+
+            if (count($this->tindakan) > 0) {
+                $this->dispatch('set-tindakan', data: collect($this->tindakan)->toArray());
+            }
+
             if (count($this->resep) > 0) {
                 $this->dispatch('set-resep', data: $this->resep);
             }
-            $this->total_tindakan = collect($this->tindakan)->sum(function ($q) {
+
+            $this->total_registrasi_paket_perawatan = collect($this->registrasi_paket_perawatan)->sum(function ($q) {
+                return $q['biaya'] * $q['qty'];
+            });
+
+            $this->total_tindakan = collect($this->tindakan)->whereNull('paket_perawatan_id')->sum(function ($q) {
                 return $q['biaya'] * $q['qty'] - $q['diskon'];
             });
             $this->total_resep = collect($this->resep)->sum(function ($q) {
@@ -163,6 +184,7 @@ class Index extends Component
                     return $b['harga'] * $b['qty'];
                 });
             });
+            $this->dispatch('set-totalregistrasipaketperawatan', data: $this->total_registrasi_paket_perawatan);
             $this->dispatch('set-totaltindakan', data: $this->total_tindakan);
             $this->dispatch('set-totalresep', data: $this->total_resep);
         }
@@ -301,6 +323,7 @@ class Index extends Component
             $pembayaran = new Pembayaran();
             $pembayaran->id = $id;
             $pembayaran->total_barang = $this->total_barang + $this->total_diskon_barang;
+            $pembayaran->total_registrasi_paket_perawatan = $this->total_registrasi_paket_perawatan;
             $pembayaran->total_tindakan = $this->total_tindakan + $this->total_diskon_tindakan;
             $pembayaran->total_harga_barang = $this->total_barang;
             $pembayaran->total_resep = $this->total_resep;
@@ -325,6 +348,7 @@ class Index extends Component
             $pembayaran->save();
 
             $detail = $this->kas($pembayaran); // Kas dan diskon
+            $detail = array_merge($detail, $this->paketPerawatan());
             $detail = array_merge($detail, $this->tindakan($pembayaran->id)); // Pendapatan Tindakan
             $detail = array_merge($detail, $this->resep($pembayaran->id)); // Pendapatan Resep
             if (collect($this->barang)->filter(fn($item) => !empty($item['id']))->count() > 0) {
@@ -346,6 +370,28 @@ class Index extends Component
         });
         $this->redirect('/kasir');
     }
+
+    private function paketPerawatan()
+    {
+        foreach ($this->registrasi_paket_perawatan->where('jenis', 'Prabayar') as $key => $value) {
+            RegistrasiPaketPerawatan::where('id', $value['id'])->update([
+                'terbayar' => 1,
+            ]);
+        }
+        $data = collect($this->registrasi_paket_perawatan)->where('jenis', 'Prabayar')->map(function ($q) {
+            return [
+                'kode_akun_id' => $q['kode_akun_pembayaran_id'],
+                'debet' => $q['prabayar'],
+                'kredit' => 0,
+            ];
+        });
+        return collect($data)->groupBy('kode_akun_id')->map(fn($q) => [
+            'kode_akun_id' => $q->first()['kode_akun_id'],
+            'debet' => $q->sum('debet'),
+            'kredit' => $q->sum('kredit'),
+        ])->toArray();
+    }
+
 
     private function barangTindakan($pembayaranId)
     {
@@ -468,8 +514,7 @@ class Index extends Component
                 'debet' => 0,
                 'kredit' => $q['biaya'] * $q['qty'],
             ];
-        })->all()); // Tindakan
-
+        })->all());
         return collect($data)->groupBy('kode_akun_id')->map(fn($q) => [
             'kode_akun_id' => $q->first()['kode_akun_id'],
             'debet' => $q->sum('debet'),
@@ -568,6 +613,7 @@ class Index extends Component
             'kode_akun_jasa_perawat_id' => $q->kode_akun_jasa_perawat_id,
         ])->toArray();
         $this->tanggal = date('Y-m-d');
+        $this->setRegistrasi('20260521143525');
     }
 
     public function render()

@@ -39,6 +39,7 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Catatan</th>
+                        <th>Paket Perawatan</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -57,6 +58,7 @@
                             <td>{{ $row->pasien->alamat }}</td>
                             <td>{{ $row->pasien->no_hp }}</td>
                             <td>{{ $row->catatan }}</td>
+                            <td>{!! $row->registrasiPaketPerawatan->map(fn($q) => $q->paketPerawatan->nama . ' (' . $q->paketPerawatan->qty . ')')->implode('<br> ') !!}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if ($status == 1)

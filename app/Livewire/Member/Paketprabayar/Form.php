@@ -186,7 +186,7 @@ class Form extends Component
         $pasienPaketPrabayar->metode_bayar = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['nama'];
         $pasienPaketPrabayar->bayar = $this->total_bayar;
         $pasienPaketPrabayar->kode_akun_pembayaran_id = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['kode_akun_id'];
-        $pasienPaketPrabayar->kode_akun_paket_perawatan_id = $this->paketPerawatan->kode_akun_id;
+        $pasienPaketPrabayar->kode_akun_paket_perawatan_id = $this->paketPerawatan->kode_akun_kewajiban_id;
         $pasienPaketPrabayar->tanggal = $this->tanggal;
         $pasienPaketPrabayar->keterangan = $this->keterangan;
         $pasienPaketPrabayar->pengguna_id = auth()->id();

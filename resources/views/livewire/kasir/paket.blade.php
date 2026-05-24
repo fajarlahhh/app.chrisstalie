@@ -1,27 +1,12 @@
-@if (count($tindakan) > 0)
-    <tr>
-        <th class="w-10px">No.</th>
-        <th>Paket Perawatan</th>
-        <th class="text-end w-150px">Harga</th>
-        <th class="w-100px">Qty</th>
-        <th class="text-end w-150px">Sub Total</th>
-        <th class="w-5px"></th>
-    </tr>
-    <template x-for="(row, x) in tindakan" :key="x" id="tindakan">
+@if (count($registrasi_paket_perawatan) > 0)
+    <template x-for="(row, x) in registrasi_paket_perawatan" :key="x" id="registrasi_paket_perawatan">
         <tr>
             <td x-text="x + 1"></td>
             <td nowrap>
-                <span x-text="row.nama"></span>
-                <br>
-                <span class="text-muted">
-                    &nbsp;&nbsp;&nbsp;- Dokter : <span
-                        x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : '-'"></span>
-                    <br>
-                    &nbsp;&nbsp;&nbsp;- Perawat : <span
-                        x-text="row.perawat_id ? dataNakes.find(n => n.id == row.perawat_id)?.nama : '-'"></span>
-                    <br>
-                    Catatan : <span x-text="row.catatan ? row.catatan : '-'"></span>
-                </span>
+                <strong>Paket Perawatan : </strong><span x-text="row.nama"></span><br>
+                <template x-if="row.jenis == 'Prabayar'">
+                    <small class="text-danger ms-4"><span x-text="row.kode_akun_pembayaran_nama"></span> Rp. <span x-text="formatNumber(row.prabayar)"></span></small>
+                </template>
             </td>
             <td>
                 <input type="text" class="form-control text-end" :value="formatNumber(row.biaya)" disabled>
@@ -30,7 +15,7 @@
                 <input type="text" class="form-control" :value="formatNumber(row.qty)" disabled>
             </td>
             <td>
-                <input type="number" class="form-control" @input="hitungTotalTindakan()" x-model.number="row.diskon">
+                <input type="number" class="form-control" disabled>
             </td>
             <th>
                 <input type="text" class="form-control text-end"
@@ -39,10 +24,10 @@
             <td></td>
         </tr>
     </template>
-    <tr class="bg-gray-100">
-        <td colspan="5" class="text-end">Total Harga Tindakan</td>
+    <tr class="bg-light-500">
+        <td colspan="5" class="text-end"><strong>Total Harga Paket Perawatan</strong></td>
         <td>
-            <input type="text" class="form-control text-end" :value="formatNumber(total_tindakan)" disabled>
+            <input type="text" class="form-control text-end" :value="formatNumber(total_registrasi_paket_perawatan)" disabled>
         </td>
         <td></td>
     </tr>

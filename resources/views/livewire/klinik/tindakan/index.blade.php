@@ -39,6 +39,7 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Catatan</th>
+                        <th>Tindakan</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -57,6 +58,25 @@
                             <td>{{ $row->pasien->alamat }}</td>
                             <td>{{ $row->pasien->no_hp }}</td>
                             <td>{{ $row->catatan }}</td>
+                            <td>
+                                <small>
+                                    <ul>
+                                    @foreach ($row->tindakan as $item)
+                                        <li>
+                                            <strong>{{ $item->tarifTindakan->nama }} ({{ $item->qty }})</strong>
+                                                <small class="text-muted">
+                                                    @if ($item->biaya_jasa_dokter > 0)
+                                                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dokter : {{ $item->dokter?->nama }}
+                                                    @endif
+                                                    @if ($item->biaya_jasa_perawat > 0)
+                                                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Perawat : {{ $item->perawat?->nama }}
+                                                    @endif
+                                                </small>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </small>
+                            </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if ($status == 1)
