@@ -170,7 +170,7 @@
             </div>
         </div>
         <div class="col-md-7">
-            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
                 <div class="panel panel-inverse">
                     <div class="panel-heading overflow-auto d-flex">
                         <h4 class="panel-title">Assessment (Penilaian)</h4>

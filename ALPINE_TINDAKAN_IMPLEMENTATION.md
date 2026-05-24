@@ -6,7 +6,7 @@
 
 #### Perubahan Utama:
 - **Root Element**: Ditambahkan `x-data="tindakanForm()"` dan `x-init="init()"`
-- **Form Submit**: Ditambahkan `@submit.prevent="syncToLivewire()"`
+- **Form Submit**: Ditambahkan `@submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()"`
 - **Dynamic Rendering**: Menggunakan `<template x-for>` untuk render tindakan
 - **Two-way Binding**: Menggunakan `x-model` untuk semua input
 - **Conditional Rendering**: Menggunakan `<template x-if>` untuk dokter/perawat

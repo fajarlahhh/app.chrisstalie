@@ -70,7 +70,7 @@
             @endif
         </div>
         <div class="col-md-8">
-            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
                 <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
                     <div class="panel-heading ui-sortable-handle">
                         <h4 class="panel-title">Form</h4>

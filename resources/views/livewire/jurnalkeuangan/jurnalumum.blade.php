@@ -1,5 +1,5 @@
 <div x-data="jurnalumumForm()" x-init="init()" x-ref="alpineRoot">
-    <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+    <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
         <div class="panel panel-inverse" data-sortable-id="table-basic-2">
             <!-- BEGIN panel-heading -->
             <div class="panel-heading overflow-auto d-flex">

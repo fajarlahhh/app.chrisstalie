@@ -12,7 +12,7 @@
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
         </div>
-        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label mb-2">Jenis Barang</label>

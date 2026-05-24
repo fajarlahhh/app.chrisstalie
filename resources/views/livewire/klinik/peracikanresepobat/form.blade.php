@@ -13,7 +13,7 @@
             @include('livewire.klinik.informasipasien', ['data' => $data])
         </div>
         <div class="col-md-12">
-            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
                 <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
                     <!-- begin panel-heading -->
                     <div class="panel-heading ui-sortable-handle">
