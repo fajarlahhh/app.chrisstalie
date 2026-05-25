@@ -348,7 +348,7 @@ class Index extends Component
             $pembayaran->save();
 
             $detail = $this->kas($pembayaran); // Kas dan diskon
-            $detail = array_merge($detail, $this->paketPerawatan());
+            $detail = array_merge($detail, $this->paketPerawatan($pembayaran->id));
             $detail = array_merge($detail, $this->tindakan($pembayaran->id)); // Pendapatan Tindakan
             $detail = array_merge($detail, $this->resep($pembayaran->id)); // Pendapatan Resep
             if (collect($this->barang)->filter(fn($item) => !empty($item['id']))->count() > 0) {
@@ -371,11 +371,11 @@ class Index extends Component
         $this->redirect('/kasir');
     }
 
-    private function paketPerawatan()
+    private function paketPerawatan($pembayaranId)
     {
         foreach (collect($this->registrasi_paket_perawatan)->where('jenis', 'Prabayar') as $key => $value) {
             RegistrasiPaketPerawatan::where('id', $value['id'])->update([
-                'terbayar' => 1,
+                'pembayaran_id' => $pembayaranId,
             ]);
         }
         $data = collect($this->registrasi_paket_perawatan)->where('jenis', 'Prabayar')->map(function ($q) {

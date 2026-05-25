@@ -181,7 +181,6 @@ class Form extends Component
         $pasienPaketPrabayar->tanggal_aktif = $this->tanggal;
         $pasienPaketPrabayar->tanggal_berakhir = date('Y-m-d', strtotime($this->tanggal . ' + ' . $this->paketPerawatan->masa_aktif . ' days'));
         $pasienPaketPrabayar->qty = $this->paketPerawatan->paketPerawatanDetail->first()->qty;
-        $pasienPaketPrabayar->qty_terpakai = 0;
         $pasienPaketPrabayar->aktif = true;
         $pasienPaketPrabayar->metode_bayar = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['nama'];
         $pasienPaketPrabayar->bayar = $this->total_bayar;

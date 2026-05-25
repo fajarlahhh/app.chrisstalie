@@ -44,6 +44,6 @@ class PasienPaketPrabayar extends Model
 
     public function getQtyTerpakaiAttribute()
     {
-        return $this->registrasiPaketPerawatan->where('terbayar', 1)->count();
+        return $this->registrasiPaketPerawatan->whereNotNull('pembayaran_id')->count();
     }
 }

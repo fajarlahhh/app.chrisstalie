@@ -35,7 +35,15 @@ class Form extends Component
             return abort(404);
         }
         $this->dataPasienPaketPrabayar = PasienPaketPrabayar::where('pasien_id', $data->pasien_id)
-            ->whereRaw('qty > qty_terpakai')->with('paketPerawatan.paketPerawatanDetail.tarifTindakan')->get()->map(
+            ->whereRaw('qty > (
+		select count(*)
+	FROM
+		registrasi_paket_perawatan 
+	WHERE
+		pasien_paket_prabayar.id = registrasi_paket_perawatan.pasien_paket_prabayar_id 
+	AND pembayaran_id IS NULL 
+	)')
+            ->with('paketPerawatan.paketPerawatanDetail.tarifTindakan')->get()->map(
                 function ($q) {
                     return [
                         'id' => $q->id,
@@ -47,7 +55,7 @@ class Form extends Component
                         'tarif_tindakan_id' => $q->paketPerawatan->paketPerawatanDetail->first()->tarif_tindakan_id,
                         'tarif_tindakan_nama' => $q->paketPerawatan->paketPerawatanDetail->first()->tarifTindakan->nama,
                         'qty' => $q->qty,
-                        'qty_terpakai' => $q->qty_terpakai,
+                        'qty_terpakai' => $q->qty_terpakai
                     ];
                 }
             )->toArray();
