@@ -83,16 +83,7 @@ class Form extends Component
                 'kode_akun_id' => $q->kode_akun_id,
                 'pasien_paket_prabayar_id' => $q->pasien_paket_prabayar_id,
             ])->toArray();
-        } else {
-            $this->registrasi_paket_perawatan[] = [
-                'id' => null,
-                'biaya' => null,
-                'catatan' => null,
-                'jenis' => 'Bundling',
-                'kode_akun_id' => null,
-                'pasien_paket_prabayar_id' => null,
-            ];
-        }
+        } 
     }
 
     public function submit()
