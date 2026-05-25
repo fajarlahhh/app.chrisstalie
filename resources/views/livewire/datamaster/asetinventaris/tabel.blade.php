@@ -57,8 +57,14 @@
                         @default
                     @endswitch
                 </td>
-                <td><a href="/jurnalkeuangan?bulan={{ substr($item->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $item->keuanganJurnal?->nomor }}"
-                        target="_blank">{{ $item->keuanganJurnal?->nomor }}</a></td>
+                <td>
+                    @if ($cetak == false)
+                        <a href="/jurnalkeuangan?bulan={{ substr($item->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $item->keuanganJurnal?->nomor }}"
+                            target="_blank">{{ $item->keuanganJurnal?->nomor }}</a>
+                    @else
+                        {{ $item->keuanganJurnal?->nomor }}
+                    @endif
+                </td>
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor')
