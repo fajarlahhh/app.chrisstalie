@@ -120,7 +120,7 @@
             <th class="p-0 text-end">Total<br><br></th>
         </tr>
         @if ($data->registrasi)
-            @foreach ($data->registrasi->registrasiPaketPerawatan->where('terbayar', 1) as $value)
+            @foreach ($data->registrasi->registrasiPaketPerawatan as $value)
                 <tr>
                     <td class="p-0">
                         {{ $value->paketPerawatan->nama }}<br>
