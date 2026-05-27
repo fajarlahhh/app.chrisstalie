@@ -12,6 +12,7 @@ use App\Models\Pembayaran;
 use App\Models\Expenditure;
 use App\Models\MetodeBayar;
 use App\Models\KeuanganJurnalDetail;
+use App\Models\PasienPaketPrabayar;
 use Livewire\Attributes\Url;
 
 class Index extends Component
@@ -43,8 +44,31 @@ class Index extends Component
 
     public function getPendapatan()
     {
-        return Pembayaran::with(['pengguna'])
-            ->where('tanggal', 'like', $this->tanggal . '%')->get();
+        $prabayar = PasienPaketPrabayar::with(['pengguna'])
+        ->where('tanggal', 'like', $this->tanggal . '%')->get()->map(fn($q) => [
+            'metode_bayar' => $q['metode_bayar'],
+            'bayar' => $q['bayar'],
+            'selisih' => 0,
+            'metode_bayar_2' => null,
+            'bayar_2' => 0,
+            'total_diskon_barang' => 0,
+            'total_diskon_tindakan' =>0,
+            'diskon' => 0,
+            'pengguna_id' => $q['pengguna_id']
+        ])->toArray();
+        $pembayaran = Pembayaran::with(['pengguna'])
+            ->where('tanggal', 'like', $this->tanggal . '%')->get()->map(fn($q) => [
+                'metode_bayar' => $q['metode_bayar'],
+                'bayar' => $q['bayar'],
+                'selisih' => $q['selisih'],
+                'metode_bayar_2' => $q['metode_bayar_2'],
+                'bayar_2' => $q['bayar_2'],
+                'total_diskon_barang' => $q['total_diskon_barang'],
+                'total_diskon_tindakan' => $q['total_diskon_tindakan'],
+                'diskon' => $q['diskon'],
+                'pengguna_id' => $q['pengguna_id']
+            ])->toArray();
+        return collect(array_merge($pembayaran, $prabayar));
     }
 
     public function getPengeluaran()
