@@ -31,7 +31,6 @@ class Form extends Component
                 'uraian' => 'required',
                 'tarif' => 'required|numeric',
                 'jenis' => 'required',
-                'kode_akun_pendapatan_id' => 'required',
                 'masa_aktif' => $this->jenis == 'Prabayar' ? 'required|numeric' : 'nullable|numeric',
             ]
         );
