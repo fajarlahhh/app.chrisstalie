@@ -29,7 +29,6 @@ class Form extends Component
             [
                 'nama' => 'required',
                 'uraian' => 'required',
-                'tarif' => 'required|numeric',
                 'jenis' => 'required',
                 'masa_aktif' => $this->jenis == 'Prabayar' ? 'required|numeric' : 'nullable|numeric',
             ]
