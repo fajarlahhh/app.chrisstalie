@@ -35,7 +35,7 @@ class Index extends Component
     public $tanggal;
     public $total_bayar = 0;
 
-    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $registrasi_paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_registrasi_paket_perawatan = 0, $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
+    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $registrasi_paket_prabayar = [], $registrasi_paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_registrasi_paket_perawatan = 0, $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
 
 
     public function setRegistrasi($id)
@@ -62,6 +62,19 @@ class Index extends Component
                     'prabayar' => $q->jenis == "Bundling" ? 0 : $q->biaya,
                     'diskon' => 0,
                     'jenis' => $q->jenis,
+                ];
+            })->toArray();
+            $this->registrasi_paket_prabayar = $this->registrasi->registrasiPaketPerawatan->where('jenis', 'Prabayar')->map(function ($q) {
+                return [
+                    'id' => $q->id,
+                    'nama' => $q->paketPerawatan->nama,
+                    'qty' => $q->qty,
+                    'kode_akun_pendapatan_id' => $q->paketPerawatan->kode_akun_pendapatan_id,
+                    'kode_akun_pembayaran_id' => $q->paketPerawatan->kode_akun_kewajiban_id,
+                    'kode_akun_pembayaran_nama' => $q->paketPerawatan->kodeAkunKewajiban?->nama,
+                    'paket_perawatan_id' => $q->paket_perawatan_id,
+                    'pasien_paket_prabayar_id' => $q->pasien_paket_prabayar_id,
+                    'biaya' => $q->biaya * $q->qty,
                 ];
             })->toArray();
             $dataPaketPerawatanDetail = PaketPerawatanDetail::whereIn('paket_perawatan_id', collect($this->registrasi_paket_perawatan)->pluck('paket_perawatan_id'))->get();
@@ -336,6 +349,11 @@ class Index extends Component
             $pembayaran->metode_bayar_2 = $this->cash_2 > 0 ? collect($this->dataMetodeBayar)->where('id', $this->metode_bayar_2)->first()['nama'] : null;
             $pembayaran->bayar = $this->cash;
             $pembayaran->bayar_2 = $this->cash_2 > 0 ? $this->cash_2 : 0;
+            if (sizeOf($this->registrasi_paket_prabayar) > 0) {
+                $pembayaran->bayar_3 = collect($this->registrasi_paket_prabayar)->sum('biaya');
+                $pembayaran->kode_akun_3_id = collect($this->registrasi_paket_prabayar)->where('id', $this->metode_bayar_3)->first()['kode_akun_pembayaran_id'];
+                $pembayaran->metode_bayar_3 = collect($this->dataMetodeBayar)->where('kode_akun_id', collect($this->registrasi_paket_prabayar)->where('id', $this->metode_bayar_3)->first()['kode_akun_pembayaran_id'])->first()['nama'];
+            }
             $pembayaran->kode_akun_id = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['kode_akun_id'];
             $pembayaran->kode_akun_2_id = $this->cash_2 > 0 ? collect($this->dataMetodeBayar)->where('id', $this->metode_bayar_2)->first()['kode_akun_id'] : null;
 
