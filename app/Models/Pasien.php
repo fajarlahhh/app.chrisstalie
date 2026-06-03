@@ -31,6 +31,11 @@ class Pasien extends Model
         return $this->hasMany(Pembayaran::class);
     }
 
+    public function pembayaranTerakhir(): HasMany
+    {
+        return $this->hasMany(Pembayaran::class)->orderBy('created_at', 'desc');
+    }
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();

@@ -22,23 +22,25 @@ class Index extends Component
     private function getRekamMedis($id)
     {        
         return Pasien::with(
-            'rekamMedis.nakes',
-            'rekamMedis.tug',
-            'rekamMedis.pengguna',
-            'rekamMedis.pemeriksaanAwal.pengguna',
-            'rekamMedis.diagnosis.pengguna',
-            'rekamMedis.tindakan.pengguna',
-            'rekamMedis.tindakan.tarifTindakan',
-            'rekamMedis.tindakan.dokter',
-            'rekamMedis.tindakan.perawat',
-            'rekamMedis.tindakan.barangSatuan',
-            'rekamMedis.tindakan.barangSatuan.barang',
-            'rekamMedis.siteMarking.pengguna',
-            'rekamMedis.resepObat.pengguna',
-            'rekamMedis.resepObat.barangSatuan',
-            'rekamMedis.resepObat.barangSatuan.barang',
-            'rekamMedis.resepObat.barangSatuan.barang.kodeAkun',
-            'rekamMedis.pembayaran.pengguna'
+            'pembayaranTerakhir.registrasi.nakes',
+            'pembayaranTerakhir.registrasi.tug',
+            'pembayaranTerakhir.registrasi.pengguna',
+            'pembayaranTerakhir.registrasi.pemeriksaanAwal.pengguna',
+            'pembayaranTerakhir.registrasi.diagnosis.pengguna',
+            'pembayaranTerakhir.registrasi.tindakan.pengguna',
+            'pembayaranTerakhir.registrasi.tindakan.tarifTindakan',
+            'pembayaranTerakhir.registrasi.tindakan.dokter',
+            'pembayaranTerakhir.registrasi.tindakan.perawat',
+            'pembayaranTerakhir.registrasi.tindakan.barangSatuan',
+            'pembayaranTerakhir.registrasi.tindakan.barangSatuan.barang',
+            'pembayaranTerakhir.registrasi.siteMarking.pengguna',
+            'pembayaranTerakhir.registrasi.resepObat.pengguna',
+            'pembayaranTerakhir.registrasi.resepObat.barangSatuan',
+            'pembayaranTerakhir.registrasi.resepObat.barangSatuan.barang',
+            'pembayaranTerakhir.registrasi.resepObat.barangSatuan.barang.kodeAkun',
+            'pembayaranTerakhir.stokKeluar.barang',
+            'pembayaranTerakhir.stokKeluar.barangSatuan',
+            'pembayaranTerakhir.pengguna'
         )->find($id);
     }
 
