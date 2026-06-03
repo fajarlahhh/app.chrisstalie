@@ -82,13 +82,13 @@
         @endforeach
         @if ($cetak == true)
             <tr>
-                <th colspan="10" class="text-end">TOTAL</th>
+                <th colspan="12" class="text-end">TOTAL</th>
                 <th class="text-end">{{ $data->sum('harga_perolehan') }}</th>
             </tr>
         @else
             @if ($data->currentPage() == $data->lastPage())
                 <tr>
-                    <th colspan="11" class="text-end">TOTAL</th>
+                    <th colspan="12" class="text-end">TOTAL</th>
                     <th class="text-end">{{ number_format_id($dataRaw->sum('harga_perolehan')) }}</th>
                 </tr>
             @endif
