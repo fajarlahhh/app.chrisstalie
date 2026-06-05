@@ -9,8 +9,6 @@ use App\Models\KepegawaianAbsensi;
 use App\Models\KepegawaianPegawai;
 use Illuminate\Support\Facades\DB;
 use App\Models\KepegawaianKehadiran;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class Index extends Component
 {
@@ -22,8 +20,7 @@ class Index extends Component
 
     public function mount()
     {
-        $ip = file_get_contents('https://api.ipify.org');
-        $this->ipPublik = $ip;
+        $this->ipPublik = request()->ip();
 
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
