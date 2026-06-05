@@ -32,7 +32,7 @@
         </div>
     @else
         <div class="alert alert-danger">
-            Tidak terhubung ke Mesin Fingerprint
+            Tidak terhubung ke Mesin Fingerprint. IP Publik Anda: <strong>{{ $ipPublik }}</strong>
         </div>
     @endif
 

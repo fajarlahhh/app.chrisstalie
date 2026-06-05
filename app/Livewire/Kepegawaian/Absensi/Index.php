@@ -9,17 +9,23 @@ use App\Models\KepegawaianAbsensi;
 use App\Models\KepegawaianPegawai;
 use Illuminate\Support\Facades\DB;
 use App\Models\KepegawaianKehadiran;
+use Illuminate\Support\Facades\Http;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal1, $tanggal2, $kepegawaian_pegawai_id;
+    public $cari, $tanggal1, $tanggal2, $kepegawaian_pegawai_id, $ipPublik;
     public $dataPegawai = [];
 
     public function mount()
     {
+        $response = Http::get('https://api.ipify.org?format=json');
+
+        if ($response->successful()) {
+            $this->ipPublik = $response->json()['ip'];
+        }
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
         $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
