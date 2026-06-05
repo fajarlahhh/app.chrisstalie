@@ -15,13 +15,11 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal1, $tanggal2, $kepegawaian_pegawai_id, $ipPublik;
+    public $cari, $tanggal1, $tanggal2, $kepegawaian_pegawai_id;
     public $dataPegawai = [];
 
     public function mount()
     {
-        $this->ipPublik = request()->ip();
-
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
         $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();

@@ -27,6 +27,7 @@
             @yield('content')
             <div id="footer" class="app-footer mx-0 px-0">
                 &copy; 2025 {{ config('app.name') }} v2025.11.23.1 - {{ config('app.organization') }}
+                <span class="float-end">IP Publik Anda: <strong>{{ request()->ip() }}</strong></span>
             </div>
         </div>
 
