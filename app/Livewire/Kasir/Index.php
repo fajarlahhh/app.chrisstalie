@@ -351,7 +351,7 @@ class Index extends Component
             $pembayaran->bayar_2 = $this->cash_2 > 0 ? $this->cash_2 : 0;
             if (sizeOf($this->registrasi_paket_prabayar) > 0) {
                 $pembayaran->bayar_3 = collect($this->registrasi_paket_prabayar)->sum('biaya');
-                $pembayaran->kode_akun_3_id = collect($this->registrasi_paket_prabayar)->where('id', $this->metode_bayar_3)->first()['kode_akun_pembayaran_id'];
+                $pembayaran->kode_akun_3_id = collect($this->registrasi_paket_prabayar)->first()['kode_akun_pembayaran_id'];
                 $pembayaran->metode_bayar_3 = collect($this->dataMetodeBayar)->where('kode_akun_id', collect($this->registrasi_paket_prabayar)->where('id', $this->metode_bayar_3)->first()['kode_akun_pembayaran_id'])->first()['nama'];
             }
             $pembayaran->kode_akun_id = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['kode_akun_id'];
