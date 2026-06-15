@@ -35,14 +35,22 @@
             <th class="bg-gray-300 text-white" rowspan="2">Total Sebelum Diskon</th>
             <th class="bg-gray-300 text-white" rowspan="2">Diskon</th>
             <th class="bg-gray-300 text-white" rowspan="2">Total Setelah Diskon</th>
-            <th class="bg-gray-300 text-white" colspan="{{ $data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->count() + $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->count()+ $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->count() }}">Metode Bayar</th>
+            <th class="bg-gray-300 text-white"
+                colspan="{{ collect(
+                    array_merge(
+                        $data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(),
+                        $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(),
+                        $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray(),
+                    ),
+                )->unique()->count() }}">
+                Metode Bayar</th>
             @role('administrator|supervisor')
                 <th class="bg-gray-300 text-white" rowspan="2">Kasir</th>
             @endrole
             <th class="bg-gray-300 text-white" rowspan="2">Keterangan</th>
         </tr>
         <tr>
-            @foreach ($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->merge($data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique())->merge($data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()) as $item)
+            @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique() as $item)
                 <th class="bg-gray-300 text-white">{{ $item }}</th>
             @endforeach
         </tr>
@@ -64,8 +72,11 @@
                 <td>
                     {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['jenis_kelamin']) ? $row['registrasi']['pasien']['jenis_kelamin'] : '' }}
                 </td>
-                <td class="text-end">{{ $cetak ? $row['total_registrasi_paket_perawatan'] : number_format_id($row['total_registrasi_paket_perawatan']) }}</td>
-                <td class="text-end">{{ $cetak ? $row['total_tindakan'] : number_format_id($row['total_tindakan']) }}</td>
+                <td class="text-end">
+                    {{ $cetak ? $row['total_registrasi_paket_perawatan'] : number_format_id($row['total_registrasi_paket_perawatan']) }}
+                </td>
+                <td class="text-end">{{ $cetak ? $row['total_tindakan'] : number_format_id($row['total_tindakan']) }}
+                </td>
                 <td class="text-end">{{ $cetak ? $row['total_resep'] : number_format_id($row['total_resep']) }}</td>
                 <td class="text-end">
                     {{ $cetak ? $row['total_barang'] : number_format_id($row['total_barang']) }}</td>
@@ -76,16 +87,16 @@
                 <td class="text-end">
                     {{ $cetak ? $row['total_tindakan'] + $row['total_registrasi_paket_perawatan'] + $row['total_resep'] + $row['total_barang'] - $diskon : number_format_id($row['total_registrasi_paket_perawatan'] + $row['total_tindakan'] + $row['total_resep'] + $row['total_barang'] - $diskon) }}
                 </td>
-                @foreach ($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->merge($data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique())->merge($data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()) as $item)
+                @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->toArray() as $item)
                     <td class="text-end" nowrap>
-                        @if ($row['metode_bayar'] == $item)
-                            {{ $cetak ? ($row['bayar'] - $row['selisih']) : number_format_id($row['bayar'] - $row['selisih']) }}
+                        @if ($row['metode_bayar'] == $item && $row['bayar'] > 0)
+                            {{ $cetak ? $row['bayar'] - $row['selisih'] : number_format_id($row['bayar'] - $row['selisih']) }}
                         @endif
-                        @if ($row['metode_bayar_2'] == $item)
-                            {{ $cetak ? ($row['bayar_2']) : number_format_id($row['bayar_2']) }}
+                        @if ($row['metode_bayar_2'] == $item && $row['bayar_2'] > 0)
+                            {{ $cetak ? $row['bayar_2'] : number_format_id($row['bayar_2']) }}
                         @endif
-                        @if ($row['metode_bayar_3'] == $item)
-                            {{ $cetak ? ($row['bayar_3']) : number_format_id($row['bayar_3']) }}
+                        @if ($row['metode_bayar_3'] == $item && $row['bayar_3'] > 0)
+                            {{ $cetak ? $row['bayar_3'] : number_format_id($row['bayar_3']) }}
                         @endif
                     </td>
                 @endforeach
@@ -118,9 +129,17 @@
             <th class="text-end">
                 {{ $cetak ? $data->sum(fn($row) => $row['total_tindakan'] + $row['total_registrasi_paket_perawatan'] + $row['total_resep'] + $row['total_barang'] - ($row['total_diskon_barang'] + $row['total_diskon_tindakan'] + $row['diskon'])) : number_format_id($data->sum(fn($row) => $row['total_tindakan'] + $row['total_registrasi_paket_perawatan'] + $row['total_resep'] + $row['total_barang'] - ($row['total_diskon_barang'] + $row['total_diskon_tindakan'] + $row['diskon']))) }}
             </th>
-            @foreach ($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->merge($data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique())->merge($data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()) as $item)
+            @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->toArray() as $item)
                 <th class="text-end">
-                    {{ $cetak ? $data->where('metode_bayar', $item)->sum(fn($row) => $row['bayar'] - $row['selisih']) + $data->where('metode_bayar_2', $item)->sum(fn($row) => $row['bayar_2']) + $data->where('metode_bayar_3', $item)->sum(fn($row) => $row['bayar_3']) : number_format_id($data->where('metode_bayar', $item)->sum(fn($row) => $row['bayar'] - $row['selisih']) + $data->where('metode_bayar_2', $item)->sum(fn($row) => $row['bayar_2']) + $data->where('metode_bayar_3', $item)->sum(fn($row) => $row['bayar_3'])) }}
+                    {{ $cetak
+                        ? $data->where('metode_bayar', $item)->sum(fn($row) => $row['bayar'] - $row['selisih']) +
+                            $data->where('metode_bayar_2', $item)->sum(fn($row) => $row['bayar_2']) +
+                            $data->where('metode_bayar_3', $item)->sum(fn($row) => $row['bayar_3'])
+                        : number_format_id(
+                            $data->where('metode_bayar', $item)->sum(fn($row) => $row['bayar'] - $row['selisih']) +
+                                $data->where('metode_bayar_2', $item)->sum(fn($row) => $row['bayar_2']) +
+                                $data->where('metode_bayar_3', $item)->sum(fn($row) => $row['bayar_3']),
+                        ) }}
                 </th>
             @endforeach
             @role('administrator|supervisor')
@@ -140,7 +159,7 @@
             <th>Total Sebelum Diskon</th>
             <th>Diskon</th>
             <th>Total Setelah Diskon</th>
-            @foreach ($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->merge($data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique())->merge($data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()) as $item)
+            @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->toArray() as $item)
                 <th>{{ $item }}</th>
             @endforeach
             @role('administrator|supervisor')
@@ -148,6 +167,6 @@
             @endrole
             <th>Keterangan</th>
         </tr>
-        
+
     </tfoot>
 </table>
