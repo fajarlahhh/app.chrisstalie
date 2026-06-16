@@ -353,6 +353,7 @@ class Index extends Component
                 $pembayaran->bayar_3 = collect($this->registrasi_paket_prabayar)->sum('biaya');
                 $pembayaran->kode_akun_3_id = collect($this->registrasi_paket_prabayar)->first()['kode_akun_pembayaran_id'];
                 $pembayaran->metode_bayar_3 = collect($this->dataMetodeBayar)->where('kode_akun_id', collect($this->registrasi_paket_prabayar)->first()['kode_akun_pembayaran_id'])->first()['nama'];
+                $pembayaran->total_registrasi_paket_perawatan = $pembayaran->total_registrasi_paket_perawatan + $pembayaran->bayar_3;
             }
             $pembayaran->kode_akun_id = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['kode_akun_id'];
             $pembayaran->kode_akun_2_id = $this->cash_2 > 0 ? collect($this->dataMetodeBayar)->where('id', $this->metode_bayar_2)->first()['kode_akun_id'] : null;
