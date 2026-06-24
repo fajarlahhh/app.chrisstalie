@@ -132,7 +132,7 @@
                         <tbody>
                             @foreach ($pasiva as $key => $item)
                                 <tr>
-                                    <td>{{ $loop->iteration + $aktiva->count() }}</td>
+                                    <td>{{ $loop->iteration + collect($aktiva)->count() }}</td>
                                     <td class="w-100px">
                                         <input type="number" class="form-control w-70px"
                                             wire:model="pasiva.{{ $key }}.urutan" wire:change="sortPasiva">
