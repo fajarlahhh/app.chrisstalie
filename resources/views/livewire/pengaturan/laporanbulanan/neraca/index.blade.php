@@ -150,7 +150,7 @@
                                             <select class="form-control"
                                                 wire:model="pasiva.{{ $key }}.kode_akun" multiple
                                                 data-width="100%">
-                                                @foreach (collect($dataKodeAkun)->whereIn('kategori', ['Aktiva']) as $item)
+                                                @foreach (collect($dataKodeAkun)->whereIn('kategori', ['Kewajiban', 'Ekuitas']) as $item)
                                                     <option value="{{ $item['id'] }}">{{ $item['id'] }} -
                                                         {{ $item['nama'] }}
                                                     </option>
