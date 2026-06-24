@@ -54,6 +54,11 @@ class Index extends Component
         $this->aktiva = array_values(collect($this->aktiva)->sortBy('urutan')->toArray());
     }
 
+    public function sortPasiva()
+    {
+        $this->pasiva = array_values(collect($this->pasiva)->sortBy('urutan')->toArray());
+    }
+
     public function deleteAktiva($index)
     {
         unset($this->aktiva[$index]);
