@@ -39,7 +39,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                            <th class="w-10px">ID</th>
+                                <th class="w-10px">ID</th>
                                 <th class="w-10px">Urutan</th>
                                 <th>Nomor</th>
                                 <th>Uraian</th>
@@ -51,7 +51,7 @@
                         <tbody>
                             @foreach ($aktiva as $key => $item)
                                 <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td class="w-100px">
                                         <input type="number" class="form-control w-70px"
                                             wire:model="aktiva.{{ $key }}.urutan" wire:change="sortAktiva">
@@ -120,6 +120,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th class="w-10px">ID</th>
                                 <th class="w-10px">Urutan</th>
                                 <th>Nomor</th>
                                 <th>Uraian</th>
@@ -131,6 +132,7 @@
                         <tbody>
                             @foreach ($pasiva as $key => $item)
                                 <tr>
+                                    <td>{{ $loop->iteration + $aktiva->count() }}</td>
                                     <td class="w-100px">
                                         <input type="number" class="form-control w-70px"
                                             wire:model="pasiva.{{ $key }}.urutan" wire:change="sortPasiva">
