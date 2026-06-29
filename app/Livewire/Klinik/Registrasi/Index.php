@@ -77,7 +77,7 @@ class Index extends Component
             'keluhan_awal'
         ]);
     }
-    
+
     public function submit()
     {
         $rules = [
@@ -122,18 +122,18 @@ class Index extends Component
                 $lastRm = $last ? (int)substr($last->id, 6, 4) : 0;
                 $pasien->id = date('y.m.') . sprintf('%04d', $lastRm + 1);
                 $pasien->pengguna_id = auth()->id();
+                $pasien->nik = $this->nik;
+                $pasien->nama = $this->nama;
+                $pasien->alamat = $this->alamat;
+                $pasien->jenis_kelamin = $this->jenis_kelamin;
+                $pasien->tanggal_lahir = $this->tanggal_lahir;
+                $pasien->no_hp = $this->no_hp;
+                $pasien->tanggal_daftar = $this->tanggal;
+                $pasien->save();
             } else {
                 $pasien = Pasien::find($this->pasien_id);
             }
 
-            $pasien->nik = $this->nik;
-            $pasien->nama = $this->nama;
-            $pasien->alamat = $this->alamat;
-            $pasien->jenis_kelamin = $this->jenis_kelamin;
-            $pasien->tanggal_lahir = $this->tanggal_lahir;
-            $pasien->no_hp = $this->no_hp;
-            $pasien->tanggal_daftar = $this->tanggal;
-            $pasien->save();
 
             $registrasi = new Registrasi();
             if (!$this->pasien_id) {
