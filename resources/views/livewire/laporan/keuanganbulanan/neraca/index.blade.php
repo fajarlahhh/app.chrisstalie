@@ -20,8 +20,17 @@
             })" wire:loading.remove class="btn btn-indigo">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
-                <input id="bulan"  type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
-                    max="{{ date('Y-m') }}" class="form-control w-auto">
+                <select id="jenis" class="form-control w-auto" wire:model.lazy="jenis">
+                    <option value="Bulanan">Bulanan</option>
+                    <option value="Tahunan">Tahunan</option>
+                </select>&nbsp;
+                @if ($jenis == 'Bulanan')
+                    <input id="bulan" type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
+                        max="{{ date('Y-m') }}" class="form-control w-auto">
+                @else
+                    <input id="tahun" type="number" autocomplete="off" wire:model.lazy="tahun" min="2025"
+                        max="{{ date('Y') }}" class="form-control w-auto">
+                @endif
             </div>
         </div>
         <div class="panel-body table-responsive">
@@ -36,7 +45,7 @@
                     </ul>
                 </div>
             @endif
-            @include('livewire.laporan.keuanganbulanan.neraca.cetak', ['cetak' => false])
+            @include('livewire.laporan.keuanganbulanan.neraca.' . strtolower($jenis), ['cetak' => false])
         </div>
     </div>
     <x-modal.cetak judul="Neraca" />
