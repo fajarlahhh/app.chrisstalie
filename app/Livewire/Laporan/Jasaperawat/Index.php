@@ -39,7 +39,7 @@ class Index extends Component
                 'nama_pasien' => $row->registrasi->pasien->nama,
                 'nama_tindakan' => $row->tarifTindakan->nama,
                 'nama_petugas' => $row->perawat?->nama,
-                'biaya' => $row->biaya_jasa_perawat,
+                'biaya' => $row->biaya_jasa_perawat * $row->qty,
             ])->sortBy('tanggal')->values()->toArray();
     }
 
