@@ -25,6 +25,7 @@
             <th class="bg-gray-300 text-white" rowspan="2">Nama Pasien</th>
             <th class="bg-gray-300 text-white" rowspan="2">Tindakan</th>
             <th class="bg-gray-300 text-white" colspan="{{ collect($data)->groupBy('perawat_id')->count() }}">Nama Dokter</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Total</th>
         </tr>
         <tr>
             @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
