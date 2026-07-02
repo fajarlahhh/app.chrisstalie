@@ -26,6 +26,7 @@
             <th class="bg-gray-300 text-white" rowspan="2">Tindakan</th>
             <th class="bg-gray-300 text-white" colspan="{{ collect($data)->groupBy('perawat_id')->count() }}">Nama
                 Perawat</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Total</th>
         </tr>
         <tr>
             @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
@@ -34,6 +35,9 @@
         </tr>
     </thead>
     <tbody>
+        @php
+            $total = 0;
+        @endphp
         @foreach ($data as $index => $row)
             <tr>
                 <td>{{ $index + 1 }}</td>
@@ -42,13 +46,25 @@
                 <td>{{ substr($row['tanggal'], 0, 10) }}</td>
                 <td>{{ $row['nama_pasien'] }}</td>
                 <td>{{ $row['nama_tindakan'] }}</td>
+                @php
+                    $subTotal = 0;
+                @endphp
                 @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
+                    @php
+                        $subTotal += $row['biaya'];
+                    @endphp
                     <td class="text-end">
                         @if ($row['perawat_id'] == $key)
                             {{ $cetak ? $row['biaya'] : number_format_id($row['biaya']) }}
                         @endif
                     </td>
                 @endforeach
+                <td class="text-end">
+                    {{ $cetak ? $subTotal : number_format_id($subTotal) }}
+                </td>
+                @php
+                    $total += $subTotal;
+                @endphp
             </tr>
         @endforeach
         <tr>
@@ -58,6 +74,9 @@
                     {{ $cetak ? collect($data)->where('perawat_id', $key)->sum('biaya') : number_format_id(collect($data)->where('perawat_id', $key)->sum('biaya')) }}
                 </th>
             @endforeach
+            <th class="text-end">
+                {{ $cetak ? $total : number_format_id($total) }}
+            </th>
         </tr>
     </tbody>
 </table>
