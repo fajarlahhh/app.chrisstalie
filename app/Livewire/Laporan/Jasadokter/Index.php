@@ -35,7 +35,7 @@ class Index extends Component
                 'perawat_id' => $row->dokter_id,
                 'no_registrasi' => $row->registrasi->id,
                 'no_nota' => $row->pembayaran->id,
-                'tanggal' => substr($row->pembayaran->created_at, 0, 10),
+                'tanggal' => substr($row->pembayaran->tanggal, 0, 10),
                 'nama_pasien' => $row->registrasi->pasien->nama,
                 'nama_tindakan' => $row->tarifTindakan->nama,
                 'nama_petugas' => $row->dokter?->nama,
