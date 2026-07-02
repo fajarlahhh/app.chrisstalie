@@ -27,11 +27,11 @@ class Index extends Component
     public function getData()
     {
         return Tindakan::with('registrasi.pasien', 'pembayaran', 'perawat', 'tarifTindakan', 'perawat.kepegawaianPegawai')
-        ->where('biaya_jasa_perawat', '>', 0)
-        ->whereNotNull('perawat_id')
-        ->whereHas('pembayaran', fn($r) => $r
-            ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]))
-        ->get()->map(fn($row) => [
+            ->where('biaya_jasa_perawat', '>', 0)
+            ->whereNotNull('perawat_id')
+            ->whereHas('pembayaran', fn($r) => $r
+                ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]))
+            ->get()->map(fn($row) => [
                 'perawat_id' => $row->perawat_id,
                 'no_registrasi' => $row->registrasi->id,
                 'no_nota' => $row->pembayaran->id,
@@ -40,7 +40,7 @@ class Index extends Component
                 'nama_tindakan' => $row->tarifTindakan->nama,
                 'nama_petugas' => $row->perawat?->nama,
                 'biaya' => $row->biaya_jasa_perawat,
-            ])->values()->toArray();
+            ])->sortBy('tanggal')->values()->toArray();
     }
 
     public function render()

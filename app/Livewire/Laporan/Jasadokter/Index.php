@@ -40,7 +40,7 @@ class Index extends Component
                 'nama_tindakan' => $row->tarifTindakan->nama,
                 'nama_petugas' => $row->dokter?->nama,
                 'biaya' => $row->biaya_jasa_dokter,
-            ])->sortByDesc('perawat_id')->values()->toArray();
+            ])->sortBy('tanggal')->sortByDesc('perawat_id')->values()->toArray();
     }
 
     public function render()
