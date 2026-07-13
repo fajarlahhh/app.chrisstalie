@@ -81,7 +81,7 @@ class Form extends Component
                 'stok_keluar_id' => 'required',
             ]);
         }
-
+        
         DB::transaction(function () {
 
             $stok = [];
@@ -124,7 +124,7 @@ class Form extends Component
             if (!empty($stok)) {
                 Stok::insert($stok);
             }
-            $this->jurnalKeuangan($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
+            $this->jurnalKeuangan($data, $this->harga_beli * $this->qty_masuk);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
