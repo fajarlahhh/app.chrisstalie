@@ -14,12 +14,8 @@
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
-                setTimeout(() => {
-                    $('#modal-cetak').modal('show')
-                }, 1000)
-            })" class="btn btn-outline-info btn-block">
-                Cetak</a>&nbsp;
+            <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
+                Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <select id="sort"  class="form-control w-auto" wire:model.lazy="sort">
                     <option value="qty">Desc Qty</option>

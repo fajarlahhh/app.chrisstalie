@@ -3,6 +3,7 @@
 namespace App\Livewire\Laporan\Statistik\Penggunaanalat;
 
 use App\Models\TindakanAlatBarang;
+use App\Exports\LaporanstatistikExport;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 
@@ -35,15 +36,9 @@ class Index extends Component
             })->sortByDesc('qty')->values()->toArray();
     }
 
-    public function print()
+    public function export()
     {
-        $cetak = view('livewire.laporan.statistik.penggunaanalat.cetak', [
-            'cetak' => false,
-            'tanggal1' => $this->tanggal1,
-            'tanggal2' => $this->tanggal2,
-            'data' => $this->getData(),
-        ])->render();
-        session()->flash('cetak', $cetak);
+        return (new LaporanstatistikExport($this->getData(), $this->tanggal1, $this->tanggal2, 'penggunaanalat'))->download('penggunaanalat_' . $this->tanggal1 . '-' . $this->tanggal2 . '.xls');
     }
 
     public function render()

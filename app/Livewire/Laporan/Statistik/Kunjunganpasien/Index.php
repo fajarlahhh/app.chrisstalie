@@ -4,6 +4,7 @@ namespace App\Livewire\Laporan\Statistik\Kunjunganpasien;
 
 use Livewire\Component;
 use App\Models\Pembayaran;
+use App\Exports\LaporanstatistikExport;
 use Livewire\Attributes\Url;
 
 class Index extends Component
@@ -32,15 +33,9 @@ class Index extends Component
         })->sortByDesc($this->sort)->values()->toArray();
     }
 
-    public function print()
+    public function export()
     {
-        $cetak = view('livewire.laporan.statistik.kunjunganpasien.cetak', [
-            'cetak' => false,
-            'tanggal1' => $this->tanggal1,
-            'tanggal2' => $this->tanggal2,
-            'data' => $this->getData(),
-        ])->render();
-        session()->flash('cetak', $cetak);
+        return (new LaporanstatistikExport($this->getData(), $this->tanggal1, $this->tanggal2, 'kunjunganpasien'))->download('kunjunganpasien_' . $this->tanggal1 . '-' . $this->tanggal2 . '.xls');
     }
 
     public function render()
