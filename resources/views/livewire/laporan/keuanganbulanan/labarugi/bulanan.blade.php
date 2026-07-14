@@ -20,7 +20,13 @@
         @foreach ($data as $index => $item)
             <tr>
                 <td class="w-10px p-1">{{ $item['nomor'] }}</td>
-                <td class="p-1 border-start border-end">{!! $item['uraian'] !!}</td>
+                <td class="p-1 border-start border-end">
+                    @if ($cetak)
+                        {{ str_replace('&nbsp;', '', $item['uraian']) }}
+                    @else
+                        {!! $item['uraian'] !!}
+                    @endif
+                </td>
                 <td class="text-end p-1">{{ $item['nilai'] }}</td>
             </tr>
         @endforeach

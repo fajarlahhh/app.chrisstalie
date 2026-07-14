@@ -13,12 +13,8 @@
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <a href="javascript:;" wire:click="cetak" x-init="$($el).on('click', function() {
-                setTimeout(() => {
-                    $('#modal-cetak').modal('show')
-                }, 1000)
-            })" wire:loading.remove class="btn btn-indigo">
-                Cetak</a>&nbsp;
+            <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
+                Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <select id="jenis" class="form-control w-auto" wire:model.lazy="jenis">
                     <option value="Bulanan">Bulanan</option>

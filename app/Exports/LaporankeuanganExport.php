@@ -9,21 +9,24 @@ use Maatwebsite\Excel\Concerns\Exportable;
 class LaporankeuanganExport implements FromView
 {
     use Exportable;
-    public $data, $bulan;
+    public $data, $bulan, $laporan, $jenis;
 
-    public function __construct($data, $bulan)
+    public function __construct($data, $bulan, $laporan, $jenis = 'cetak')
     {
         $this->data = $data;
         $this->bulan = $bulan;
+        $this->laporan = $laporan;
+        $this->jenis = $jenis;
     }
 
     public function view(): View
     {
         //
-        return view('livewire.laporan.keuanganbulanan.neracalajur.cetak', [
+        return view('livewire.laporan.keuanganbulanan.' . $this->laporan . '.' . $this->jenis, [
             'cetak' => true,
             'data' => $this->data,
             'bulan' => $this->bulan,
+            'tahun' => $this->bulan,
         ]);
     }
 }

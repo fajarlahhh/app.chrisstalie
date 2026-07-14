@@ -7,6 +7,7 @@ use App\Models\KeuanganTemplateLaporanKeuangan;
 use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use App\Exports\LaporankeuanganExport;
 
 class Index extends Component
 {
@@ -25,18 +26,23 @@ class Index extends Component
         $this->kodeAkunBelumMasuk = KodeAkun::whereIn('kategori', ['Pendapatan', 'Beban'])->detail()->whereNotIn('id', $kodeAkunTemplate)->get();
     }
 
+    public function export()
+    {
+        return (new LaporankeuanganExport($this->getData(true), ($this->jenis=='Bulanan' ? $this->bulan: $this->tahun), 'labarugi', strtolower($this->jenis)))->download('labarugi' . $this->bulan . '.xls');
+    }
+
     public function cetak()
     {
         $cetak = view('livewire.laporan.keuanganbulanan.labarugi.' . $this->jenis, [
             'cetak' => true,
-            'data' => $this->getData(),
+            'data' => $this->getData(true),
             'bulan' => $this->bulan,
             
         ])->render();
         session()->flash('cetak', $cetak);
     }
 
-    public function getData()
+    public function getData($cetak = false)
     {
         // $data = KeuanganLaporanBulanan::where('Laba Rugi')->where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
         if ($this->jenis == 'Bulanan') {
@@ -100,7 +106,7 @@ class Index extends Component
                     'nomor' => $item->nomor,
                     'kode_akun' => $item->kode_akun,
                     'uraian' => $item->uraian /*. ($item->kode_akun ? ' <small>(' . implode(', ', explode(',', $item->kode_akun)) . ')</small>' : '')*/,
-                    'nilai' => $nilai == '' ? '' : number_format_id($nilai, 2),
+                    'nilai' => $nilai == '' ? '' : (!$cetak ? number_format_id($nilai, 2) : $nilai),
                 ];
             }
             return $data;
@@ -172,7 +178,7 @@ class Index extends Component
                         }
                     }
 
-                    $data[$index]['nilai_bulan_' . $i] = $nilai == '' ? '' : number_format_id($nilai, 2);
+                    $data[$index]['nilai_bulan_' . $i] = $nilai == '' ? '' : (!$cetak ? number_format_id($nilai, 2) : $nilai);
                     if ($nilai !== '') {
                         $data[$index]['total_nilai'] += $nilai;
                         $data[$index]['has_nilai'] = true;
@@ -181,7 +187,7 @@ class Index extends Component
             }
 
             foreach ($data as $index => $item) {
-                $data[$index]['total'] = $item['has_nilai'] ? number_format_id($item['total_nilai'], 2) : '';
+                $data[$index]['total'] = $item['has_nilai'] ? (!$cetak ? number_format_id($item['total_nilai'], 2) : $item['total_nilai']) : '';
             }
 
             return array_values($data);

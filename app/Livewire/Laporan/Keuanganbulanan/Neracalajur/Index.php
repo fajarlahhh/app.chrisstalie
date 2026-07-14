@@ -20,7 +20,7 @@ class Index extends Component
 
     public function export()
     {
-        return (new LaporankeuanganExport($this->getData(), $this->bulan))->download('neracalajur' . $this->bulan . '.xls');
+        return (new LaporankeuanganExport($this->getData(), $this->bulan, 'neracalajur'))->download('neracalajur' . $this->bulan . '.xls');
     }
 
     public function getData()

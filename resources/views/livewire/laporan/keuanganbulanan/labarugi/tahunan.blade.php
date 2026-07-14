@@ -32,7 +32,13 @@
         @foreach ($data as $index => $item)
             <tr>
                 <td class="w-10px p-1 text-center">{{ $item['nomor'] }}</td>
-                <td class="p-1 border-start border-end text-nowrap">{!! $item['uraian'] !!}</td>
+                <td class="p-1 border-start border-end text-nowrap">
+                    @if ($cetak)
+                        {{ str_replace('&nbsp;', '', $item['uraian']) }}
+                    @else
+                        {!! $item['uraian'] !!}
+                    @endif
+                </td>
                 @for ($i = 1; $i <= 12; $i++)
                     <td class="text-end p-1 border-start border-end">{{ $item['nilai_bulan_'.$i] ?? '' }}</td>
                 @endfor

@@ -7,6 +7,7 @@ use App\Models\KeuanganTemplateLaporanKeuangan;
 use App\Models\KeuanganSaldo;
 use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
+use App\Exports\LaporankeuanganExport;
 
 class Index extends Component
 {
@@ -25,6 +26,11 @@ class Index extends Component
         $this->kodeAkunBelumMasuk = KodeAkun::whereIn('kategori', ['Aktiva', 'Kewajiban', 'Ekuitas'])->detail()->whereNotIn('id', $kodeAkunTemplate)->get();
     }
 
+    public function export()
+    {
+        return (new LaporankeuanganExport($this->getData(true), ($this->jenis=='Bulanan' ? $this->bulan: $this->tahun), 'labarugi', strtolower($this->jenis)))->download('labarugi' . $this->bulan . '.xls');
+    }
+
     public function cetak()
     {
         $cetak = view('livewire.laporan.keuanganbulanan.neraca.' . strtolower($this->jenis), [
@@ -37,7 +43,7 @@ class Index extends Component
         session()->flash('cetak', $cetak);
     }
 
-    public function getDataAktiva()
+    public function getDataAktiva($cetak = false)
     {
         if ($this->jenis == 'Bulanan') {
             $saldo = KeuanganSaldo::where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
@@ -98,7 +104,7 @@ class Index extends Component
                     'nomor' => $item->nomor,
                     'kode_akun' => $item->kode_akun,
                     'uraian' => $item->uraian,
-                    'nilai' => $nilai == '' ? '' : number_format_id($nilai, 2),
+                    'nilai' => $nilai == '' ? '' : (!$cetak ? number_format_id($nilai, 2) : $nilai),
                 ];
             }
             return $data;
@@ -169,7 +175,7 @@ class Index extends Component
                         }
                     }
 
-                    $data[$index]['nilai_bulan_' . $i] = $nilai == '' ? '' : number_format_id($nilai, 2);
+                    $data[$index]['nilai_bulan_' . $i] = $nilai == '' ? '' : (!$cetak ? number_format_id($nilai, 2) : $nilai);
                     if ($nilai !== '') {
                         $data[$index]['total_nilai'] += $nilai;
                         $data[$index]['has_nilai'] = true;
@@ -181,7 +187,7 @@ class Index extends Component
         }
     }
 
-    public function getDataPasiva()
+    public function getDataPasiva($cetak = false)
     {
         if ($this->jenis == 'Bulanan') {
             $saldo = KeuanganSaldo::where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
@@ -242,7 +248,7 @@ class Index extends Component
                     'nomor' => $item->nomor,
                     'kode_akun' => $item->kode_akun,
                     'uraian' => $item->uraian,
-                    'nilai' => $nilai == '' ? '' : number_format_id($nilai, 2),
+                    'nilai' => $nilai == '' ? '' : (!$cetak ? number_format_id($nilai, 2) : $nilai),
                 ];
             }
             return $data;
@@ -313,7 +319,7 @@ class Index extends Component
                         }
                     }
 
-                    $data[$index]['nilai_bulan_' . $i] = $nilai == '' ? '' : number_format_id($nilai, 2);
+                    $data[$index]['nilai_bulan_' . $i] = $nilai == '' ? '' : (!$cetak ? number_format_id($nilai, 2) : $nilai);
                     if ($nilai !== '') {
                         $data[$index]['total_nilai'] += $nilai;
                         $data[$index]['has_nilai'] = true;
