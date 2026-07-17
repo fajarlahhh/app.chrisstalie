@@ -48,11 +48,15 @@
                 <th class="bg-gray-300 text-white" rowspan="2">Kasir</th>
             @endrole
             <th class="bg-gray-300 text-white" rowspan="2">Keterangan</th>
+            <th class="bg-gray-300 text-white" colspan="3">Waktu Pelayanan</th>
         </tr>
         <tr>
             @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique() as $item)
                 <th class="bg-gray-300 text-white">{{ $item }}</th>
             @endforeach
+            <th class="bg-gray-300 text-white">Jam Masuk</th>
+            <th class="bg-gray-300 text-white">Jam Pulang</th>
+            <th class="bg-gray-300 text-white">Total Durasi</th>
         </tr>
     </thead>
     <tbody>
@@ -103,7 +107,14 @@
                 @role('administrator|supervisor')
                     <td>{{ $row['pengguna']['nama'] }}</td>
                 @endrole
-                <td>{{ $row['keterangan'] }}</td>
+                <td nowrap>{{ $row['keterangan'] }}</td>
+                <td nowrap>{{ isset($row['registrasi']) ? $row['registrasi']['created_at'] : '' }}</td>
+                <td nowrap>{{ isset($row['registrasi']) ? $row['created_at'] : '' }}</td>
+                <td nowrap>
+                    @if (isset($row['registrasi']['created_at']) && isset($row['created_at']))
+                        {{ \Carbon\Carbon::parse($row['registrasi']['created_at'])->diff(\Carbon\Carbon::parse($row['created_at']))->format('%h Jam %i Menit %s Detik') }}
+                    @endif
+                </td>
             </tr>
         @endforeach
     </tbody>
@@ -148,6 +159,7 @@
             @role('operator')
                 <th colspan="2"></th>
             @endrole
+            <th colspan="3"></th>
         </tr>
 
         <tr>
@@ -159,13 +171,21 @@
             <th>Total Sebelum Diskon</th>
             <th>Diskon</th>
             <th>Total Setelah Diskon</th>
-            @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->toArray() as $item)
-                <th>{{ $item }}</th>
-            @endforeach
+            @if (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->count() > 0)
+                @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->toArray() as $item)
+                    <th>{{ $item }}</th>
+                @endforeach
+            @else
+                <th>Metode Bayar</th>
+            @endif
+            
             @role('administrator|supervisor')
                 <th>Kasir</th>
             @endrole
             <th>Keterangan</th>
+            <th>Jam Masuk</th>
+            <th>Jam Pulang</th>
+            <th>Total Durasi</th>
         </tr>
 
     </tfoot>

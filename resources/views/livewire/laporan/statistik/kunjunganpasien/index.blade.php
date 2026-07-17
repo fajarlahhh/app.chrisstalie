@@ -17,6 +17,10 @@
             <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
+                <select id="sort"  class="form-control w-auto" wire:model.lazy="jenis">
+                    <option value="perpasien">Per Pasien</option>
+                    <option value="pertanggal">Per Tanggal</option>
+                </select>&nbsp;
                 <select id="sort"  class="form-control w-auto" wire:model.lazy="sort">
                     <option value="qty">Desc Qty</option>
                     <option value="biaya">Desc Biaya</option>

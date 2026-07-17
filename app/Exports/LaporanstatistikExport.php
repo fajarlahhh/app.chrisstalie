@@ -9,14 +9,15 @@ use Maatwebsite\Excel\Concerns\Exportable;
 class LaporanstatistikExport implements FromView
 {
     use Exportable;
-    public $data, $tanggal1, $tanggal2, $laporan;
+    public $data, $tanggal1, $tanggal2, $laporan, $jenis;
 
-    public function __construct($data, $tanggal1, $tanggal2, $laporan)
+    public function __construct($data, $tanggal1, $tanggal2, $laporan, $jenis = null)
     {
         $this->data = $data;
         $this->tanggal1 = $tanggal1;
         $this->tanggal2 = $tanggal2;
         $this->laporan = $laporan;
+        $this->jenis = $jenis;
     }
 
     public function view(): View
@@ -26,6 +27,7 @@ class LaporanstatistikExport implements FromView
             'tanggal1' => $this->tanggal1,
             'tanggal2' => $this->tanggal2,
             'data' => $this->data,
+            'jenis' => $this->jenis,
         ]);
     }
 }
