@@ -153,7 +153,7 @@ class Form extends Component
         $this->dataKodeAkun = KodeAkun::detail()
         ->whereIn('id', $this->getKodeAkunTransaksiByKategori(['Aset Tetap'])->pluck('kode_akun_id'))->get()->toArray();
         $this->dataKodeAkunSumberDana = KodeAkun::detail()
-        ->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Hutang Ke Pemegang Saham', 'Pembayaran','Aset Dalam Penyelesaian'])->pluck('kode_akun_id'))->get()->toArray();
+        ->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Hutang Ke Pemegang Saham', 'Aset Dalam Penyelesaian'])->pluck('kode_akun_id'))->get()->toArray();
         $this->dataKodeAkunPenyusutan = KodeAkun::detail()
         ->whereIn('id', $this->getKodeAkunTransaksiByKategori(['Penyusutan Aset'])->pluck('kode_akun_id'))
         ->get()->toArray();
