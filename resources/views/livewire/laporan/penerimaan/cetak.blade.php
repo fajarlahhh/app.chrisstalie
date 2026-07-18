@@ -51,9 +51,13 @@
             <th class="bg-gray-300 text-white" colspan="3">Waktu Pelayanan</th>
         </tr>
         <tr>
-            @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique() as $item)
-                <th class="bg-gray-300 text-white">{{ $item }}</th>
-            @endforeach
+            @if (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->count() > 0)
+                @foreach (collect(array_merge($data->whereNotNull('metode_bayar')->pluck('metode_bayar')->unique()->toArray(), $data->whereNotNull('metode_bayar_2')->pluck('metode_bayar_2')->unique()->toArray(), $data->whereNotNull('metode_bayar_3')->pluck('metode_bayar_3')->unique()->toArray()))->unique()->toArray() as $item)
+                    <th class="bg-gray-300 text-white">{{ $item }}</th>
+                @endforeach
+            @else
+                <th class="bg-gray-300 text-white"></th>
+            @endif
             <th class="bg-gray-300 text-white">Jam Masuk</th>
             <th class="bg-gray-300 text-white">Jam Pulang</th>
             <th class="bg-gray-300 text-white">Total Durasi</th>
