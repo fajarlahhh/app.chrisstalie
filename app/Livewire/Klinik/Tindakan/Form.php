@@ -20,6 +20,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
 
+    public $ulangTahun = false;
     public $tindakan = [], $tindakan_paket = [], $dataTindakan = [], $dataNakes = [];
     public $data, $nakes_id;
     public $bahan = [];
@@ -29,6 +30,21 @@ class Form extends Component
     {
         $this->data = $data;
         $this->nakes_id = $data->nakes_id;
+
+        if ($this->data->pasien->tanggal_lahir){
+            $tglLahir = \Carbon\Carbon::parse($this->data->pasien->tanggal_lahir)->startOfDay();
+            $today = now()->startOfDay();
+            
+            $b1 = $tglLahir->copy()->year($today->year);
+            $b2 = $tglLahir->copy()->year($today->year - 1);
+            $b3 = $tglLahir->copy()->year($today->year + 1);
+            
+            if (abs($today->diffInDays($b1, false)) <= 5 || 
+                abs($today->diffInDays($b2, false)) <= 5 || 
+                abs($today->diffInDays($b3, false)) <= 5) {
+                $this->ulangTahun = true;
+            }
+        }
 
         $this->dataBarang = collect(BarangClass::getBarang());
         if ($this->data->pembayaran) {
@@ -40,7 +56,8 @@ class Form extends Component
             'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
             'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
             'biaya_alat_barang' => $q->biaya_alat_barang,
-            'tarif' => $q->tarif
+            'tarif' => $q->tarif,
+            'promo_ultah' => $q->promo_ultah
         ])->toArray();
         if ($data->tindakan->count() > 0) {
             $dataPaketPerawatan = PaketPerawatan::whereIn('id', $data->tindakan->pluck('paket_perawatan_id'))->get();
@@ -50,6 +67,9 @@ class Form extends Component
                 'paket_perawatan_nama' => $dataPaketPerawatan->firstWhere('id', $q->paket_perawatan_id)?->nama,
                 'tindakan_nama' => collect($this->dataTindakan)->where('id', $q->tarif_tindakan_id)->first()['nama'],
                 'qty' => $q->qty,
+                'diskon' => 0,
+                'diskon_ultah' => 0,
+                'promo_ultah' => 0,
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
                 'membutuhkan_inform_consent' => $q->membutuhkan_inform_consent == 1 ? true : false,
@@ -68,6 +88,9 @@ class Form extends Component
                 'paket_perawatan_nama' => $q->paketPerawatan?->nama,
                 'tindakan_nama' => null,
                 'qty' => $q->qty,
+                'diskon' => $q->diskon- $q->diskon_ultah,
+                'diskon_ultah' => $q->diskon_ultah,
+                'promo_ultah' => $q->promo_ultah,
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
                 'membutuhkan_inform_consent' => $q->membutuhkan_inform_consent == 1 ? true : false,
@@ -86,6 +109,9 @@ class Form extends Component
                 'paket_perawatan_id' => null,
                 'paket_perawatan_nama' => null,
                 'qty' => 1,
+                'diskon' => null,
+                'diskon_ultah' => null,
+                'promo_ultah' => null,
                 'tindakan_nama' => null,
                 'harga' => null,
                 'catatan' => null,
@@ -182,6 +208,8 @@ class Form extends Component
                 $tindakan->dokter_id = $q['dokter_id'] && $q['dokter_id'] != "" ? $q['dokter_id'] : null;
                 $tindakan->perawat_id = $q['perawat_id'] ? $q['perawat_id'] : null;
                 $tindakan->qty = $q['qty'];
+                $tindakan->diskon = $q['diskon'] + $q['diskon_ultah'];
+                $tindakan->diskon_ultah = $q['diskon_ultah'];
                 $tindakan->registrasi_paket_perawatan_id = $q['registrasi_paket_perawatan_id'];
                 $tindakan->paket_perawatan_id = $q['paket_perawatan_id'];
                 $tindakan->pengguna_id = auth()->id();

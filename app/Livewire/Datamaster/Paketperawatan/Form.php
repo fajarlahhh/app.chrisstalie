@@ -19,6 +19,11 @@ class Form extends Component
     public $tarif;
     public $masa_aktif;
     public $tindakan = [];
+    public $jenis_prabayar;
+    public $tanggal_mulai_daftar;
+    public $tanggal_selesai_daftar;
+    public $tanggal_mulai_berlaku;
+    public $tanggal_selesai_berlaku;
     public $jenis;
     public $dataKodeAkun;
     public $kode_akun_kewajiban_id;
@@ -30,7 +35,13 @@ class Form extends Component
                 'nama' => 'required',
                 'uraian' => 'required',
                 'jenis' => 'required',
-                'masa_aktif' => $this->jenis == 'Prabayar' ? 'required|numeric' : 'nullable|numeric',
+                'masa_aktif' => $this->jenis_prabayar == 'Masa Aktif' ? 'required|numeric' : 'nullable|numeric',
+                'jenis_prabayar' => $this->jenis == 'Prabayar' ? 'required' : 'nullable',
+                'kode_akun_kewajiban_id' => $this->jenis == 'Prabayar' ? 'required' : 'nullable',
+                'tanggal_mulai_daftar' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after_or_equal:now' : 'nullable|date',
+                'tanggal_selesai_daftar' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after:tanggal_mulai_daftar' : 'nullable|date',
+                'tanggal_mulai_berlaku' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after_or_equal:tanggal_mulai_daftar' : 'nullable|date',
+                'tanggal_selesai_berlaku' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after:tanggal_mulai_berlaku' : 'nullable|date',
             ]
         );
         DB::transaction(
@@ -41,6 +52,11 @@ class Form extends Component
                 $this->data->masa_aktif = $this->masa_aktif;
                 $this->data->qty = $this->jenis == 'Prabayar' ? collect($this->tindakan)->sum('qty') : null;
                 $this->data->jenis = $this->jenis;
+                $this->data->jenis_prabayar = $this->jenis_prabayar;
+                $this->data->tanggal_mulai_daftar = $this->tanggal_mulai_daftar;
+                $this->data->tanggal_selesai_daftar = $this->tanggal_selesai_daftar;
+                $this->data->tanggal_mulai_berlaku = $this->tanggal_mulai_berlaku;
+                $this->data->tanggal_selesai_berlaku = $this->tanggal_selesai_berlaku;
                 $this->data->kode_akun_kewajiban_id = $this->kode_akun_kewajiban_id;
                 $this->data->pengguna_id = auth()->id();
                 $this->data->save();

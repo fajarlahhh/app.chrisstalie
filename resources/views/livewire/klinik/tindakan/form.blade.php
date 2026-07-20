@@ -15,7 +15,7 @@
             @php
                 $historyCount = 0;
             @endphp
-            
+
             @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
                 @if ($row->tindakan->count() > 0)
                     @php $historyCount++; @endphp
@@ -30,33 +30,33 @@
                                     {{ $row->tindakan->count() }} Tindakan
                                 </span>
                             </div>
-                                @foreach ($row->tindakan as $item)
-                                    <div class="history-item {{ !$loop->last ? 'border-bottom pb-2 mb-2' : '' }}">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <span class="fw-semibold text-dark fs-12px">
-                                                {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }}
-                                            </span>
-                                            <span class="badge bg-secondary text-white fs-10px">
-                                                {{ $item->qty }}x
-                                            </span>
-                                        </div>
-                                        
-                                        <div class="mt-2 ps-3 text-muted fs-11px">
-                                            @if ($item->dokter?->nama)
-                                                <div class="d-flex align-items-start mb-1">
-                                                    <i class="fa fa-user-md me-2 text-info w-15px text-center mt-0.5"></i>
-                                                    <span>Dokter: <strong class="text-dark">{{ $item->dokter->nama }}</strong></span>
-                                                </div>
-                                            @endif
-                                            @if ($item->perawat?->nama)
-                                                <div class="d-flex align-items-start">
-                                                    <i class="fa fa-user-nurse me-2 text-success w-15px text-center mt-0.5"></i>
-                                                    <span>Perawat: <strong class="text-dark">{{ $item->perawat->nama }}</strong></span>
-                                                </div>
-                                            @endif
-                                        </div>
+                            @foreach ($row->tindakan as $item)
+                                <div class="history-item {{ !$loop->last ? 'border-bottom pb-2 mb-2' : '' }}">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <span class="fw-semibold text-dark fs-12px">
+                                            {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }}
+                                        </span>
+                                        <span class="badge bg-secondary text-white fs-10px">
+                                            {{ $item->qty }}x
+                                        </span>
                                     </div>
-                                @endforeach
+                                    
+                                    <div class="mt-2 ps-3 text-muted fs-11px">
+                                        @if ($item->dokter?->nama)
+                                            <div class="d-flex align-items-start mb-1">
+                                                <i class="fa fa-user-md me-2 text-info w-15px text-center mt-0.5"></i>
+                                                <span>Dokter: <strong class="text-dark">{{ $item->dokter->nama }}</strong></span>
+                                            </div>
+                                        @endif
+                                        @if ($item->perawat?->nama)
+                                            <div class="d-flex align-items-start">
+                                                <i class="fa fa-user-nurse me-2 text-success w-15px text-center mt-0.5"></i>
+                                                <span>Perawat: <strong class="text-dark">{{ $item->perawat->nama }}</strong></span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 @endif
@@ -154,7 +154,7 @@
                                                                     </option>
                                                                 </template>
                                                             </select>
-                                                        </div>                                                        
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label class="form-label">Qty</label>
@@ -163,102 +163,124 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                                <div class="row g-2 align-items-center">
+                                            <div class="row g-2 align-items-center">
+                                                <div class="col-md-6">
+                                                    <template x-if="row.biaya_jasa_dokter > 0">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Dokter</label>
+                                                            <select class="form-control" x-model="row.dokter_id">
+                                                                <option value="">-- Tidak Ada Dokter --</option>
+                                                                <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)" :key="nakes.id">
+                                                                    <option :value="nakes.id" :selected="row.dokter_id == nakes.id" x-text="nakes.nama"></option>
+                                                                </template>
+                                                            </select>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <template x-if="row.biaya_jasa_perawat > 0">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Perawat</label>
+                                                            <select class="form-control" x-model="row.perawat_id">
+                                                                <option value="">-- Tidak Ada Perawat --</option>
+                                                                <template x-for="nakes in dataNakes" :key="nakes.id">
+                                                                    <option :value="nakes.id" :selected="row.perawat_id == nakes.id" x-text="nakes.nama"></option>
+                                                                </template>
+                                                            </select>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2 align-items-center mb-3">
+                                                <template x-if="ulangTahun">
                                                     <div class="col-md-6">
-                                                        <template x-if="row.biaya_jasa_dokter > 0">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Dokter</label>
-                                                                <select class="form-control" x-model="row.dokter_id">
-                                                                    <option value="">-- Tidak Ada Dokter --</option>
-                                                                    <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
-                                                            :key="nakes.id">
-                                                            <option :value="nakes.id" :selected="row.dokter_id == nakes.id"
-                                                                x-text="nakes.nama"></option>
-                                                        </template>
-                                                    </select>
-                                                </div>
-                                            </template>
-                                                </div>
+                                                        <label class="form-label fw-bold" :class="row.diskon_ultah > 0 ? 'text-success' : 'text-secondary'">
+                                                            <i class="fa fa-gift me-1"></i> Diskon Ulang Tahun
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text text-white" 
+                                                                :class="row.diskon_ultah > 0 ? 'bg-success border-success' : 'bg-secondary border-secondary'">Rp.</span>
+                                                            <input type="number" min="0" class="form-control" 
+                                                                :class="row.diskon_ultah > 0 ? 'border-success' : 'border-secondary'"
+                                                                placeholder="0" x-model.number="row.diskon_ultah" disabled>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                @role('administrator|supervisor')
                                                     <div class="col-md-6">
-                                            <template x-if="row.biaya_jasa_perawat > 0">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Perawat</label>
-                                                    <select class="form-control" x-model="row.perawat_id" >
-                                                        <option value="">-- Tidak Ada Perawat --</option>
-                                                        <template x-for="nakes in dataNakes" :key="nakes.id">
-                                                            <option :value="nakes.id"
-                                                                :selected="row.perawat_id == nakes.id" x-text="nakes.nama">
-                                                            </option>
-                                                        </template>
-                                                    </select>
-                                                </div>
-                                            </template>
-                                                </div>
-                                                </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Catatan</label>
-                                                <textarea class="form-control" x-model="row.catatan"></textarea>
+                                                        <label class="form-label">Diskon</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text">Rp.</span>
+                                                            <input type="number" min="0" class="form-control"
+                                                                placeholder="0" x-model.number="row.diskon">
+                                                        </div>
+                                                    </div>
+                                                @endrole
                                             </div>
-                                            <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input" type="checkbox"
-                                                    :id="`membutuhkan_inform_consent${index}`"
-                                                    x-model="row.membutuhkan_inform_consent">
-                                                <label class="form-check-label" :for="`membutuhkan_inform_consent${index}`">
-                                                    Butuh Informed Consent</label>
-                                            </div>
-                                            <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input" type="checkbox"
-                                                    :id="`membutuhkan_sitemarking${index}`"
-                                                    x-model="row.membutuhkan_sitemarking">
-                                                <label class="form-check-label" :for="`membutuhkan_sitemarking${index}`">
-                                                    Butuh Sitemarking</label>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Catatan</label>
+                                            <textarea class="form-control" x-model="row.catatan"></textarea>
                                         </div>
-                                    </template>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">
-                                    <button type="button" wire:loading.attr="disabled" class="btn btn-primary btn-sm"
-                                        @click="tambahTindakan()">
-                                        <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                        Tambah Tindakan Lainnya
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-footer">
-                        @role('administrator|supervisor|operator')
-                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                                <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                Submit
-                            </button>
-                        @endrole
-                        @if (isset($data->tindakan) && $data->tindakan->count() > 0)
-                            <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                                onclick="window.location.href='/klinik/resepobat/form/{{ $data->id }}'">
-                                <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                Lanjut Resep Obat
-                            </button>
-                        @endif
-                        <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
-                            onclick="window.location.href='/klinik/tindakan'">
-                            <span wire:loading class="spinner-border spinner-border-sm"></span>
-                            Data
-                        </button>
-                        <x-alert />
-                    </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox"
+                                                :id="`membutuhkan_inform_consent${index}`"
+                                                x-model="row.membutuhkan_inform_consent">
+                                            <label class="form-check-label" :for="`membutuhkan_inform_consent${index}`">
+                                                Butuh Informed Consent</label>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox"
+                                                :id="`membutuhkan_sitemarking${index}`"
+                                                x-model="row.membutuhkan_sitemarking">
+                                            <label class="form-check-label" :for="`membutuhkan_sitemarking${index}`">
+                                                Butuh Sitemarking</label>
+                                        </div>
+                                    </div>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <button type="button" wire:loading.attr="disabled" class="btn btn-primary btn-sm"
+                                    @click="tambahTindakan()">
+                                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                                    Tambah Tindakan Lainnya
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-            
-        <x-modal.konfirmasi />
-    </form>
-        </div>
+                <div class="panel-footer">
+                    @role('administrator|supervisor|operator')
+                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                            Submit
+                        </button>
+                    @endrole
+                    @if (isset($data->tindakan) && $data->tindakan->count() > 0)
+                        <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
+                            onclick="window.location.href='/klinik/resepobat/form/{{ $data->id }}'">
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                            Lanjut Resep Obat
+                        </button>
+                    @endif
+                    <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
+                        onclick="window.location.href='/klinik/tindakan'">
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
+                        Data
+                    </button>
+                    <x-alert />
+                </div>
+            </div>
+
+            <x-modal.konfirmasi />
+        </form>
     </div>
-    
-    <div wire:loading>
-        <x-loading />
-    </div>
+</div>
+
+<div wire:loading>
+    <x-loading />
+</div>
 </div>
 
 @push('scripts')
@@ -270,6 +292,7 @@
                 dataTindakan: @js($dataTindakan),
                 dataNakes: @js($dataNakes),
                 nakes_id: @js($nakes_id),
+                ulangTahun: @js($ulangTahun),
 
 
                 tambahTindakan() {
@@ -277,6 +300,9 @@
                         id: null,
                         qty: 1,
                         harga: null,
+                        diskon: 0,
+                        diskon_ultah: 0,
+                        promo_ultah: 0,
                         catatan: null,
                         membutuhkan_inform_consent: false,
                         membutuhkan_sitemarking: false,
@@ -305,6 +331,9 @@
                     let selected = this.dataTindakan.find(t => t.id == row.id);
                     row.perawat_id = null;
                     if (selected) {
+                        if (this.ulangTahun) {
+                            row.diskon_ultah = selected.promo_ultah;
+                        }
                         row.harga = selected.tarif;
                         row.biaya_jasa_dokter = selected.biaya_jasa_dokter;
                         row.biaya_jasa_perawat = selected.biaya_jasa_perawat;
@@ -346,8 +375,7 @@
                         }));
                     });
                 },
-                init() {
-                },
+                init() {},
             }
         }
     </script>

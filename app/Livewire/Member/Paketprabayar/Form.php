@@ -40,7 +40,16 @@ class Form extends Component
     public function mount()
     {
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
-        $this->dataPaketPerawatan = PaketPerawatan::where('jenis', 'Prabayar')->get()->toArray();
+        $today = date('Y-m-d');
+        $this->dataPaketPerawatan = PaketPerawatan::where('jenis', 'Prabayar')
+            ->where(function ($query) use ($today) {
+                $query->whereNull('tanggal_mulai_daftar')
+                      ->orWhere(function ($q) use ($today) {
+                          $q->where('tanggal_mulai_daftar', '<=', $today)
+                            ->where('tanggal_selesai_daftar', '>=', $today);
+                      });
+            })
+            ->get()->toArray();
         $this->dataMetodeBayar = MetodeBayar::orderBy('nama')->get()->toArray();
     }
 
@@ -179,7 +188,13 @@ class Form extends Component
         $pasienPaketPrabayar->pasien_id = $pasienId;
         $pasienPaketPrabayar->paket_perawatan_id = $this->paket_perawatan_id;
         $pasienPaketPrabayar->tanggal_aktif = $this->tanggal;
-        $pasienPaketPrabayar->tanggal_berakhir = date('Y-m-d', strtotime($this->tanggal . ' + ' . $this->paketPerawatan->masa_aktif . ' days'));
+        
+        if ($this->paketPerawatan->jenis_prabayar == 'Periode Tanggal') {
+            $pasienPaketPrabayar->tanggal_berakhir = $this->paketPerawatan->tanggal_selesai_daftar;
+        } else {
+            $pasienPaketPrabayar->tanggal_berakhir = date('Y-m-d', strtotime($this->tanggal . ' + ' . $this->paketPerawatan->masa_aktif . ' days'));
+        }
+        
         $pasienPaketPrabayar->qty = $this->paketPerawatan->paketPerawatanDetail->first()->qty;
         $pasienPaketPrabayar->aktif = true;
         $pasienPaketPrabayar->metode_bayar = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['nama'];

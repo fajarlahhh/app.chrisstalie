@@ -68,6 +68,17 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <hr>
+                        <div class="alert alert-secondary table-responsive">
+                            <div class="mb-3">
+                                <label class="form-label">Promo Ulang Tahun</label>
+                                <input id="promo_ultah"  class="form-control" type="number" step="1" min="0" wire:model="promo_ultah"
+                                    x-model.number="promo_ultah" @keyup="hitungKeuntungan()" />
+                                @error('promo_ultah')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-8">
                         <!-- TABEL ALAT -->
@@ -378,6 +389,7 @@
                     subtotal: row.subtotal ?? ((parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0)
                 })),
                 catatan: @js($catatan),
+                promo_ultah: @js($promo_ultah),
                 dataBarang: @js($dataBarang),
                 biaya_jasa_dokter: @js($biaya_jasa_dokter),
                 biaya_jasa_perawat: @js($biaya_jasa_perawat),
@@ -413,6 +425,7 @@
                                 $wire.set('alat', JSON.parse(JSON.stringify(this.alat)), false);
                                 $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), false);
                                 $wire.set('nama', this.nama, false);
+                                $wire.set('promo_ultah', this.promo_ultah, false);
                                 $wire.set('kode_akun_id', this.kode_akun_id, false);
                                 $wire.set('icd_9_cm', this.icd_9_cm, false);
                                 $wire.set('tarif', this.tarif, false);

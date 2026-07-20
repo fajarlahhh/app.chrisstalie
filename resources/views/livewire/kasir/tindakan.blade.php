@@ -22,7 +22,7 @@
                 <input type="text" class="form-control" :value="formatNumber(row.qty)" disabled>
             </td>
             <td>
-                <input type="number" class="form-control" @input="hitungTotalTindakan()" x-model.number="row.diskon">
+                <input type="number" class="form-control" @input="hitungTotalTindakan()" x-model.number="row.diskon" disabled>
             </td>
             <th>
                 <input type="text" class="form-control text-end"

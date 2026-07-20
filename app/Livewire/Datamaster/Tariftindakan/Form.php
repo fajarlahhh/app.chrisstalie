@@ -30,6 +30,7 @@ class Form extends Component
     public $alat = [];
     public $barang = [];
     public $catatan;
+    public $promo_ultah = 0;
     public function submit()
     {
         $this->validateWithCustomMessages([
@@ -49,6 +50,7 @@ class Form extends Component
             $this->data->tarif = $this->tarif;
             $this->data->catatan = $this->catatan;
             $this->data->pengguna_id = auth()->id();
+            $this->data->promo_ultah = $this->promo_ultah;
             $this->data->save();
 
             $alatBahan = collect(collect($this->alat)->map(fn($q) => [

@@ -48,6 +48,21 @@
                         </div>
                         <template x-if="jenis == 'Prabayar'">
                             <div class="mb-3">
+                                <label class="form-label">Jenis Prabayar</label>
+                                <select id="jenis_prabayar" class="form-control" wire:model="jenis_prabayar" x-model="jenis_prabayar"
+                                    @change="updatedJenisPrabayar()" @if ($data->exists) disabled @endif
+                                    data-width="100%">
+                                    <option value="" selected>-- Pilih Jenis Prabayar --</option>
+                                    <option value="Masa Aktif">Masa Aktif</option>
+                                    <option value="Periode Tanggal">Periode Tanggal</option>
+                                </select>
+                                @error('jenis_prabayar')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </template>
+                        <template x-if="jenis == 'Prabayar'">
+                            <div class="mb-3">
                                 <label class="form-label">Kode Akun Kewajiban</label>
                                 <select id="kode_akun_kewajiban_id" class="form-control" wire:model="kode_akun_kewajiban_id"
                                     x-init="$($el).selectpicker({
@@ -70,12 +85,48 @@
                                 @enderror
                             </div>
                         </template>
-                        <template x-if="jenis == 'Prabayar'">
+                        <template x-if="jenis_prabayar == 'Masa Aktif'">
                             <div class="mb-3">
                                 <label class="form-label">Masa Aktif <small>(Hari)</small></label>
                                 <input id="masa_aktif" class="form-control" type="number" step="1" min="0"
                                     wire:model="masa_aktif" x-model.number="masa_aktif" />
                                 @error('masa_aktif')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </template>
+                        <template x-if="jenis_prabayar == 'Periode Tanggal'">
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Pendaftaran</label>
+                                <div class="input-group">
+                                    <input id="tanggal_mulai_daftar" class="form-control" type="date" step="1" min="0"
+                                        wire:model="tanggal_mulai_daftar" x-model="tanggal_mulai_daftar" />
+                                    <span class="input-group-text">s/d</span>
+                                    <input id="tanggal_selesai_daftar" class="form-control" type="date" step="1" min="0"
+                                        wire:model="tanggal_selesai_daftar" x-model="tanggal_selesai_daftar" />
+                                </div>
+                                @error('tanggal_mulai_daftar')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                @error('tanggal_selesai_daftar')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </template>
+                        <template x-if="jenis_prabayar == 'Periode Tanggal'">
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Berlaku</label>
+                                <div class="input-group">
+                                    <input id="tanggal_mulai_berlaku" class="form-control" type="date" step="1" min="0"
+                                        wire:model="tanggal_mulai_berlaku" x-model="tanggal_mulai_berlaku" />
+                                    <span class="input-group-text">s/d</span>
+                                    <input id="tanggal_selesai_berlaku" class="form-control" type="date" step="1" min="0"
+                                        wire:model="tanggal_selesai_berlaku" x-model="tanggal_selesai_berlaku" />
+                                </div>
+                                @error('tanggal_mulai_berlaku')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                @error('tanggal_selesai_berlaku')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -253,6 +304,11 @@
                 uraian: @js($uraian),
                 nama: @js($nama),
                 jenis: @js($jenis),
+                jenis_prabayar: @js($jenis_prabayar),
+                tanggal_mulai_daftar: @js($tanggal_mulai_daftar),
+                tanggal_selesai_daftar: @js($tanggal_selesai_daftar),
+                tanggal_mulai_berlaku: @js($tanggal_mulai_berlaku),
+                tanggal_selesai_berlaku: @js($tanggal_selesai_berlaku),
                 masa_aktif: @js($masa_aktif),
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';

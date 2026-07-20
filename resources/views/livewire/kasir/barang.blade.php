@@ -27,8 +27,13 @@
             <input type="text" class="form-control text-end w-150px" :value="formatNumber(row.harga)" disabled>
         </td>
         <td>
-            <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
-                @input="hitungTotalBarang(z)">
+            @role('administrator|supervisor')
+                <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
+                    @input="hitungTotalBarang(z)">
+            @else
+                <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
+                    @input="hitungTotalBarang(z)" disabled>
+            @endrole
         </td>
         <td>
             <input type="number" class="form-control" @input="hitungTotalBarang(z)" :max="row.harga * row.qty" x-model.number="row.diskon">
