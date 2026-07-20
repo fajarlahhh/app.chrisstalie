@@ -66,7 +66,9 @@
                         Submit
                     </button>
                 @endrole
+                <x-alert />
             </div>
+            <x-modal.konfirmasi />
         </form>
     </div>
 
