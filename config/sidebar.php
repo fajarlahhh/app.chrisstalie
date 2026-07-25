@@ -81,7 +81,7 @@ return [
                 ],
                 [
                     "title" => "Diskon",
-                    "method" => ["Index"],
+                    "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Kode Akun Transaksi",

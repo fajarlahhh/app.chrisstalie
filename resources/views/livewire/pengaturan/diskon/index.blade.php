@@ -15,10 +15,6 @@
                     class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
             @endrole
             <div class="ms-auto d-flex align-items-center">
-                <select id="aktif"  class="form-control w-auto" wire:model.lazy="aktif">
-                    <option value="1">Aktif</option>
-                    <option value="0">Non Aktif</option>
-                </select>&nbsp;
                 <input id="cari" type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
                     wire:model.lazy="cari">
             </div>
@@ -29,11 +25,12 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Uraian</th>
                         <th>Tarif Tindakan</th>
                         <th>Barang Dagang</th>
+                        <th>Harga Standar</th>
                         <th>Harga Diskon</th>
-                        <th>Uraian</th>
-                        <th>Tanggal Berakhir</th>
+                        <th>Periode</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -43,22 +40,23 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->ihs }}</td>
-                            <td>{{ $row->nik }}</td>
-                            <td>{{ $row->nama }}</td>
-                            <td>{{ $row->alamat }}</td>
-                            <td>{{ $row->no_hp }}</td>
+                            <td>{{ $row->uraian }}</td>
+                            <td>{{ $row->tarifTindakan?->nama }}</td>
                             <td>
-                                <span
-                                    class="badge bg-primary">{{ $row->kode_akun_jasa_dokter_id ? $row->kode_akun_jasa_dokter_id . ' - ' . $row->kodeAkunJasaDokter->nama : '' }}</span>
+                                {{ $row->barangSatuan?->barang->nama }}
                             </td>
                             <td>
-                                <span
-                                    class="badge bg-primary">{{ $row->kode_akun_jasa_perawat_id ? $row->kode_akun_jasa_perawat_id . ' - ' . $row->kodeAkunJasaPerawat->nama : '' }}</span>
+                                @if ($row->tarifTindakan)
+                                    {{ number_format_id($row->tarifTindakan?->tarif) }}
+                                @else
+                                    {{ number_format_id($row->barangSatuan?->harga_jual) }}
+                                @endif
                             </td>
+                            <td>{{ number_format_id($row->harga_diskon) }}</td>
+                            <td>{{ $row->tanggal_mulai }} s/d {{ $row->tanggal_berakhir }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                    <x-action :row="$row" custom="" :detail="false" :edit="false"
                                         :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                 @endrole
                             </td>

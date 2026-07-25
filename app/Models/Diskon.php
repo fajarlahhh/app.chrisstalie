@@ -15,9 +15,9 @@ class Diskon extends Model
         return $this->belongsTo(TarifTindakan::class);
     }
 
-    public function barangDagang()
+    public function barangSatuan()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(BarangSatuan::class);
     }
 
     public function pengguna()
