@@ -82,7 +82,7 @@
                                     <th class="bg-gray-100">Uraian</th>
                                     <th class="text-end w-150px bg-gray-100">Harga</th>
                                     <th class="w-100px bg-gray-100">Qty</th>
-                                    <th class="w-150px bg-gray-100">Diskon <small class="text-muted">(Rp.)</small></th>
+                                    <th class="w-200px bg-gray-100">Diskon <small class="text-muted">(Rp.)</small></th>
                                     <th class="text-end w-150px bg-gray-100">Sub Total</th>
                                     <th class="w-5px bg-gray-100"></th>
                                 </tr>
@@ -172,18 +172,6 @@
         }
     });
 
-    document.addEventListener('set-tindakan', function(event) {
-        const data = event?.detail?.data ?? [];
-        let root = document.querySelector('[x-data]');
-        if (root) {
-            let alpineData = Alpine?.closestDataStack ? Alpine.closestDataStack(root)?.[0] : root.__x?.$data;
-            if (alpineData && 'tindakan' in alpineData) {
-                alpineData.tindakan = data;
-                alpineData.hitungTotalTindakan();
-            }
-        }
-    });
-
     document.addEventListener('set-resep', function(event) {
         const data = event?.detail?.data ?? [];
         let root = document.querySelector('[x-data]');
@@ -207,6 +195,7 @@
             dataNakes: @js($dataNakes),
             dataMetodeBayar: @js($dataMetodeBayar ?? []),
             total_diskon_tindakan: @js($total_diskon_tindakan),
+            total_diskon_resep: @js($total_diskon_resep),
             total_diskon_barang: @js($total_diskon_barang),
             total_registrasi_paket_perawatan: @js($total_registrasi_paket_perawatan),
             total_barang: @js($total_barang),
@@ -227,16 +216,16 @@
             },
             hitungTotalRegistrasiPaketPerawatan() {
                 this.total_registrasi_paket_perawatan = this.registrasi_paket_perawatan.reduce((sum, row) => {
-                    return sum + (row.biaya * row.qty - row.diskon);
+                    return sum + ((parseFloat(row.biaya) || 0) * (parseFloat(row.qty) || 0) - (parseFloat(row.diskon) || 0));
                 }, 0);
                 this.hitungTotalTagihan();
             },
             hitungTotalTindakan() {
                 this.total_tindakan = this.tindakan.filter(row => !row.paket_perawatan_id).reduce((sum, row) => {
-                    return sum + (row.biaya * row.qty - row.diskon);
+                    return sum + ((parseFloat(row.biaya) || 0) * (parseFloat(row.qty) || 0) - (parseFloat(row.diskon) || 0));
                 }, 0);
                 this.total_diskon_tindakan = this.tindakan.reduce((sum, row) => {
-                    return sum + row.diskon;
+                    return sum + (parseFloat(row.diskon) || 0);
                 }, 0);
                 this.hitungTotalTagihan();
             },
@@ -247,16 +236,19 @@
             },
             hitungTotalResep() {
                 this.total_resep = this.resep.reduce((sum, row) => {
-                    return sum + (row.barang.reduce((sum, b) => sum + (b.harga * b.qty), 0));
+                    return sum + (row.barang.reduce((sum, b) => sum + (((parseFloat(b.harga) || 0) * (parseFloat(b.qty) || 0)) - (parseFloat(b.diskon) || 0)), 0));
+                }, 0);
+                this.total_diskon_resep = this.resep.reduce((sum, row) => {
+                    return sum + (row.barang.reduce((sum, b) => sum + (parseFloat(b.diskon) || 0), 0));
                 }, 0);
                 this.hitungTotalTagihan();
             },
             hitungTotalBarang(index) {
                 this.total_barang = this.barang.reduce((sum, row) => {
-                    return sum + (row.harga * row.qty - row.diskon);
+                    return sum + ((parseFloat(row.harga) || 0) * (parseFloat(row.qty) || 0) - (parseFloat(row.diskon) || 0));
                 }, 0);
                 this.total_diskon_barang = this.barang.reduce((sum, row) => {
-                    return sum + row.diskon;
+                    return sum + (parseFloat(row.diskon) || 0);
                 }, 0);
                 this.hitungTotalTagihan();
             },
@@ -332,6 +324,7 @@
                             $wire.set('total_resep', this.total_resep, true);
                             $wire.set('total_barang', this.total_barang, true);
                             $wire.set('total_diskon_tindakan', this.total_diskon_tindakan, true);
+                            $wire.set('total_diskon_resep', this.total_diskon_resep, true);
                             $wire.set('total_diskon_barang', this.total_diskon_barang, true);
                             $wire.set('total_registrasi_paket_perawatan', this.total_registrasi_paket_perawatan, true);
                             $wire.set('tanggal', this.tanggal, true);

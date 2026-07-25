@@ -191,32 +191,44 @@
                                                     </template>
                                                 </div>
                                             </div>
-                                            <div class="row g-2 align-items-center mb-3">
-                                                <template x-if="ulangTahun">
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-bold" :class="row.diskon_ultah > 0 ? 'text-success' : 'text-secondary'">
-                                                            <i class="fa fa-gift me-1"></i> Diskon Ulang Tahun
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text text-white" 
-                                                                :class="row.diskon_ultah > 0 ? 'bg-success border-success' : 'bg-secondary border-secondary'">Rp.</span>
-                                                            <input type="number" min="0" class="form-control" 
-                                                                :class="row.diskon_ultah > 0 ? 'border-success' : 'border-secondary'"
-                                                                placeholder="0" x-model.number="row.diskon_ultah" disabled>
+                                            <template x-if="row.promo_ultah > 0 || row.promo_tindakan != 0">
+                                                <div class="alert alert-info mb-3 p-3 border-0 shadow-sm rounded-3">
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <div class="bg-info bg-opacity-25 text-info rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                                            <i class="fa fa-tags"></i>
                                                         </div>
+                                                        <h6 class="mb-0 fw-bold text-dark">Promo & Diskon Tersedia</h6>
                                                     </div>
-                                                </template>
-                                                @role('administrator|supervisor')
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Diskon</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">Rp.</span>
-                                                            <input type="number" min="0" class="form-control"
-                                                                placeholder="0" x-model.number="row.diskon">
-                                                        </div>
+                                                    <div class="row g-2">
+                                                        <template x-if="row.promo_ultah > 0">
+                                                            <div class="col-md-6">
+                                                                <div class="bg-white rounded p-2 d-flex align-items-center border border-info border-opacity-25">
+                                                                    <div class="text-danger bg-danger bg-opacity-10 rounded p-2 me-3">
+                                                                        <i class="fa fa-gift fa-lg"></i>
+                                                                    </div>
+                                                                    <div class="flex-grow-1">
+                                                                        <div class="text-secondary small fw-bold">Diskon Ulang Tahun</div>
+                                                                        <div class="fw-bold text-dark">- Rp. <span x-text="new Intl.NumberFormat('id-ID').format(row.promo_ultah)"></span></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                        <template x-if="row.promo_tindakan != 0">
+                                                            <div class="col-md-6">
+                                                                <div class="bg-white rounded p-2 d-flex align-items-center border border-info border-opacity-25">
+                                                                    <div class="text-success bg-success bg-opacity-10 rounded p-2 me-3">
+                                                                        <i class="fa fa-percent fa-lg"></i>
+                                                                    </div>
+                                                                    <div class="flex-grow-1">
+                                                                        <div class="text-secondary small fw-bold" x-text="row.promo_tindakan.uraian || 'Diskon Tindakan'"></div>
+                                                                        <div class="fw-bold text-dark">- Rp. <span x-text="new Intl.NumberFormat('id-ID').format(row.promo_tindakan.harga_diskon)"></span></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </template>
                                                     </div>
-                                                @endrole
-                                            </div>
+                                                </div>
+                                            </template>
                                         <div class="mb-3">
                                             <label class="form-label">Catatan</label>
                                             <textarea class="form-control" x-model="row.catatan"></textarea>
@@ -292,8 +304,6 @@
                 dataTindakan: @js($dataTindakan),
                 dataNakes: @js($dataNakes),
                 nakes_id: @js($nakes_id),
-                ulangTahun: @js($ulangTahun),
-
 
                 tambahTindakan() {
                     this.tindakan.push({
@@ -301,7 +311,7 @@
                         qty: 1,
                         harga: null,
                         diskon: 0,
-                        diskon_ultah: 0,
+                        promo_tindakan: 0,
                         promo_ultah: 0,
                         catatan: null,
                         membutuhkan_inform_consent: false,
@@ -331,15 +341,16 @@
                     let selected = this.dataTindakan.find(t => t.id == row.id);
                     row.perawat_id = null;
                     if (selected) {
-                        if (this.ulangTahun) {
-                            row.diskon_ultah = selected.promo_ultah;
-                        }
+                        row.promo_ultah = selected.promo_ultah;
+                        row.promo_tindakan = selected.promo_tindakan;
                         row.harga = selected.tarif;
                         row.biaya_jasa_dokter = selected.biaya_jasa_dokter;
                         row.biaya_jasa_perawat = selected.biaya_jasa_perawat;
                         row.biaya_alat_barang = selected.biaya_alat_barang;
                         row.biaya = selected.tarif;
                     } else {
+                        row.promo_tindakan = selected.promo_tindakan;
+                        row.promo_ultah = selected.promo_ultah;
                         row.harga = null;
                         row.biaya_jasa_dokter = 0;
                         row.biaya_jasa_perawat = 0;

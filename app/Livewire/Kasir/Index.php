@@ -13,7 +13,7 @@ use App\Models\MetodeBayar;
 use App\Class\JurnalkeuanganClass;
 use App\Models\PaketPerawatanDetail;
 use App\Models\Pasien;
-use App\Models\PasienPaketPrabayar;
+use App\Models\Diskon;
 use App\Models\RegistrasiPaketPerawatan;
 use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +23,10 @@ use App\Traits\KodeakuntransaksiTrait;
 class Index extends Component
 {
     use CustomValidationTrait, KodeakuntransaksiTrait;
+    public $promo = [];
     public $dataBarangApotek = [], $dataBarang = [], $dataMetodeBayar = [];
     public $barang = [];
+    public $ulangTahun = false;
     public $keterangan;
     public $metode_bayar = 1;
     public $metode_bayar_2 = 1;
@@ -35,7 +37,7 @@ class Index extends Component
     public $tanggal;
     public $total_bayar = 0;
 
-    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $registrasi_paket_prabayar = [], $registrasi_paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_registrasi_paket_perawatan = 0, $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0;
+    public $dataPasienTindakanResepObat = [], $cari, $registrasi, $dataNakes = [], $tindakan = [], $registrasi_paket_prabayar = [], $registrasi_paket_perawatan = [], $resep = [], $bahan = [], $alat = [], $total_registrasi_paket_perawatan = 0, $total_tindakan = 0, $total_resep = 0, $total_barang = 0, $total_diskon_tindakan = 0, $total_diskon_barang = 0, $total_diskon_resep=0;
 
 
     public function setRegistrasi($id)
@@ -48,6 +50,23 @@ class Index extends Component
             $this->barang = [];
             $this->pasien_id = $this->registrasi->pasien_id;
 
+            if ($this->registrasi->pasien->tanggal_lahir) {
+                $tglLahir = \Carbon\Carbon::parse($this->registrasi->pasien->tanggal_lahir)->startOfDay();
+                $today = now()->startOfDay();
+
+                $b1 = $tglLahir->copy()->year($today->year);
+                $b2 = $tglLahir->copy()->year($today->year - 1);
+                $b3 = $tglLahir->copy()->year($today->year + 1);
+
+                if (
+                    abs($today->diffInDays($b1, false)) <= 5 ||
+                    abs($today->diffInDays($b2, false)) <= 5 ||
+                    abs($today->diffInDays($b3, false)) <= 5
+                ) {
+                    $this->ulangTahun = true;
+                }
+            }
+            $diskon = Diskon::whereNotNull('tarif_tindakan_id')->where('tanggal_mulai', '<=', date('Y-m-d'))->where('tanggal_berakhir', '>=', date('Y-m-d'))->get();
             $this->registrasi_paket_perawatan = $this->registrasi->registrasiPaketPerawatan->map(function ($q) {
                 return [
                     'id' => $q->id,
@@ -79,13 +98,29 @@ class Index extends Component
             })->toArray();
             $dataPaketPerawatanDetail = PaketPerawatanDetail::whereIn('paket_perawatan_id', collect($this->registrasi_paket_perawatan)->pluck('paket_perawatan_id'))->get();
 
-            $this->tindakan = $this->registrasi->tindakan->map(function ($q) use ($dataPaketPerawatanDetail) {
+            $this->tindakan = $this->registrasi->tindakan->map(function ($q) use ($dataPaketPerawatanDetail, $diskon) {
+                $promo = [];
+                if ($this->ulangTahun && $q->tarifTindakan->promo_ultah) {
+                    $promo[] = [
+                        'uraian' => 'Ulang Tahun',
+                        'nilai' => $q->tarifTindakan->promo_ultah,
+                        'rupiah' => number_format_id($q->tarifTindakan->promo_ultah),
+                    ];
+                }
+                if ($diskon->where('tarif_tindakan_id', $q->tarifTindakan->id)->first()) {
+                    $dataDiskon = $diskon->where('tarif_tindakan_id', $q->tarifTindakan->id)->first();
+                    $promo[] = [
+                        'uraian' => $dataDiskon->uraian,
+                        'nilai' => $dataDiskon->harga_diskon,
+                        'rupiah' => number_format_id($dataDiskon->harga_diskon),
+                    ];
+                }
                 return [
                     'id' => $q->id,
                     'tarif_tindakan_id' => $q->tarif_tindakan_id,
                     'nama' => $q->tarifTindakan->nama,
                     'qty' => $q->qty,
-                    'diskon' => $q->diskon,
+                    'diskon' => $q->paket_perawatan_id ? 0 : ($q->diskon ?: ($this->ulangTahun && $q->tarifTindakan->promo_ultah ? $q->tarifTindakan->promo_ultah : 0)),
                     'kode_akun_id' => $q->tarifTindakan->kode_akun_id,
                     'harga' => $q->harga,
                     'catatan' => $q->catatan,
@@ -96,6 +131,7 @@ class Index extends Component
                     'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
                         return $q->qty * $q->biaya;
                     }),
+                    'promo' => $q->paket_perawatan_id ? null : ($q->diskon ? null : $promo),
                     'biaya_alat_barang' => $q->biaya_alat_barang,
                     'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
                     'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
@@ -103,7 +139,6 @@ class Index extends Component
                     'biaya_asli' => $q->biaya,
                 ];
             })->toArray();
-
             $this->resep = collect($this->registrasi->resepObat)
                 ->groupBy('resep')
                 ->map(function ($group) {
@@ -118,6 +153,7 @@ class Index extends Component
                                 return [
                                     'id' => null,
                                     'nama' => 'Terjadi Kesalahan Resep Obat',
+                                    'diskon' => null,
                                     'satuan' => null,
                                     'kode_akun_id' => null,
                                     'kode_akun_penjualan_id' => null,
@@ -130,6 +166,7 @@ class Index extends Component
                             return [
                                 'id' => $r->barang_satuan_id,
                                 'nama' => $barang['nama'],
+                                'diskon' => $r->diskon,
                                 'satuan' => $barang['satuan'],
                                 'kode_akun_id' => $barang['kode_akun_id'],
                                 'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
@@ -339,11 +376,12 @@ class Index extends Component
             $pembayaran->total_registrasi_paket_perawatan = $this->total_registrasi_paket_perawatan;
             $pembayaran->total_tindakan = $this->total_tindakan + $this->total_diskon_tindakan;
             $pembayaran->total_harga_barang = $this->total_barang;
-            $pembayaran->total_resep = $this->total_resep;
+            $pembayaran->total_resep = $this->total_resep + $this->total_diskon_resep;
             $pembayaran->total_diskon_barang = $this->total_diskon_barang;
             $pembayaran->total_diskon_tindakan = $this->total_diskon_tindakan;
+            $pembayaran->total_diskon_resep = $this->total_diskon_resep;
             $pembayaran->total_tagihan = $this->total_tagihan;
-            $pembayaran->total_diskon = $this->total_diskon_tindakan + $this->total_diskon_barang;
+            $pembayaran->total_diskon = $this->total_diskon_tindakan + $this->total_diskon_resep + $this->total_diskon_barang;
 
             $pembayaran->metode_bayar = collect($this->dataMetodeBayar)->where('id', $this->metode_bayar)->first()['nama'];
             $pembayaran->metode_bayar_2 = $this->cash_2 > 0 ? collect($this->dataMetodeBayar)->where('id', $this->metode_bayar_2)->first()['nama'] : null;
@@ -454,7 +492,7 @@ class Index extends Component
         $pendapatan = array_merge($pendapatan, [
             [
                 'kode_akun_id' =>  $this->getKodeAkunTransaksiByTransaksi(['Diskon Pendapatan'])->kode_akun_id,
-                'debet' => $this->total_diskon_barang + $this->total_diskon_tindakan,
+                'debet' => $this->total_diskon_barang + $this->total_diskon_tindakan + $this->total_diskon_resep,
                 'kredit' => 0,
             ]
         ]);
@@ -632,6 +670,7 @@ class Index extends Component
             'kode_akun_jasa_perawat_id' => $q->kode_akun_jasa_perawat_id,
         ])->toArray();
         $this->tanggal = date('Y-m-d');
+        // $this->setRegistrasi('20260720082945');
     }
 
     public function render()

@@ -405,6 +405,10 @@ return [
                     "title" => "Upload",
                     "method" => ["Index", "Form"],
                 ],
+                [
+                    "title" => "Diskon Khusus",
+                    "method" => ["Index", "Form"],
+                ],
             ]
         ],
         [

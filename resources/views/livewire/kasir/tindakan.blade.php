@@ -22,7 +22,26 @@
                 <input type="text" class="form-control" :value="formatNumber(row.qty)" disabled>
             </td>
             <td>
-                <input type="number" class="form-control" @input="hitungTotalTindakan()" x-model.number="row.diskon" disabled>
+                <template x-if="row.promo && row.promo.length > 0">
+                    <select class="form-control mb-1"
+                        @change="
+                        let val = $event.target.value.toString();
+                        if (val.includes('%')) {
+                            row.diskon = (parseFloat(val) / 100) * (parseFloat(row.biaya) * parseFloat(row.qty));
+                        } else {
+                            row.diskon = parseFloat(val) || 0;
+                        }
+                        hitungTotalTindakan();
+                    ">
+                        <template x-for="(p, idx) in row.promo" :key="idx">
+                            <option :value="p.nilai" x-text="`${p.uraian} (${p.rupiah})`"></option>
+                        </template>
+                    </select>
+                </template>
+                <template x-if="row.diskon > 0">
+                    <input type="text" class="form-control text-end" :value="formatNumber(row.diskon)" disabled>
+                    <span class="text-danger">Diskon Khusus</span>
+                </template>
             </td>
             <th>
                 <input type="text" class="form-control text-end"

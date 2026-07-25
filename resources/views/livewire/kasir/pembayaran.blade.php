@@ -1,7 +1,7 @@
 <div class="mb-3">
     <label class="form-label text-danger">Total Diskon</label>
     <input class="form-control text-end text-bold fs-20px text-danger" type="text" disabled
-        :value="formatNumber(total_diskon_tindakan + total_diskon_barang)" />
+        :value="formatNumber(total_diskon_tindakan + total_diskon_barang + total_diskon_resep)" />
 </div>
 <div class="mb-3 text-success">
     <label class="form-label">Total Tagihan</label>

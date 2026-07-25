@@ -151,7 +151,7 @@
 
                     </td>
                     <td class="p-0 text-end w-50px" nowrap>
-                        {{ number_format_id(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
+                        {{ number_format_id(($tindakan->biaya * $tindakan->qty) - $tindakan->diskon) }}
                     </td>
                 </tr>
             @endforeach
@@ -159,13 +159,15 @@
                 <tr>
                     <td class="p-0">
                         {{ $resep->first()->nama }}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format_id($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format_id($resep->sum(fn($q) => $q->harga * $q->qty)) }} @if ($resep->sum('diskon') > 0)
+                            - {{ number_format_id($resep->sum('diskon')) }}
+                        @endif
                     </td>
                     <td class="p-0 ps-2 text-center w-10px" nowrap>
                         1
                     </td>
                     <td class="p-0 text-end w-50px" nowrap>
-                        {{ number_format_id($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                        {{ number_format_id($resep->sum(fn($q) => ($q->harga * $q->qty) - $q->diskon)) }}
                     </td>
                 </tr>
             @endforeach
@@ -210,7 +212,7 @@
         </tr>
         <tr>
             <td class="p-0">Diskon</td>
-            <td class="p-0 text-end">{{ number_format_id($data->total_diskon_barang + $data->total_diskon_tindakan +  $data->diskon) }}
+            <td class="p-0 text-end">{{ number_format_id($data->total_diskon_barang + $data->total_diskon_tindakan + $data->total_diskon_resep +  $data->diskon) }}
             </td>
         </tr>
         <tr>

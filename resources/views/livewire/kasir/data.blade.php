@@ -77,7 +77,7 @@
                                             <strong>{{ number_format_id($row->total_barang) }}</strong>
                                         </li>
                                         <li>Total Diskon :
-                                            <strong>{{ number_format_id($row->total_diskon_barang + $row->total_diskon_tindakan + $row->diskon) }}</strong>
+                                            <strong>{{ number_format_id($row->total_diskon_barang + $row->total_diskon_tindakan + $row->total_diskon_resep + $row->diskon) }}</strong>
                                         </li>
                                         <li>Total Tagihan :
                                             <strong>{{ number_format_id($row->total_tagihan) }}</strong>
