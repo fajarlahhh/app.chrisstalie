@@ -15,7 +15,7 @@
         </div>
         <form wire:submit="submit">
             <div class="panel-body" x-data="{ jenis: @entangle('jenis') }">
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label class="form-label">Jenis</label>
                     <select id="jenis"  class="form-control" wire:model.live="jenis" x-model="jenis">
                         <option value="Tindakan">Tindakan</option>
@@ -44,7 +44,7 @@
                     @error('barang_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> --}}
                 <div class="mb-3" x-show="jenis == 'Tindakan'" x-transition>
                     <label class="form-label">Cari Tindakan</label>
                     <div wire:ignore>

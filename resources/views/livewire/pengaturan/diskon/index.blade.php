@@ -27,7 +27,7 @@
                         <th class="w-10px">No.</th>
                         <th>Uraian</th>
                         <th>Tarif Tindakan</th>
-                        <th>Barang Dagang</th>
+                        {{-- <th>Barang Dagang</th> --}}
                         <th>Harga Standar</th>
                         <th>Harga Diskon</th>
                         <th>Periode</th>
@@ -42,9 +42,9 @@
                             </td>
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->tarifTindakan?->nama }}</td>
-                            <td>
+                            {{-- <td>
                                 {{ $row->barangSatuan?->barang->nama }}
-                            </td>
+                            </td> --}}
                             <td>
                                 @if ($row->tarifTindakan)
                                     {{ number_format_id($row->tarifTindakan?->tarif) }}
