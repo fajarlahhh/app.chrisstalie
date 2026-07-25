@@ -27,23 +27,20 @@
             <input type="text" class="form-control text-end w-150px" :value="formatNumber(row.harga)" disabled>
         </td>
         <td>
-            @role('administrator|supervisor')
-                <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
-                    @input="hitungTotalBarang(z)">
-            @else
-                <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
-                    @input="hitungTotalBarang(z)" disabled>
-            @endrole
+            <input type="number" class="form-control w-100px" min="1" step="any" x-model.number="row.qty"
+                @input="hitungTotalBarang(z)">
         </td>
         <td>
-            <input type="number" class="form-control" @input="hitungTotalBarang(z)" :max="row.harga * row.qty" x-model.number="row.diskon">
+            <input type="number" class="form-control" @input="hitungTotalBarang(z)" :max="row.harga * row.qty"
+                x-model.number="row.diskon">
         </td>
         <th>
             <input type="text" class="form-control text-end"
                 :value="formatNumber(row.harga * row.qty - parseInt(row.diskon || 0))" disabled>
         </th>
         <td>
-            <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled" @click="hapusBarang(z)">
+            <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled"
+                @click="hapusBarang(z)">
                 <i class="fa fa-times"></i>
             </button>
         </td>
