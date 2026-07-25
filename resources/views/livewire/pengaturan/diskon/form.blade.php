@@ -61,7 +61,7 @@
                             @endforeach
                         </select>
                     </div>
-                    @error('barang_id')
+                    @error('tarif_tindakan_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
