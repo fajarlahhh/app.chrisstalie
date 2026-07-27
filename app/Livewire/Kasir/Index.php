@@ -111,8 +111,8 @@ class Index extends Component
                     $dataDiskon = $diskon->where('tarif_tindakan_id', $q->tarifTindakan->id)->first();
                     $promo[] = [
                         'uraian' => $dataDiskon->uraian,
-                        'nilai' => $dataDiskon->harga_diskon,
-                        'rupiah' => number_format_id($dataDiskon->harga_diskon),
+                        'nilai' => $dataDiskon->diskon,
+                        'rupiah' => number_format_id($dataDiskon->diskon),
                     ];
                 }
                 return [

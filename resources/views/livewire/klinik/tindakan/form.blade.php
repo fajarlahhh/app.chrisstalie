@@ -221,7 +221,7 @@
                                                                     </div>
                                                                     <div class="flex-grow-1">
                                                                         <div class="text-secondary small fw-bold" x-text="row.promo_tindakan.uraian || 'Diskon Tindakan'"></div>
-                                                                        <div class="fw-bold text-dark">- Rp. <span x-text="new Intl.NumberFormat('id-ID').format(row.promo_tindakan.harga_diskon)"></span></div>
+                                                                        <div class="fw-bold text-dark">- Rp. <span x-text="new Intl.NumberFormat('id-ID').format(row.promo_tindakan.diskon)"></span></div>
                                                                     </div>
                                                                 </div>
                                                             </div>

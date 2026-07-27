@@ -52,7 +52,7 @@
                                     {{ number_format_id($row->barangSatuan?->harga_jual) }}
                                 @endif
                             </td>
-                            <td>{{ number_format_id($row->harga_diskon) }}</td>
+                            <td>{{ number_format_id($row->barangSatuan?->harga_jual - $row->diskon) }}</td>
                             <td>{{ $row->tanggal_mulai }} s/d {{ $row->tanggal_berakhir }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')

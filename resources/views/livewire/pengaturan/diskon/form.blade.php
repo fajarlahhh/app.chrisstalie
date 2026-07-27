@@ -82,9 +82,9 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="harga_diskon">Harga Diskon</label>
-                    <input type="text" class="form-control text-end" wire:model="harga_diskon" id="harga_diskon">
-                    @error('harga_diskon')
+                    <label class="form-label" for="diskon">Diskon</label>
+                    <input type="text" class="form-control text-end" wire:model="diskon" id="diskon">
+                    @error('diskon')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

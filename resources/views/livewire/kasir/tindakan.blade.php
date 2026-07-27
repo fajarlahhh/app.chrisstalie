@@ -33,12 +33,13 @@
                         }
                         hitungTotalTindakan();
                     ">
+                        <option>-- Pilih Diskon -- </option>
                         <template x-for="(p, idx) in row.promo" :key="idx">
                             <option :value="p.nilai" x-text="`${p.uraian} (${p.rupiah})`"></option>
                         </template>
                     </select>
                 </template>
-                <template x-if="row.diskon > 0">
+                <template x-if="row.diskon > 0 && row.promo.length == 0">
                     <input type="text" class="form-control text-end" :value="formatNumber(row.diskon)" disabled>
                     <span class="text-danger">Diskon Khusus</span>
                 </template>
