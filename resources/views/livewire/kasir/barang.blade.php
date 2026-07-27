@@ -31,8 +31,11 @@
                 @input="hitungTotalBarang(z)">
         </td>
         <td>
-            <input type="number" class="form-control" @input="hitungTotalBarang(z)" :max="row.harga * row.qty"
-                x-model.number="row.diskon">
+            @role('administrator|supervisor')
+                <input type="number" class="form-control" @input="hitungTotalBarang(z)" x-model.number="row.diskon">
+            @else
+                <input type="text" class="form-control" :value="formatNumber(row.diskon || 0)" disabled>
+            @endrole
         </td>
         <th>
             <input type="text" class="form-control text-end"
