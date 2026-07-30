@@ -54,19 +54,24 @@
     <tbody>
         @php
             $total = 0;
+            $groupedStok = $dataStok->groupBy('barang_id');
+            if ($jenis == 'Tanggal Masuk') {
+                $tglBulan = ($bulan == date('Y-m')) 
+                    ? \Carbon\Carbon::now()->startOfDay() 
+                    : \Carbon\Carbon::parse($bulan . '-01')->endOfMonth()->startOfDay();
+            }
         @endphp
         @foreach ($data as $item)
             @php
                 $barangSatuanUtama = $item->barangSatuanUtama;
-                $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($barangSatuanUtama) {
+                $rasio = $barangSatuanUtama?->rasio_dari_terkecil ?: 1;
+                
+                $stok = collect($groupedStok->get($item->id, []))->map(function ($q) use ($rasio) {
                     return [
                         'tanggal' => $q->tanggal,
-                        'harga_beli' => $q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil,
-                        'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
-                        'total' =>
-                            (($q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil) /
-                                $barangSatuanUtama?->rasio_dari_terkecil) *
-                            $q->stok,
+                        'harga_beli' => $q->harga_beli * $rasio,
+                        'stok' => $q->stok / $rasio,
+                        'total' => $q->harga_beli * $q->stok,
                     ];
                 });
 
@@ -111,13 +116,6 @@
                         @if ($jenis == 'Tanggal Masuk')
                             <td nowrap class="text-end">
                                 @php
-                                    if ($bulan == date('Y-m')) {
-                                        $tglBulan = \Carbon\Carbon::now()->startOfDay();
-                                    } else {
-                                        $tglBulan = \Carbon\Carbon::parse($bulan . '-01')
-                                            ->endOfMonth()
-                                            ->startOfDay();
-                                    }
                                     $umur = \Carbon\Carbon::parse($subItem['tanggal'])
                                         ->startOfDay()
                                         ->diffInDays($tglBulan);

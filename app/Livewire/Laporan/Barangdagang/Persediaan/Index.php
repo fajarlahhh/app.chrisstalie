@@ -25,28 +25,30 @@ class Index extends Component
 
     private function getData()
     {
-        if ($this->jenis == 'Tanggal Kedaluarsa') {
-            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_kedaluarsa as tanggal, harga_beli, count(*) as stok'))
-            ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01'))
-            ->where(fn($q) => $q->whereNull('tanggal_keluar')->orWhereNull('stok_keluar_id')->orWhere('tanggal_keluar', '>=', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01')))
-            ->groupBy('barang_id', 'tanggal_kedaluarsa', 'harga_beli')->get();
-        } else {
-            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_masuk as tanggal, harga_beli, count(*) as stok'))
-            ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01'))
-            ->where(fn($q) => $q->whereNull('tanggal_keluar')->orWhereNull('stok_keluar_id')->orWhere('tanggal_keluar', '>=', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01')))
-            ->groupBy('barang_id', 'tanggal_masuk', 'harga_beli')->get();
-        }
-        
-            
-        return Barang::with(['barangSatuanUtama.satuanKonversi', 'barangSatuan', 'kodeAkun'])
+        $batasBulan = \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01');
+
+        $barang = Barang::with(['barangSatuanUtama.satuanKonversi', 'barangSatuan', 'kodeAkun'])
             ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
-            ->when($this->kode_akun_id, function ($q) {
-                $q->where('kode_akun_id', $this->kode_akun_id);
-            })
-            ->where(fn($q) => $q
-                ->where('nama', 'like', '%' . $this->cari . '%'))
+            ->when($this->kode_akun_id, fn($q) => $q->where('kode_akun_id', $this->kode_akun_id))
+            ->when($this->cari, fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
             ->orderBy('nama')
             ->get();
+
+        $barangIds = $barang->pluck('id');
+        $tanggalKolom = $this->jenis == 'Tanggal Kedaluarsa' ? 'tanggal_kedaluarsa' : 'tanggal_masuk';
+
+        $this->dataStok = Stok::select(DB::raw("barang_id, {$tanggalKolom} as tanggal, harga_beli, count(*) as stok"))
+            ->whereIn('barang_id', $barangIds)
+            ->where('tanggal_masuk', '<', $batasBulan)
+            ->where(function ($q) use ($batasBulan) {
+                $q->whereNull('tanggal_keluar')
+                  ->orWhereNull('stok_keluar_id')
+                  ->orWhere('tanggal_keluar', '>=', $batasBulan);
+            })
+            ->groupBy('barang_id', $tanggalKolom, 'harga_beli')
+            ->get();
+
+        return $barang;
     }
 
     public function print()
