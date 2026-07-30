@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class Index extends Component
 {
     #[Url]
-    public $cari, $persediaan = 'Apotek', $kode_akun_id, $bulan;
+    public $cari, $persediaan = 'Apotek', $kode_akun_id, $bulan, $jenis = 'Tanggal Kedaluarsa';
     public $dataKodeAkun = [], $dataStok;
 
     public function mount()
@@ -25,10 +25,18 @@ class Index extends Component
 
     private function getData()
     {
-        $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_kedaluarsa, harga_beli, count(*) as stok'))
+        if ($this->jenis == 'Tanggal Kedaluarsa') {
+            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_kedaluarsa, harga_beli, count(*) as stok'))
             ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01'))
             ->where(fn($q) => $q->whereNull('tanggal_keluar')->orWhereNull('stok_keluar_id')->orWhere('tanggal_keluar', '>=', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01')))
             ->groupBy('barang_id', 'tanggal_kedaluarsa', 'harga_beli')->get();
+        } else {
+            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_masuk, harga_beli, count(*) as stok'))
+            ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01'))
+            ->where(fn($q) => $q->whereNull('tanggal_keluar')->orWhereNull('stok_keluar_id')->orWhere('tanggal_keluar', '>=', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01')))
+            ->groupBy('barang_id', 'tanggal_masuk', 'harga_beli')->get();
+        }
+        
             
         return Barang::with(['barangSatuanUtama.satuanKonversi', 'barangSatuan', 'kodeAkun'])
             ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
@@ -48,6 +56,7 @@ class Index extends Component
             'cetak' => true,
             'data' => $this->getData(),
             'dataStok' => $this->dataStok,
+            'jenis' => $this->jenis,
             'persediaan' => $this->persediaan,
             'kode_akun' => $this->kode_akun_id ? collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()?->nama : '',
             'cari' => $this->cari,

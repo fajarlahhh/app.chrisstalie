@@ -27,6 +27,10 @@
                         <option value="Klinik">Persediaan Alat & Bahan</option>
                     @endrole
                 </select>&nbsp;
+                <select id="jenis"  class="form-control w-auto" wire:model.lazy="jenis">
+                    <option value="Tanggal Kedaluarsa">Tanggal Kedaluarsa</option>
+                    <option value="Tanggal Masuk">Tanggal Masuk</option>
+                </select>&nbsp;
                 <select id="kode_akun_id"  class="form-control w-auto" wire:model.lazy="kode_akun_id">
                     <option value="">Semua Kategori</option>
                     @foreach ($dataKodeAkun as $item)
