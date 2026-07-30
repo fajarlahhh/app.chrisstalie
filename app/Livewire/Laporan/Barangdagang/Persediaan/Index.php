@@ -26,12 +26,12 @@ class Index extends Component
     private function getData()
     {
         if ($this->jenis == 'Tanggal Kedaluarsa') {
-            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_kedaluarsa, harga_beli, count(*) as stok'))
+            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_kedaluarsa as tanggal, harga_beli, count(*) as stok'))
             ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01'))
             ->where(fn($q) => $q->whereNull('tanggal_keluar')->orWhereNull('stok_keluar_id')->orWhere('tanggal_keluar', '>=', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01')))
             ->groupBy('barang_id', 'tanggal_kedaluarsa', 'harga_beli')->get();
         } else {
-            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_masuk, harga_beli, count(*) as stok'))
+            $this->dataStok = Stok::select(DB::raw('barang_id, tanggal_masuk as tanggal, harga_beli, count(*) as stok'))
             ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01'))
             ->where(fn($q) => $q->whereNull('tanggal_keluar')->orWhereNull('stok_keluar_id')->orWhere('tanggal_keluar', '>=', \Carbon\Carbon::parse($this->bulan . '-01')->addMonth()->format('Y-m-01')))
             ->groupBy('barang_id', 'tanggal_masuk', 'harga_beli')->get();
@@ -62,6 +62,20 @@ class Index extends Component
             'cari' => $this->cari,
         ])->render();
         session()->flash('cetak', $cetak);
+    }
+
+    public function export()
+    {
+        $this->getData();
+        return (new \App\Exports\LaporanpersediaanExport(
+            $this->getData(),
+            $this->dataStok,
+            $this->bulan,
+            $this->persediaan,
+            $this->kode_akun_id ? collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()?->nama : '',
+            $this->cari,
+            $this->jenis
+        ))->download('LaporanPersediaan-' . $this->bulan . '.xls');
     }
 
 

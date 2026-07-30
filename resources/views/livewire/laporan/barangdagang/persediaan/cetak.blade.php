@@ -58,49 +58,34 @@
         @foreach ($data as $item)
             @php
                 $barangSatuanUtama = $item->barangSatuanUtama;
-                if ($jenis == 'Tanggal Kedaluarsa') {
-                    $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($barangSatuanUtama) {
-                        return [
-                            'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                            'harga_beli' => $q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil,
-                            'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
-                            'total' =>
-                                (($q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil) /
-                                    $barangSatuanUtama?->rasio_dari_terkecil) *
-                                $q->stok,
-                        ];
-                    });
-                } else {
-                    $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($barangSatuanUtama) {
-                        return [
-                            'tanggal_masuk' => $q->tanggal_masuk,
-                            'harga_beli' => $q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil,
-                            'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
-                            'total' =>
-                                (($q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil) /
-                                    $barangSatuanUtama?->rasio_dari_terkecil) *
-                                $q->stok,
-                        ];
-                    });
-                }
+                $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($barangSatuanUtama) {
+                    return [
+                        'tanggal' => $q->tanggal,
+                        'harga_beli' => $q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil,
+                        'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
+                        'total' =>
+                            (($q->harga_beli * $barangSatuanUtama?->rasio_dari_terkecil) /
+                                $barangSatuanUtama?->rasio_dari_terkecil) *
+                            $q->stok,
+                    ];
+                });
 
-                $total += $stok->sum(fn($q) => $q['total']);
+                $total += $stok->sum('total');
             @endphp
-            <tr @if ($stok->count() > 0) class="bg-green-100" @endif>
-                <td @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                    {{ $loop->iteration }}</td>
-                <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                    {{ $item->nama }}</td>
-                <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                    {{ $item->persediaan }}</td>
-                <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                    {{ $barangSatuanUtama?->nama }}
-                    <small>{{ $barangSatuanUtama?->konversi_satuan }}</small>
-                </td>
-                <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                    {{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
-                @if ($stok->count() == 0)
+            @if ($stok->count() == 0)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td nowrap>{{ $item->nama }}</td>
+                    <td nowrap>{{ $item->persediaan }}</td>
+                    <td nowrap>
+                        {{ $barangSatuanUtama?->nama }}
+                        <small>{{ $barangSatuanUtama?->konversi_satuan }}</small>
+                    </td>
+                    <td nowrap>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                     <td nowrap></td>
+                    @if ($jenis == 'Tanggal Masuk')
+                        <td nowrap></td>
+                    @endif
                     @role('administrator|supervisor')
                         <td nowrap class="text-end">0</td>
                     @endrole
@@ -108,61 +93,51 @@
                     @role('administrator|supervisor')
                         <td nowrap class="text-end">0</td>
                     @endrole
-                @endif
-            </tr>
-            @if ($jenis == 'Tanggal Kedaluarsa')
-                @foreach ($stok->sortBy('tanggal_kedaluarsa') as $subItem)
-                    <tr class="bg-green-100">
-                        <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
-
-                        @role('administrator|supervisor')
-                            <td nowrap class="text-end">{{ number_format_id($subItem['harga_beli'], 2) }}</td>
-                        @endrole
-                        <td nowrap class="text-end">
-                            @php
-                                $stok = $subItem['stok'];
-                            @endphp
-                            {{ fmod($stok, 1) != 0 ? number_format_id($stok, 3) : number_format_id($stok) }}
-                        </td>
-                        @role('administrator|supervisor')
-                            <td nowrap class="text-end">
-                                {{ number_format_id($subItem['total'], 2) }}</td>
-                        @endrole
-                    </tr>
-                @endforeach
+                </tr>
             @else
-                @foreach ($stok->sortBy('tanggal_masuk') as $subItem)
+                @foreach ($stok->sortBy('tanggal') as $subItem)
                     <tr class="bg-green-100">
-                        <td nowrap class="text-end">{{ $subItem['tanggal_masuk'] }}</td>
-                        <td nowrap class="text-end">
-                            @php
-                                if ($bulan == date('Y-m')) {
-                                    $tglBulan = \Carbon\Carbon::now()->startOfDay();
-                                } else {
-                                    $tglBulan = \Carbon\Carbon::parse($bulan . '-01')->endOfMonth()->startOfDay();
-                                }
-                                $umur = \Carbon\Carbon::parse($subItem['tanggal_masuk'])->startOfDay()->diffInDays($tglBulan);
-                            @endphp
-                            {{ $umur }}
+                        <td>{{ $loop->parent->iteration }}</td>
+                        <td nowrap>{{ $item->nama }}</td>
+                        <td nowrap>{{ $item->persediaan }}</td>
+                        <td nowrap>
+                            {{ $barangSatuanUtama?->nama }}
+                            <small>{{ $barangSatuanUtama?->konversi_satuan }}</small>
                         </td>
+                        <td nowrap>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
+
+                        <td nowrap class="text-end">{{ $subItem['tanggal'] }}</td>
+
+                        @if ($jenis == 'Tanggal Masuk')
+                            <td nowrap class="text-end">
+                                @php
+                                    if ($bulan == date('Y-m')) {
+                                        $tglBulan = \Carbon\Carbon::now()->startOfDay();
+                                    } else {
+                                        $tglBulan = \Carbon\Carbon::parse($bulan . '-01')
+                                            ->endOfMonth()
+                                            ->startOfDay();
+                                    }
+                                    $umur = \Carbon\Carbon::parse($subItem['tanggal'])
+                                        ->startOfDay()
+                                        ->diffInDays($tglBulan);
+                                @endphp
+                                {{ $umur }}
+                            </td>
+                        @endif
 
                         @role('administrator|supervisor')
                             <td nowrap class="text-end">{{ number_format_id($subItem['harga_beli'], 2) }}</td>
                         @endrole
                         <td nowrap class="text-end">
-                            @php
-                                $stok = $subItem['stok'];
-                            @endphp
-                            {{ fmod($stok, 1) != 0 ? number_format_id($stok, 3) : number_format_id($stok) }}
+                            {{ fmod($subItem['stok'], 1) != 0 ? number_format_id($subItem['stok'], 3) : number_format_id($subItem['stok']) }}
                         </td>
                         @role('administrator|supervisor')
-                            <td nowrap class="text-end">
-                                {{ number_format_id($subItem['total'], 2) }}</td>
+                            <td nowrap class="text-end">{{ number_format_id($subItem['total'], 2) }}</td>
                         @endrole
                     </tr>
                 @endforeach
             @endif
-            </tr>
         @endforeach
     </tbody>
     @role('administrator|supervisor')

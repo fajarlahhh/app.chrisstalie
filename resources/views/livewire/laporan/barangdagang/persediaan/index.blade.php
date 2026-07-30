@@ -10,12 +10,8 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
-                setTimeout(() => {
-                    $('#modal-cetak').modal('show')
-                }, 1000)
-            })" class="btn btn-outline-info btn-block">
-                Cetak</a>&nbsp;
+            <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
+                Excel</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input id="bulan"  type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
                 <select id="persediaan"  class="form-control w-auto" wire:model.lazy="persediaan">
