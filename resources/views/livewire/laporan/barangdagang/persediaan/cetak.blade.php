@@ -143,7 +143,7 @@
     @role('administrator|supervisor')
         <tfoot>
             <tr>
-                <th colspan="8" class="text-end">Total Nilai Persediaan</th>
+                <th colspan="{{ $jenis == 'Tanggal Kedaluarsa' ? 8: 9 }}" class="text-end">Total Nilai Persediaan</th>
                 <th class="text-end">{{ number_format_id($total, 2) }}</th>
         </tfoot>
     @endrole
