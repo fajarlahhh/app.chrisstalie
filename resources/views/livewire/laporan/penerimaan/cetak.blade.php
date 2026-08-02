@@ -40,6 +40,7 @@
     <thead>
         <tr>
             <th class="bg-gray-300 text-white" rowspan="2">No.</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Tanggal</th>
             <th class="bg-gray-300 text-white" rowspan="2">No. Nota</th>
             <th class="bg-gray-300 text-white" rowspan="2">Nama</th>
             <th class="bg-gray-300 text-white" rowspan="2">Alamat</th>
@@ -81,6 +82,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $row['id'] }}</td>
+                <td>{{ $row['tanggal'] }}</td>
                 <td>
                     {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['nama']) ? $row['registrasi']['pasien']['nama'] : '' }}
                 </td>
