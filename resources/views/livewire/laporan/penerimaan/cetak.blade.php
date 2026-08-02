@@ -123,7 +123,7 @@
                     </td>
                 @endforeach
                 @role('administrator|supervisor')
-                    <td>{{ $row['pengguna']['nama'] ?? '' }}</td>
+                    <td nowrap>{{ $row['pengguna']['nama'] ?? '' }}</td>
                 @endrole
                 <td nowrap>{{ $row['keterangan'] }}</td>
                 <td nowrap>{{ isset($row['registrasi']) ? $row['registrasi']['created_at'] : '' }}</td>
