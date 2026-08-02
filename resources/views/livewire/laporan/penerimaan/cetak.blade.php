@@ -156,9 +156,9 @@
                                 $barangs[] = $nama;
                             }
                         }
-                        $penjualanDetailList = data_get($row, 'penjualan.penjualanDetail', data_get($row, 'penjualan.penjualan_detail', []));
-                        foreach ($penjualanDetailList as $pd) {
-                            $nama = data_get($pd, 'barang.nama');
+                        $stokKeluarList = data_get($row, 'stokKeluarPenjualan', data_get($row, 'stok_keluar_penjualan', []));
+                        foreach ($stokKeluarList as $s) {
+                            $nama = data_get($s, 'barang.nama');
                             if ($nama) {
                                 $barangs[] = $nama;
                             }

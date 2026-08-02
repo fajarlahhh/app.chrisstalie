@@ -41,7 +41,7 @@ class Index extends Component
             'pengguna',
             'registrasi.tindakan.tarifTindakan',
             'registrasi.resepObat.barang',
-            'penjualan.penjualanDetail.barang'
+            'stokKeluarPenjualan.barang'
         ])->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]);
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
             $query->where('pengguna_id', auth()->id());

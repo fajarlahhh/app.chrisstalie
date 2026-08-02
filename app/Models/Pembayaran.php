@@ -28,6 +28,11 @@ class Pembayaran extends Model
         return $this->hasMany(StokKeluar::class);
     }
 
+    public function stokKeluarPenjualan(): HasMany
+    {
+        return $this->hasMany(StokKeluar::class)->where('penjualan', 1);
+    }
+
     public function jurnalPenjualanBarangBebas(): HasMany
     {
         return $this->hasMany(KeuanganJurnal::class, 'referensi_id')->where('jenis', 'Penjualan Barang Bebas');
