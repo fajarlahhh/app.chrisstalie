@@ -59,6 +59,8 @@
             @endrole
             <th class="bg-gray-300 text-white" rowspan="2">Keterangan</th>
             <th class="bg-gray-300 text-white" colspan="3">Waktu Pelayanan</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Tindakan</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Barang</th>
         </tr>
         <tr>
             @if ($metode_bayar_count > 0)
@@ -131,12 +133,46 @@
                         {{ \Carbon\Carbon::parse($row['registrasi']['created_at'])->diff(\Carbon\Carbon::parse($row['created_at']))->format('%h Jam %i Menit %s Detik') }}
                     @endif
                 </td>
+                <td nowrap>
+                    @php
+                        $tindakans = [];
+                        $tindakanList = data_get($row, 'registrasi.tindakan', []);
+                        foreach ($tindakanList as $t) {
+                            $nama = data_get($t, 'tarifTindakan.nama') ?: data_get($t, 'tarif_tindakan.nama');
+                            if ($nama) {
+                                $tindakans[] = $nama;
+                            }
+                        }
+                        echo implode('<br>', $tindakans);
+                    @endphp
+                </td>
+                <td nowrap>
+                    @php
+                        $barangs = [];
+                        $resepObatList = data_get($row, 'registrasi.resepObat', data_get($row, 'registrasi.resep_obat', []));
+                        foreach ($resepObatList as $r) {
+                            $nama = data_get($r, 'barang.nama');
+                            if ($nama) {
+                                $barangs[] = $nama;
+                            }
+                        }
+                        $penjualanDetailList = data_get($row, 'penjualan.penjualanDetail', data_get($row, 'penjualan.penjualan_detail', []));
+                        foreach ($penjualanDetailList as $pd) {
+                            $nama = data_get($pd, 'barang.nama');
+                            if ($nama) {
+                                $barangs[] = $nama;
+                            }
+                        }
+                        // remove duplicates if necessary
+                        echo implode('<br>', array_unique($barangs));
+                    @endphp
+                </td>
             </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="5">Total</th>
+            <th colspan="6">Total</th>
             <th class="text-end">{{ $cetak ? $sum_registrasi : number_format_id($sum_registrasi) }}</th>
             <th class="text-end">{{ $cetak ? $sum_tindakan : number_format_id($sum_tindakan) }}</th>
             <th class="text-end">{{ $cetak ? $sum_resep : number_format_id($sum_resep) }}</th>
@@ -162,11 +198,11 @@
             @role('operator')
                 <th colspan="2"></th>
             @endrole
-            <th colspan="3"></th>
+            <th colspan="5"></th>
         </tr>
 
         <tr>
-            <th colspan="5"></th>
+            <th colspan="6"></th>
             <th>Paket</th>
             <th>Tindakan</th>
             <th>Resep</th>
@@ -189,6 +225,7 @@
             <th>Jam Masuk</th>
             <th>Jam Pulang</th>
             <th>Total Durasi</th>
+            <th colspan="3"></th>
         </tr>
     </tfoot>
 </table>
