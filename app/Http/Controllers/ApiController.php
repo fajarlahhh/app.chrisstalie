@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\KepegawaianPegawai;
+use App\Models\KepegawaianKehadiran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -11,7 +13,8 @@ class ApiController extends Controller
     public function pegawaiBelumSync(Request $req)
     {
         return response()->json([
-            'status' => 'sukses',
+            'success' => true,
+            'message' => 'Berhasil mengambil data pegawai belum sync',
             'data' => KepegawaianPegawai::where('sinkron', 0)->select('id', 'nama', 'panggilan', 'alamat')->get()->toArray(),
         ], 200);
     }
@@ -24,7 +27,8 @@ class ApiController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'gagal',
+                'success' => false,
+                'message' => 'Validasi gagal',
                 'data' => $validator->errors(),
             ], 400);
         }
@@ -33,15 +37,17 @@ class ApiController extends Controller
             $data = json_decode($req->data, true);
             KepegawaianPegawai::where('sinkron', 0)->whereIn('id', collect($data)->pluck('id')->toArray())->update(['sinkron' => 1]);
             return response()->json([
-                'status' => 'sukses',
-                'data' => ""
+                'success' => true,
+                'message' => 'Berhasil menyimpan sync pegawai',
+                'data' => null
             ], 200);
         } catch (\Throwable $th) {
 
             return response()->json([
-                'status' => 'gagal',
-                'data' => $th->getMessage()
-            ], 200);
+                'success' => false,
+                'message' => $th->getMessage(),
+                'data' => null
+            ], 500);
         }
     }
 
@@ -53,7 +59,8 @@ class ApiController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'gagal',
+                'success' => false,
+                'message' => 'Validasi gagal',
                 'data' => $validator->errors(),
             ], 400);
         }
@@ -73,22 +80,25 @@ class ApiController extends Controller
             })->toArray());
 
             return response()->json([
-                'status' => 'sukses',
-                'data' => '',
+                'success' => true,
+                'message' => 'Berhasil menyimpan kehadiran',
+                'data' => null,
             ], 200);
         } catch (\Throwable $th) {
 
             return response()->json([
-                'status' => 'gagal',
-                'data' => $th->getMessage(),
-            ], 200);
+                'success' => false,
+                'message' => $th->getMessage(),
+                'data' => null,
+            ], 500);
         }
     }
 
     public function pegawai(Request $req)
     {
         return response()->json([
-            'status' => 'sukses',
+            'success' => true,
+            'message' => 'Berhasil mengambil data pegawai',
             'data' => KepegawaianPegawai::select(
                 'id',
                 'nik',

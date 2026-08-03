@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+});
+
 if (!function_exists('routeName')) {
     function routeName($row, $url)
     {
