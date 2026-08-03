@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\CustomValidationTrait;
+use Illuminate\Support\Facades\Hash;
 
 class Form extends Component
 {
@@ -125,6 +126,7 @@ class Form extends Component
                 }
                 $this->data->id = $pasien->id;
                 $this->data->email = $this->email;
+                $this->data->password = Hash::make($pasien->id);
                 $this->data->token = Str::random(60);
                 $this->data->pengguna_id = auth()->id();
                 $this->data->save();

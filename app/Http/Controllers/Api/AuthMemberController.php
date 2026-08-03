@@ -42,10 +42,7 @@ class AuthMemberController extends Controller
             ], 404);
         }
 
-        // Ambil data Pengguna terkait
-        $pengguna = $member->pengguna ?? $member->pasien->pengguna ?? null;
-
-        if (!$pengguna || !Hash::check($request->password, $pengguna->password)) {
+        if (!$member || !Hash::check($request->password, $member->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Kredensial tidak valid',
@@ -54,7 +51,7 @@ class AuthMemberController extends Controller
         }
 
         // Generate Sanctum token
-        $token = $pengguna->createToken('member-token')->plainTextToken;
+        $token = $member->createToken('member-token')->plainTextToken;
 
         return response()->json([
             'success' => true,
