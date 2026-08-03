@@ -76,7 +76,8 @@
                     <div class="panel-heading ui-sortable-handle">
                         <h4 class="panel-title">Jadwal Shift</h4>
                         <div class="panel-heading-btn">
-                            <input id="bulanShift"  type="month" class="form-control w-auto" wire:model.lazy="bulanShift">
+                            <input id="bulanShift" type="month" class="form-control w-auto"
+                                wire:model.lazy="bulanShift">
                         </div>
                     </div>
                     <div class="row text-center p-2">
@@ -112,52 +113,54 @@
                 </div>
             </div>
         @endif
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 col-xs-12">
-            <div class="panel panel-inverse" data-sortable-id="index-6">
-                <div class="panel-heading ui-sortable-handle">
-                    <h4 class="panel-title">Pengadaan Barang Jatuh Tempo</h4>
-                </div>
-                <div class="table-responsive fs-11px">
-                    <table class="table table-panel align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>No. Tagihan</th>
-                                <th>Vendor</th>
-                                <th>Tanggal</th>
-                                <th class="text-end">Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($dataPengadaanBarangJatuhTempo as $row)
+        @role('administrator|supervisor')
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 col-xs-12">
+                <div class="panel panel-inverse" data-sortable-id="index-6">
+                    <div class="panel-heading ui-sortable-handle">
+                        <h4 class="panel-title">Pengadaan Barang Jatuh Tempo</h4>
+                    </div>
+                    <div class="table-responsive fs-11px">
+                        <table class="table table-panel align-middle mb-0">
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td nowrap="" nowrap>
-                                        {{ $row->no_faktur }}
-                                    </td>
-                                    <td nowrap="" nowrap>{{ $row->supplier?->nama }}</td>
-                                    <td nowrap="" nowrap>
-                                        @if ($row->tanggal_jatuh_tempo < date('Y-m-d'))
-                                            <span class="badge bg-danger">{{ $row->tanggal_jatuh_tempo }}</span>
-                                        @elseif ($row->tanggal_jatuh_tempo = date('Y-m-d'))
-                                            <span class="badge bg-warning">{{ $row->tanggal_jatuh_tempo }}</span>
-                                        @elseif ($row->tanggal_jatuh_tempo > date('Y-m-d'))
-                                            <span class="badge bg-success">{{ $row->tanggal_jatuh_tempo }}</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-end" nowrap>{{ number_format_id($row->total_tagihan) }}</td>
-                                    <td>
-                                        <a href="/manajemenstok/pengadaanbrgdagang/pelunasan/form?supplier={{ $row->supplier_id }}"
-                                            class="btn btn-xs btn-primary">Lunasi</a>
-                                    </td>
+                                    <th>No.</th>
+                                    <th>No. Tagihan</th>
+                                    <th>Vendor</th>
+                                    <th>Tanggal</th>
+                                    <th class="text-end">Total</th>
+                                    <th></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($dataPengadaanBarangJatuhTempo as $row)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td nowrap="" nowrap>
+                                            {{ $row->no_faktur }}
+                                        </td>
+                                        <td nowrap="" nowrap>{{ $row->supplier?->nama }}</td>
+                                        <td nowrap="" nowrap>
+                                            @if ($row->tanggal_jatuh_tempo < date('Y-m-d'))
+                                                <span class="badge bg-danger">{{ $row->tanggal_jatuh_tempo }}</span>
+                                            @elseif ($row->tanggal_jatuh_tempo = date('Y-m-d'))
+                                                <span class="badge bg-warning">{{ $row->tanggal_jatuh_tempo }}</span>
+                                            @elseif ($row->tanggal_jatuh_tempo > date('Y-m-d'))
+                                                <span class="badge bg-success">{{ $row->tanggal_jatuh_tempo }}</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-end" nowrap>{{ number_format_id($row->total_tagihan) }}</td>
+                                        <td>
+                                            <a href="/manajemenstok/pengadaanbrgdagang/pelunasan/form?supplier={{ $row->supplier_id }}"
+                                                class="btn btn-xs btn-primary">Lunasi</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endrole
     </div>
 
     <div wire:loading>
