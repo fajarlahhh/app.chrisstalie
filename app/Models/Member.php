@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Member extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Member extends Authenticatable
 {
+    use HasApiTokens;
     //
     protected $table = 'member';
     public $incrementing = false;

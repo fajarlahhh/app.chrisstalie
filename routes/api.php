@@ -14,4 +14,5 @@ Route::post('kehadiran/simpan', [ApiController::class, 'simpanKehadiran']);
 Route::post('member/login', [AuthMemberController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('member/logout', [AuthMemberController::class, 'logout']);
+    Route::get('member/profile', [AuthMemberController::class, 'profile']);
 });

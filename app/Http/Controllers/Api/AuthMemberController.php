@@ -74,4 +74,17 @@ class AuthMemberController extends Controller
             'data' => null,
         ], 200);
     }
+
+    public function profile(Request $request)
+    {
+        $member = $request->user()->load(['pasien', 'memberSaldo', 'memberPoin']);
+        // Menambahkan atribut saldo dan poin secara eksplisit agar muncul di JSON
+        $member->append(['saldo', 'poin', 'level']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil mengambil profil member',
+            'data' => $member,
+        ], 200);
+    }
 }
