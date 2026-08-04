@@ -29,10 +29,7 @@ class AuthMemberController extends Controller
 
         // Cari member berdasarkan ID Member atau Email Pasien
         $member = Member::where('id', $login)
-            ->orWhereHas('pasien', function ($query) use ($login) {
-                // Asumsikan email ada di tabel pasien
-                $query->where('email', $login); 
-            })->first();
+            ->orWhere('email', $login)->first();
 
         if (!$member) {
             return response()->json([
