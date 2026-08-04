@@ -161,7 +161,7 @@ class Form extends Component
         })->toArray();
         $this->validateWithCustomMessages([
             'tindakan' => 'required|array',
-            'tindakan.*.id' => 'required|distinct',
+            'tindakan.*.id' => 'required',
             'tindakan.*.qty' => 'required|min:1',
             'bahan.*.qty' => [
                 'required',
