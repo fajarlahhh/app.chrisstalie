@@ -43,7 +43,7 @@ class AuthMemberController extends Controller
         }
 
         // if (!$member || !Hash::check($request->password, $member->password)) {
-        if (!$member) {
+        if (!$member || !Hash::check($request->password, $member->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Kredensial tidak valid',
