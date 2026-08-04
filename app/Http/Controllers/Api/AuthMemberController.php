@@ -56,7 +56,16 @@ class AuthMemberController extends Controller
             'message' => 'Login berhasil',
             'data' => [
                 'token' => $token,
-                'member' => $member,
+                'member' => [
+                    'id' => $member->id,
+                    'email' => $member->email,
+                    'nama' => $member->pasien->nama,
+                    'tanggal_lahir' => $member->pasien->tanggal_lahir->format('Y-m-d'),
+                    'jenis_kelamin' => $member->pasien->jenis_kelamin,
+                    'alamat' => $member->pasien->alamat,
+                    'no_hp' => $member->pasien->no_hp,
+                    'nik' => $member->pasien->nik,
+                ],
             ]
         ], 200);
     }
@@ -70,19 +79,6 @@ class AuthMemberController extends Controller
             'success' => true,
             'message' => 'Logout berhasil',
             'data' => null,
-        ], 200);
-    }
-
-    public function profile(Request $request)
-    {
-        $member = $request->user()->load(['pasien', 'memberSaldo', 'memberPoin']);
-        // Menambahkan atribut saldo dan poin secara eksplisit agar muncul di JSON
-        $member->append(['saldo', 'poin', 'level']);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil mengambil profil member',
-            'data' => $member,
         ], 200);
     }
 }
