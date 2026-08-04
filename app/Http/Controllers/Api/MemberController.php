@@ -16,7 +16,16 @@ class MemberController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Berhasil mengambil profil member',
-            'data' => $member,
+            'data' => [
+                'id' => $member->id,
+                'email' => $member->email,
+                'nama' => $member->pasien->nama,
+                'tanggal_lahir' => $member->pasien->tanggal_lahir->format('Y-m-d'),
+                'jenis_kelamin' => $member->pasien->jenis_kelamin,
+                'alamat' => $member->pasien->alamat,
+                'no_hp' => $member->pasien->no_hp,
+                'nik' => $member->pasien->nik,
+            ],
         ], 200);
     }
 
