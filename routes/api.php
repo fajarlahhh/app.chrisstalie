@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('member/profile', [MemberController::class, 'profile']);
     Route::get('member/saldo', [MemberController::class, 'saldo']);
     Route::get('member/poin', [MemberController::class, 'poin']);
+    Route::get('member/history', [MemberController::class, 'history']);
+    Route::get('member/history/{id}', [MemberController::class, 'historyDetail']);
 });
