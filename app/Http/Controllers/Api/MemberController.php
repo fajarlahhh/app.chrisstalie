@@ -61,6 +61,60 @@ class MemberController extends Controller
             'data' => $level,
         ], 200);
     }
+
+    public function levelProgress(Request $request)
+    {
+        $member = $request->user();
+        $pembayaran = (int) $member->memberPembayaran()
+            ->where(\Illuminate\Support\Facades\DB::raw('year(tanggal)'), date('Y'))
+            ->sum('total_tagihan');
+
+        $currentLevel = 'Bronze';
+        $nextLevel = 'Silver';
+        $target = 5000000;
+        $prevTarget = 0;
+
+        if ($pembayaran < 5000000) {
+            $currentLevel = 'Bronze';
+            $nextLevel = 'Silver';
+            $target = 5000000;
+            $prevTarget = 0;
+        } else if ($pembayaran >= 5000000 && $pembayaran < 7000000) {
+            $currentLevel = 'Silver';
+            $nextLevel = 'Gold';
+            $target = 7000000;
+            $prevTarget = 5000000;
+        } else if ($pembayaran >= 7000000 && $pembayaran < 12000000) {
+            $currentLevel = 'Gold';
+            $nextLevel = 'Diamond';
+            $target = 12000000;
+            $prevTarget = 7000000;
+        } else if ($pembayaran >= 12000000) {
+            $currentLevel = 'Diamond';
+            $nextLevel = null;
+            $target = $pembayaran; 
+            $prevTarget = 12000000;
+        }
+
+        $percentage = 100;
+        if ($nextLevel) {
+            $percentage = round((($pembayaran - $prevTarget) / ($target - $prevTarget)) * 100, 2);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil mengambil progress level member',
+            'data' => [
+                'current_level' => $currentLevel,
+                'next_level' => $nextLevel,
+                'current_spending' => $pembayaran,
+                'target_spending' => $target,
+                'next_level_remaining' => $nextLevel ? $target - $pembayaran : 0,
+                'progress_percentage' => $percentage,
+                'start_spending' => $prevTarget,
+            ],
+        ], 200);
+    }
     public function history(Request $request)
     {
         $member = $request->user();
