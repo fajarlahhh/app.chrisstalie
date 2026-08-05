@@ -50,6 +50,17 @@ class MemberController extends Controller
             'data' => $poin,
         ], 200);
     }
+
+    public function level(Request $request)
+    {
+        $level = $request->user()->level;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil level member',
+            'data' => $level,
+        ], 200);
+    }
     public function history(Request $request)
     {
         $member = $request->user();
