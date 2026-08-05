@@ -35,7 +35,7 @@ class MemberController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil mengambil riwayat saldo member',
+            'message' => 'Berhasil saldo member',
             'data' => $saldo,
         ], 200);
     }
@@ -46,7 +46,7 @@ class MemberController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil mengambil riwayat poin member',
+            'message' => 'Berhasil poin member',
             'data' => $poin,
         ], 200);
     }
