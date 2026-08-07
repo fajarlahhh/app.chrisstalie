@@ -87,7 +87,7 @@ class Form extends Component
                 'biaya_alat_barang' => $q->biaya_alat_barang,
                 'biaya' => $q->biaya,
                 'registrasi_paket_perawatan_id' => $q->registrasi_paket_perawatan_id
-            ])->groupBy('paket_perawatan_nama')->toArray();
+            ])->groupBy('paket_perawatan_nama')->values()->toArray();
             $this->tindakan = $data->tindakan->whereNull('paket_perawatan_id')->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
                 'paket_perawatan_id' => $q->paket_perawatan_id,
