@@ -135,7 +135,7 @@ class Index extends Component
                     'biaya_alat_barang' => $q->biaya_alat_barang,
                     'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
                     'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
-                    'biaya' => $q->paket_perawatan_id ? $dataPaketPerawatanDetail->where('tarif_tindakan_id', $q->tarif_tindakan_id)->first()->harga_jual * $q->qty : $q->biaya,
+                    'biaya' => $q->paket_perawatan_id ? $dataPaketPerawatanDetail->where('paket_perawatan_id', $q->paket_perawatan_id)->where('tarif_tindakan_id', $q->tarif_tindakan_id)->first()->harga_jual * $q->qty : $q->biaya,
                     'biaya_asli' => $q->biaya,
                 ];
             })->toArray();
