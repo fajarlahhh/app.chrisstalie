@@ -78,7 +78,7 @@
     <tbody>
         @foreach ($data as $row)
             @php
-                $diskon = $row['total_diskon_barang'] + $row['total_diskon_tindakan'] + $row['diskon'];
+                $diskon = $row['total_diskon_barang'] + $row['total_diskon_resep'] + $row['total_diskon_tindakan'] + $row['diskon'];
                 $total_sblm = $row['total_tindakan'] + $row['total_registrasi_paket_perawatan'] + $row['total_resep'] + $row['total_barang'];
             @endphp
             <tr>
