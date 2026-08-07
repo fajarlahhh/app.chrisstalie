@@ -29,7 +29,7 @@
                         <th>Tarif Tindakan</th>
                         {{-- <th>Barang Dagang</th> --}}
                         <th>Harga Standar</th>
-                        <th>Harga Diskon</th>
+                        <th>Diskon</th>
                         <th>Periode</th>
                         <th class="w-10px"></th>
                     </tr>
