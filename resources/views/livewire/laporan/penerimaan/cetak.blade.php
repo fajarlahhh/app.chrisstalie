@@ -11,7 +11,7 @@
     $sum_resep = $data->sum('total_resep');
     $sum_barang = $data->sum('total_barang');
     $sum_total_sblm = $sum_registrasi + $sum_tindakan + $sum_resep + $sum_barang;
-    $sum_diskon = $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon');
+    $sum_diskon = $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('total_diskon_resep') + $data->sum('diskon');
     $sum_total_setelah = $sum_total_sblm - $sum_diskon;
 @endphp
 @if ($cetak)
