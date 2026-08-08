@@ -187,12 +187,13 @@ class Form extends Component
         $pasienPaketPrabayar->total = $this->total_tagihan;
         $pasienPaketPrabayar->pasien_id = $pasienId;
         $pasienPaketPrabayar->paket_perawatan_id = $this->paket_perawatan_id;
-        $pasienPaketPrabayar->tanggal_aktif = $this->tanggal;
         
         if ($this->paketPerawatan->jenis_prabayar == 'Periode Tanggal') {
-            $pasienPaketPrabayar->tanggal_berakhir = $this->paketPerawatan->tanggal_selesai_daftar;
+            $pasienPaketPrabayar->tanggal_berakhir = $this->paketPerawatan->tanggal_selesai_berlaku;
+            $pasienPaketPrabayar->tanggal_aktif = $this->paketPerawatan->tanggal_mulai_berlaku;
         } else {
             $pasienPaketPrabayar->tanggal_berakhir = date('Y-m-d', strtotime($this->tanggal . ' + ' . $this->paketPerawatan->masa_aktif . ' days'));
+            $pasienPaketPrabayar->tanggal_aktif = $this->tanggal;
         }
         
         $pasienPaketPrabayar->qty = $this->paketPerawatan->paketPerawatanDetail->first()->qty;
