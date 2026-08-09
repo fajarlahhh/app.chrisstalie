@@ -34,14 +34,14 @@ class Form extends Component
         if ($this->data->pembayaran) {
             return abort(404);
         }
-        $this->dataPasienPaketPrabayar = PasienPaketPrabayar::where('pasien_id', $data->pasien_id)
+        $this->dataPasienPaketPrabayar = PasienPaketPrabayar::where('spasien_id', $data->pasien_id)
             ->whereRaw('qty > (
 		select count(*)
 	FROM
 		registrasi_paket_perawatan 
 	WHERE
 		pasien_paket_prabayar.id = registrasi_paket_perawatan.pasien_paket_prabayar_id 
-	AND pembayaran_id IS NULL 
+	
 	)')
             ->with('paketPerawatan.paketPerawatanDetail.tarifTindakan')->get()->map(
                 function ($q) {
