@@ -32,23 +32,54 @@
     <tbody>
         <tr>
             <td class="w-10px">1.</th>
-            <td colspan="3">Pendapatan</td>
+            <td colspan="3">Pemasukkan</td>
         </tr>
-        @foreach ($dataPendapatan->groupBy('metode_bayar') as $index => $row)
+        {{-- 1a. Pemasukkan Kunjungan --}}
+        <tr>
+            <td></td>
+            <td colspan="3"><strong>a. Pendapatan</strong></td>
+        </tr>
+        @foreach ($dataKunjungan->groupBy('metode_bayar') as $index => $row)
             <tr>
                 <td></td>
-                <td>- Pendapatan {{ $index }}</td>
+                <td>&nbsp;&nbsp;&nbsp;- Pendapatan {{ $index }}</td>
                 <td class="text-end">{{ number_format_id($row->sum('total_tagihan')) }}</td>
                 <td>
-                    Diskon : {{ number_format_id($row->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}
+                    Diskon : {{ number_format_id($row->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['total_diskon_resep'] + $q['diskon'])) }}
                 </td>
             </tr>
         @endforeach
         <tr>
-            <th></th>
+            <td></td>
             <th>Total Pendapatan</th>
-            <th class="text-end">{{ number_format_id($dataPendapatan->sum('total_tagihan')) }}</th>
-            <th>Total Diskon : {{ number_format_id($dataPendapatan->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}</th>
+            <th class="text-end">{{ number_format_id($dataKunjungan->sum('total_tagihan')) }}</th>
+            <th>Total Diskon : {{ number_format_id($dataKunjungan->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['total_diskon_resep'] + $q['diskon'])) }}</th>
+        </tr>
+        {{-- 1b. Pemasukkan Pembelian Prabayar --}}
+        <tr>
+            <td></td>
+            <td colspan="3"><strong>b. Pembelian Prabayar</strong></td>
+        </tr>
+        @foreach ($dataPrabayar->groupBy('metode_bayar') as $index => $row)
+            <tr>
+                <td></td>
+                <td>&nbsp;&nbsp;&nbsp;- Prabayar {{ $index }}</td>
+                <td class="text-end">{{ number_format_id($row->sum('total_tagihan')) }}</td>
+                <td></td>
+            </tr>
+        @endforeach
+        <tr>
+            <td></td>
+            <th>Total Prabayar</th>
+            <th class="text-end">{{ number_format_id($dataPrabayar->sum('total_tagihan')) }}</th>
+            <th></th>
+        </tr>
+        @php $totalPemasukkan = $dataKunjungan->sum('total_tagihan') + $dataPrabayar->sum('total_tagihan'); @endphp
+        <tr>
+            <th></th>
+            <th>Total Pemasukkan</th>
+            <th class="text-end">{{ number_format_id($totalPemasukkan) }}</th>
+            <th>Total Diskon : {{ number_format_id($dataKunjungan->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['total_diskon_resep'] + $q['diskon'])) }}</th>
         </tr>
         <tr>
             <td class="w-10px">2.</td>
@@ -91,9 +122,9 @@
                 REKAPITULASI KEUANGAN : <br>
                 <table class="ms-20px">
                     <tr>
-                        <td class="w-200px">Total Pendapatan</td>
+                        <td class="w-200px">Total Pemasukkan</td>
                         <td class="w-10px">:</td>
-                        <td class="text-end">{{ number_format_id($dataPendapatan->sum('total_tagihan')) }}</td>
+                        <td class="text-end">{{ number_format_id($totalPemasukkan) }}</td>
                     </tr>
                     <tr>
                         <td>Total Pengeluaran</td>
@@ -105,7 +136,7 @@
                         <td>Total Keuntungan</td>
                         <td>: </td>
                         <td class="text-end">
-                            {{ number_format_id($dataPendapatan->sum('total_tagihan') - $totalPengeluaran) }}
+                            {{ number_format_id($totalPemasukkan - $totalPengeluaran) }}
                         </td>
                     </tr>
                 </table>

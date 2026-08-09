@@ -31,31 +31,55 @@ class Index extends Component
 
     public function print()
     {
+        $kunjunganRaw = $this->getKunjungan()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id));
+        $dataKunjungan = [];
+        foreach ($kunjunganRaw as $value) {
+            $dataKunjungan[] = [
+                'metode_bayar' => $value['metode_bayar'],
+                'total_tagihan' => $value['bayar'] - $value['selisih'],
+                'total_diskon_barang' => $value['total_diskon_barang'],
+                'total_diskon_tindakan' => $value['total_diskon_tindakan'],
+                'total_diskon_resep' => $value['total_diskon_resep'],
+                'diskon' => $value['diskon']
+            ];
+            if ($value['metode_bayar_2'] != null) {
+                $dataKunjungan[] = [
+                    'metode_bayar' => $value['metode_bayar_2'],
+                    'total_tagihan' => $value['bayar_2'],
+                    'total_diskon_barang' => 0,
+                    'total_diskon_tindakan' => 0,
+                    'total_diskon_resep' => 0,
+                    'diskon' => 0
+                ];
+            }
+        }
+
+        $prabayarRaw = $this->getPembelianPrabayar()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id));
+        $dataPrabayar = $prabayarRaw->map(fn($value) => [
+            'metode_bayar' => $value['metode_bayar'],
+            'total_tagihan' => $value['bayar'],
+            'total_diskon_barang' => 0,
+            'total_diskon_tindakan' => 0,
+            'total_diskon_resep' => 0,
+            'diskon' => 0
+        ])->values();
+
         $cetak = view('livewire.laporan.laporanhariankas.cetak', [
             'cetak' => true,
             'tanggal' => $this->tanggal,
             'dataMetodeBayar' => $this->dataMetodeBayar,
             'dataKodeAkun' => $this->dataKodeAkun,
             'pengguna' => $this->pengguna_id ? Pengguna::find($this->pengguna_id)?->kepegawaianPegawai?->nama ?? Pengguna::find($this->pengguna_id)?->nama : 'Semua Pengguna',
-            'data' => $this->getData(),
+            'dataKunjungan' => collect($dataKunjungan),
+            'dataPrabayar' => $dataPrabayar,
+            'dataPengeluaran' => $this->getPengeluaran()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
         ])->render();
         session()->flash('cetak', $cetak);
     }
 
-    public function getPendapatan()
+
+    public function getKunjungan()
     {
-        $prabayar = PasienPaketPrabayar::with(['pengguna'])
-        ->where('tanggal', 'like', $this->tanggal . '%')->get()->map(fn($q) => [
-            'metode_bayar' => $q['metode_bayar'],
-            'bayar' => $q['bayar'],
-            'selisih' => 0,
-            'metode_bayar_2' => null,
-            'bayar_2' => 0,
-            'total_diskon_barang' => 0,
-            'total_diskon_tindakan' =>0,
-            'diskon' => 0,
-            'pengguna_id' => $q['pengguna_id']
-        ])->toArray();
         $pembayaran = Pembayaran::with(['pengguna'])
             ->where('tanggal', 'like', $this->tanggal . '%')->get()->map(fn($q) => [
                 'metode_bayar' => $q['metode_bayar'],
@@ -65,10 +89,28 @@ class Index extends Component
                 'bayar_2' => $q['bayar_2'],
                 'total_diskon_barang' => $q['total_diskon_barang'],
                 'total_diskon_tindakan' => $q['total_diskon_tindakan'],
+                'total_diskon_resep' => $q['total_diskon_resep'],
                 'diskon' => $q['diskon'],
                 'pengguna_id' => $q['pengguna_id']
-            ])->toArray();
-        return collect(array_merge($pembayaran, $prabayar));
+            ]);
+        return $pembayaran;
+    }
+
+    public function getPembelianPrabayar()
+    {
+        return PasienPaketPrabayar::with(['pengguna'])
+            ->where('tanggal', 'like', $this->tanggal . '%')->get()->map(fn($q) => [
+                'metode_bayar' => $q['metode_bayar'],
+                'bayar' => $q['bayar'],
+                'selisih' => 0,
+                'metode_bayar_2' => null,
+                'bayar_2' => 0,
+                'total_diskon_barang' => 0,
+                'total_diskon_tindakan' => 0,
+                'total_diskon_resep' => 0,
+                'diskon' => 0,
+                'pengguna_id' => $q['pengguna_id']
+            ]);
     }
 
     public function getPengeluaran()
@@ -89,33 +131,52 @@ class Index extends Component
 
     public function render()
     {
-        $dataPendapatan = $this->getPendapatan();
+        $kunjunganRaw = $this->getKunjungan()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id));
         $dataPengeluaran = $this->getPengeluaran();
 
-        $pendapatan = [];
-        foreach ($this->getPendapatan()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)) as $key => $value) {
-            $pendapatan[] = [
+        $dataKunjungan = [];
+        foreach ($kunjunganRaw as $value) {
+            $dataKunjungan[] = [
                 'metode_bayar' => $value['metode_bayar'],
                 'total_tagihan' => $value['bayar'] - $value['selisih'],
                 'total_diskon_barang' => $value['total_diskon_barang'],
                 'total_diskon_tindakan' => $value['total_diskon_tindakan'],
+                'total_diskon_resep' => $value['total_diskon_resep'],
                 'diskon' => $value['diskon']
             ];
             if ($value['metode_bayar_2'] != null) {
-                $pendapatan[] = [
+                $dataKunjungan[] = [
                     'metode_bayar' => $value['metode_bayar_2'],
                     'total_tagihan' => $value['bayar_2'],
                     'total_diskon_barang' => 0,
                     'total_diskon_tindakan' => 0,
+                    'total_diskon_resep' => 0,
                     'diskon' => 0
                 ];
             }
         }
 
+        $prabayarRaw = $this->getPembelianPrabayar()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id));
+        $dataPrabayar = $prabayarRaw->map(fn($value) => [
+            'metode_bayar' => $value['metode_bayar'],
+            'total_tagihan' => $value['bayar'],
+            'total_diskon_barang' => 0,
+            'total_diskon_tindakan' => 0,
+            'total_diskon_resep' => 0,
+            'diskon' => 0
+        ])->values();
+
+        $allPengguna = array_merge(
+            $this->getKunjungan()->pluck('pengguna_id')->unique()->toArray(),
+            $this->getPembelianPrabayar()->pluck('pengguna_id')->unique()->toArray(),
+            $dataPengeluaran->pluck('pengguna_id')->unique()->toArray()
+        );
+
         return view('livewire.laporan.laporanhariankas.index', [
-            'dataPendapatan' =>  collect($pendapatan),
-            'dataPengeluaran' =>  $this->getPengeluaran()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
-            'dataPengguna' => Pengguna::whereIn('id', (array_merge($dataPendapatan->pluck('pengguna_id')->unique()->toArray(), $dataPengeluaran->pluck('pengguna_id')->unique()->toArray())))->get()
+            'dataKunjungan'   => collect($dataKunjungan),
+            'dataPrabayar'    => $dataPrabayar,
+            'dataPengeluaran' => $this->getPengeluaran()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
+            'dataPengguna'    => Pengguna::whereIn('id', $allPengguna)->get()
         ]);
     }
 }
