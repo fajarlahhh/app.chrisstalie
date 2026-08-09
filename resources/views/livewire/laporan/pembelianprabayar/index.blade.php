@@ -6,7 +6,7 @@
         <li class="breadcrumb-item active">Pembelian Paket Prabayar</li>
     @endsection
 
-    <h1 class="page-header">Laporan Pembelian Paket Prabayar</h1>
+    <h1 class="page-header">Pembelian Paket Prabayar</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
