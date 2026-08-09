@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class LaporanpenerimaanExport implements FromView
+class LaporanpendapatanExport implements FromView
 {
     use Exportable;
     public $data, $tanggal1, $tanggal2, $pengguna;
@@ -22,7 +22,7 @@ class LaporanpenerimaanExport implements FromView
     public function view(): View
     {
         //
-        return view('livewire.laporan.penerimaan.cetak', [
+        return view('livewire.laporan.pendapatan.cetak', [
             'cetak' => true,
             'data' => $this->data,
             'tanggal1' => $this->tanggal1,

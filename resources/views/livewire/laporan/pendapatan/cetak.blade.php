@@ -58,7 +58,6 @@
                 <th class="bg-gray-300 text-white" rowspan="2">Kasir</th>
             @endrole
             <th class="bg-gray-300 text-white" rowspan="2">Keterangan</th>
-            <th class="bg-gray-300 text-white" colspan="3">Waktu Pelayanan</th>
             <th class="bg-gray-300 text-white" rowspan="2">Tindakan</th>
             <th class="bg-gray-300 text-white" rowspan="2">Barang</th>
         </tr>
@@ -70,9 +69,6 @@
             @else
                 <th class="bg-gray-300 text-white"></th>
             @endif
-            <th class="bg-gray-300 text-white">Jam Masuk</th>
-            <th class="bg-gray-300 text-white">Jam Pulang</th>
-            <th class="bg-gray-300 text-white">Total Durasi</th>
         </tr>
     </thead>
     <tbody>
@@ -126,13 +122,6 @@
                     <td nowrap>{{ $row['pengguna']['nama'] ?? '' }}</td>
                 @endrole
                 <td nowrap>{{ $row['keterangan'] }}</td>
-                <td nowrap>{{ isset($row['registrasi']) ? $row['registrasi']['created_at'] : '' }}</td>
-                <td nowrap>{{ isset($row['registrasi']) ? $row['created_at'] : '' }}</td>
-                <td nowrap>
-                    @if (isset($row['registrasi']['created_at']) && isset($row['created_at']))
-                        {{ \Carbon\Carbon::parse($row['registrasi']['created_at'])->diff(\Carbon\Carbon::parse($row['created_at']))->format('%h Jam %i Menit %s Detik') }}
-                    @endif
-                </td>
                 <td nowrap>
                     @php
                         $tindakans = [];
@@ -191,14 +180,7 @@
                     {{ $cetak ? $sum_metode : number_format_id($sum_metode) }}
                 </th>
             @endforeach
-            
-            @role('administrator|supervisor')
-                <th colspan="3"></th>
-            @endrole
-            @role('operator')
-                <th colspan="2"></th>
-            @endrole
-            <th colspan="5"></th>
+            <th colspan="4"></th>
         </tr>
 
         <tr>
@@ -222,10 +204,8 @@
                 <th>Kasir</th>
             @endrole
             <th>Keterangan</th>
-            <th>Jam Masuk</th>
-            <th>Jam Pulang</th>
-            <th>Total Durasi</th>
-            <th colspan="3"></th>
+            <th>Tindakan</th>
+            <th>Barang</th>
         </tr>
     </tfoot>
 </table>

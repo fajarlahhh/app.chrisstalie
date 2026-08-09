@@ -35,7 +35,7 @@
                                     <div class="history-item {{ !$loop->last ? 'border-bottom pb-2 mb-2' : '' }}">
                                         <div class="d-flex justify-content-between align-items-start">
                                             <span class="fw-semibold text-dark fs-12px">
-                                                {{ $loop->iteration }}. {{ $item->nama }}
+                                                {{ $loop->iteration }}. {{ $item->paketPerawatan->nama }}
                                             </span>
                                             <span class="badge bg-secondary text-white fs-10px">
                                                 {{ $item->qty }}x

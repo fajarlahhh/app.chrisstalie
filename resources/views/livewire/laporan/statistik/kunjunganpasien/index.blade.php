@@ -20,10 +20,7 @@
                 <select id="sort"  class="form-control w-auto" wire:model.lazy="jenis">
                     <option value="perpasien">Per Pasien</option>
                     <option value="pertanggal">Per Tanggal</option>
-                </select>&nbsp;
-                <select id="sort"  class="form-control w-auto" wire:model.lazy="sort">
-                    <option value="qty">Desc Qty</option>
-                    <option value="biaya">Desc Biaya</option>
+                    <option value="perpasienpertanggal">Per Pasien & Per Tanggal</option>
                 </select>&nbsp;
                 <input id="tanggal1"  type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
                     wire:model.lazy="tanggal1" class="form-control w-auto">&nbsp;s/d&nbsp;

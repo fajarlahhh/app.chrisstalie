@@ -339,7 +339,7 @@ return [
                     "method" => ["Index"],
                 ],
                 [
-                    "title" => "Pembelian Prabayar",
+                    "title" => "Pembelian Paket Prabayar",
                     "method" => ["Index"],
                 ],
                 [
@@ -347,7 +347,7 @@ return [
                     "method" => ["Index"],
                 ],
                 [
-                    "title" => "Penerimaan",
+                    "title" => "Pendapatan",
                     "method" => ["Index"],
                 ],
                 [

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Laporan\Pembelianprabayar;
+namespace App\Livewire\Laporan\Pembelianpaketprabayar;
 
 use Livewire\Component;
 use App\Models\Pengguna;
@@ -52,7 +52,7 @@ class Index extends Component
     {
         $data = $this->getData();
 
-        return view('livewire.laporan.pembelianprabayar.index', [
+        return view('livewire.laporan.pembelianpaketprabayar.index', [
             'data'          => $data,
             'dataMetodeBayar' => $this->dataMetodeBayar,
             'dataPengguna'  => auth()->user()->hasRole(['administrator', 'supervisor'])

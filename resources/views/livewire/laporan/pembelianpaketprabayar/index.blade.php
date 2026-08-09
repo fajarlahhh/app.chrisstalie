@@ -41,7 +41,7 @@
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
-            @include('livewire.laporan.pembelianprabayar.cetak', ['cetak' => false])
+            @include('livewire.laporan.pembelianpaketprabayar.cetak', ['cetak' => false])
         </div>
     </div>
     <x-modal.cetak judul="" />

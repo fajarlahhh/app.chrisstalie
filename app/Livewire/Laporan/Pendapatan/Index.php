@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Laporan\Penerimaan;
+namespace App\Livewire\Laporan\Pendapatan;
 
 use Livewire\Component;
 use App\Models\Pengguna;
 use App\Models\Pembayaran;
 use Livewire\Attributes\Url;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\LaporanpenerimaanExport;
+use App\Exports\LaporanpendapatanExport;
 use Illuminate\Support\Facades\DB;
 use App\Models\MetodeBayar;
 
@@ -26,12 +26,12 @@ class Index extends Component
 
     public function export()
     {
-        return Excel::download(new LaporanpenerimaanExport(
+        return Excel::download(new LaporanpendapatanExport(
             $this->getData(false),
             $this->tanggal1,
             $this->tanggal2,
             Pengguna::find($this->pengguna_id)?->nama
-        ), 'penerimaan.xlsx');
+        ), 'pendapatan.xlsx');
     }
 
     private function getData($paginate = true)
@@ -52,7 +52,7 @@ class Index extends Component
     public function render()
     {
         $data = $this->getData(true);
-        return view('livewire.laporan.penerimaan.index', [
+        return view('livewire.laporan.pendapatan.index', [
             'data' =>  $data,
             'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ? Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->get()->toArray() : Pengguna::where('id', auth()->id())->get()->toArray()
         ]);

@@ -3,11 +3,11 @@
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
-        <li class="breadcrumb-item active">Penerimaan</li>
+        <li class="breadcrumb-item active">Pendapatan</li>
     @endsection
 
     <!-- BEGIN page-header -->
-    <h1 class="page-header">Penerimaan</h1>
+    <h1 class="page-header">Pendapatan</h1>
     <!-- END page-header -->
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
@@ -33,10 +33,10 @@
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
-            @include('livewire.laporan.penerimaan.cetak', ['cetak' => false])
+            @include('livewire.laporan.pendapatan.cetak', ['cetak' => false])
         </div>
     </div>
-    <x-modal.cetak judul="Penerimaan" />
+    <x-modal.cetak judul="Pendapatan" />
 
     <div wire:loading>
         <x-loading />
