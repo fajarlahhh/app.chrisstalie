@@ -101,7 +101,7 @@ class Index extends Component
         return PasienPaketPrabayar::with(['pengguna'])
             ->where('tanggal', 'like', $this->tanggal . '%')->get()->map(fn($q) => [
                 'metode_bayar' => $q['metode_bayar'],
-                'bayar' => $q['bayar'],
+                'bayar' => $q['total'],
                 'selisih' => 0,
                 'metode_bayar_2' => null,
                 'bayar_2' => 0,

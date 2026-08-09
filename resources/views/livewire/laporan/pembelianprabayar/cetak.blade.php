@@ -44,7 +44,7 @@
                 <td>{{ $item->pasien?->nama ?? '-' }}</td>
                 <td>{{ $item->paketPerawatan?->nama ?? '-' }}</td>
                 <td>{{ $item->metode_bayar }}</td>
-                <td class="text-end">{{ number_format_id($item->bayar) }}</td>
+                <td class="text-end">{{ number_format_id($item->total) }}</td>
                 <td>{{ $item->pengguna?->nama ?? '-' }}</td>
             </tr>
         @empty
@@ -56,7 +56,7 @@
     <tfoot>
         <tr>
             <th colspan="6" class="text-end">Total</th>
-            <th class="text-end">{{ number_format_id($data->sum('bayar')) }}</th>
+            <th class="text-end">{{ number_format_id($data->sum('total')) }}</th>
             <th></th>
         </tr>
     </tfoot>
