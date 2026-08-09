@@ -38,7 +38,7 @@ class Form extends Component
                 'masa_aktif' => $this->jenis_prabayar == 'Masa Aktif' ? 'required|numeric' : 'nullable|numeric',
                 'jenis_prabayar' => $this->jenis == 'Prabayar' ? 'required' : 'nullable',
                 'kode_akun_kewajiban_id' => $this->jenis == 'Prabayar' ? 'required' : 'nullable',
-                'tanggal_mulai_daftar' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after_or_equal:now' : 'nullable|date',
+                'tanggal_mulai_daftar' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date' : 'nullable|date',
                 'tanggal_selesai_daftar' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after:tanggal_mulai_daftar' : 'nullable|date',
                 'tanggal_mulai_berlaku' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after_or_equal:tanggal_mulai_daftar' : 'nullable|date',
                 'tanggal_selesai_berlaku' => $this->jenis_prabayar == 'Periode Tanggal' ? 'required|date|after:tanggal_mulai_berlaku' : 'nullable|date',
