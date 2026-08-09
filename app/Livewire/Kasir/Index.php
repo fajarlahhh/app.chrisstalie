@@ -120,7 +120,7 @@ class Index extends Component
                     'tarif_tindakan_id' => $q->tarif_tindakan_id,
                     'nama' => $q->tarifTindakan->nama,
                     'qty' => $q->qty,
-                    'diskon' => $q->paket_perawatan_id ? 0 : ($q->diskon ?: ($this->ulangTahun && $q->tarifTindakan->promo_ultah ? $q->tarifTindakan->promo_ultah : 0)),
+                    'diskon' => $q->paket_perawatan_id ? 0 : ($q->diskon ?: ($this->ulangTahun && $q->tarifTindakan->promo_ultah ? 0 : 0)),
                     'kode_akun_id' => $q->tarifTindakan->kode_akun_id,
                     'harga' => $q->harga,
                     'catatan' => $q->catatan,
