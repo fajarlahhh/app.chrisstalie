@@ -34,7 +34,7 @@ class Form extends Component
         if ($this->data->pembayaran) {
             return abort(404);
         }
-        $this->dataPasienPaketPrabayar = PasienPaketPrabayar::where('spasien_id', $data->pasien_id)
+        $this->dataPasienPaketPrabayar = PasienPaketPrabayar::where('pasien_id', $data->pasien_id)
             ->whereRaw('qty > (
 		select count(*)
 	FROM
