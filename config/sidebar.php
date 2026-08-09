@@ -339,6 +339,10 @@ return [
                     "method" => ["Index"],
                 ],
                 [
+                    "title" => "Pembelian Prabayar",
+                    "method" => ["Index"],
+                ],
+                [
                     "title" => "Penyusutan Aset",
                     "method" => ["Index"],
                 ],
