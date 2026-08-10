@@ -87,7 +87,7 @@
                         <div class="alert alert-primary">
                             <h5>Kategori</h5>
                             <hr>
-                            <div class="mb-3" x-data="{ dokter: $wire.dokter }">
+                            <div class="mb-3" x-data="{ dokter: $wire.entangle('dokter') }">
                                 <label class="form-label">Dokter</label>
                                 <div class="input-group mb-10px">
                                     <div class="input-group-text">
@@ -103,7 +103,7 @@
                                             style: '',
                                             showSubtext: true,
                                             styleBase: 'form-control'
-                                        })" data-width="100%" :disabled="!dokter">
+                                        }); $watch('dokter', value => { $($el).prop('disabled', !value); $($el).selectpicker('refresh'); })" data-width="100%" :disabled="!dokter">
                                         <option value="">Pilih Kode Akun Jasa Dokter</option>
                                         @foreach ($dataKodeAkun as $akun)
                                             <option value="{{ $akun['id'] }}">
@@ -116,7 +116,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="mb-3" x-data="{ perawat: $wire.perawat }">
+                            <div class="mb-3" x-data="{ perawat: $wire.entangle('perawat') }">
                                 <label class="form-label">Perawat</label>
                                 <div class="input-group mb-10px">
                                     <div class="input-group-text">
@@ -132,7 +132,7 @@
                                             style: '',
                                             showSubtext: true,
                                             styleBase: 'form-control'
-                                        })" data-width="100%" :disabled="!perawat">
+                                        }); $watch('perawat', value => { $($el).prop('disabled', !value); $($el).selectpicker('refresh'); })" data-width="100%" :disabled="!perawat">
                                         <option value="">Pilih Kode Akun Jasa Perawat</option>
                                         @foreach ($dataKodeAkun as $akun)
                                             <option value="{{ $akun['id'] }}">
