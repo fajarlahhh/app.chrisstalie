@@ -256,7 +256,7 @@
                                                     style="font-size: 10px; letter-spacing: 0.5px;">Masa
                                                     Berlaku</small>
                                                 <span
-                                                    class="fs-13px fw-bold text-dark">{{ $paketPerawatan->masa_aktif }}
+                                                    class="fs-13px fw-bold text-dark">{{ $paketPerawatan->masa_aktif ?: max(0, intval(now()->startOfDay()->diffInDays(\Carbon\Carbon::parse($paketPerawatan->tanggal_selesai_berlaku)->startOfDay(), false))) }}
                                                     Hari</span>
                                             </div>
                                         </div>
@@ -267,7 +267,7 @@
                                                     style="font-size: 10px; letter-spacing: 0.5px;">Sampai
                                                     Dengan</small>
                                                 <span
-                                                    class="fs-13px fw-bold text-dark">{{ date('Y-m-d', strtotime($tanggal . ' + ' . $paketPerawatan->masa_aktif . ' days')) }}</span>
+                                                    class="fs-13px fw-bold text-dark">{{ $paketPerawatan->masa_aktif ? date('Y-m-d', strtotime($tanggal . ' + ' . $paketPerawatan->masa_aktif . ' days')) : $paketPerawatan->tanggal_selesai_berlaku }}</span>
                                             </div>
                                         </div>
                                         <div class="col-4">
