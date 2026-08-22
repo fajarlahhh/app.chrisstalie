@@ -39,11 +39,11 @@ class BarangClass
             ->when($resep == '0' || $resep == '1', fn($q) => $q->where('perlu_resep', $resep))
             ->orderBy('barang.nama')->get()->map(fn($q) => [
                 'id' => $q['barang_satuan_id'],
-                'nama' => $q['barang_nama'],
+                'nama' => $q['barang_nama'] . ' - ' . $q['rasio_dari_terkecil'],
                 'barang_id' => $q['barang_id'],
                 'biaya' => $q['harga_jual'],
                 'harga' => $q['harga_jual'],
-                'harga_beli_tertinggi' => $q->stokMasuk->take(3)->max(fn($r) => $r->harga_beli / $r->rasio_dari_terkecil) * $q['rasio_dari_terkecil'],
+                'harga_beli_tertinggi' => $q->stokMasuk->count() > 0 ? $q->stokMasuk->whereNotNull('pengadaan_pemesanan_id')->sortByDesc('tanggal')->take(1)->sum(fn($s) => ($s['harga_beli'] * $q['rasio_dari_terkecil'])) : 0,
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'satuan' => $q['barang_satuan_nama'],
                 'persediaan' => $q['persediaan'],

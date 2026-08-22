@@ -44,7 +44,7 @@
                             2,
                         )
                         : $item->tarifTindakanBahan->sum(
-                            fn($q) => ($q->qty * $q->barang?->getHargaBeliTertinggi($q->barangSatuan->rasio_dari_terkecil)) / $q->barangSatuan?->rasio_dari_terkecil,
+                            fn($q) => ($q->qty * $q->barang?->getHargaBeliTertinggi($q->barangSatuan->rasio_dari_terkecil)),
                         ) }}
                 </td>
                 <td class="text-end">
