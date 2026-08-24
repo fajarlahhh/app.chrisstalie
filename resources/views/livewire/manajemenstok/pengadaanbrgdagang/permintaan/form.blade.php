@@ -12,7 +12,8 @@
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
         </div>
-        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()"
+            @keydown.enter="if ($event.target.tagName !== 'TEXTAREA') $event.preventDefault()">
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label mb-2">Jenis Barang</label>
@@ -28,21 +29,19 @@
                             @change="updatedJenisBarang()">
                         <label class="form-check-label" for="jenis_barang_alat">Alat Dan Bahan</label>
                     </div>
-                    @role('administrator|supervisor')
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="jenis_barang_khusus" name="jenis_barang"
-                                value="Barang Khusus" wire:model.live="jenis_barang" x-model="jenis_barang"
-                                @change="updatedJenisBarang()">
-                            <label class="form-check-label" for="jenis_barang_khusus">Barang Khusus</label>
-                        </div>
-                    @endrole
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="jenis_barang_khusus" name="jenis_barang"
+                            value="Barang Khusus" wire:model.live="jenis_barang" x-model="jenis_barang"
+                            @change="updatedJenisBarang()">
+                        <label class="form-check-label" for="jenis_barang_khusus">Barang Khusus</label>
+                    </div>
                     @error('jenis_barang')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <textarea id="deskripsi"  class="form-control" wire:model="deskripsi" x-model="deskripsi"></textarea>
+                    <textarea id="deskripsi" class="form-control" wire:model="deskripsi" x-model="deskripsi"></textarea>
                     @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
