@@ -43,7 +43,7 @@
                                 <div class="stats-title">OMSET BULAN INI</div>
                                 <div class="stats-number text-end fs-12px">
                                     <small>JASA</small> :
-                                    {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_tindakan - $q->total_registrasi_paket_perawatan - $q->total_diskon_tindakan), 2) }}
+                                    {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_tindakan + $q->total_registrasi_paket_perawatan - $q->total_diskon_tindakan), 2) }}
                                     <br><small>OBAT & PRODUK</small> :
                                     {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang - $q->total_diskon_barang), 2) }}
                                 </div>
