@@ -19,7 +19,7 @@
         <img src="/assets/img/login.png" class="w-200px" alt="" />
         <br>
         <br>
-        <h5>Laporan Penerimaan</h5>
+        <h5>Laporan Pendapatan</h5>
         <hr>
     </div>
     <br>
