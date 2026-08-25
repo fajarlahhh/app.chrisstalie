@@ -45,7 +45,7 @@
                                     <small>JASA</small> :
                                     {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_tindakan + $q->total_registrasi_paket_perawatan - $q->total_diskon_tindakan), 2) }}
                                     <br><small>OBAT & PRODUK</small> :
-                                    {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang - $q->total_diskon_barang), 2) }}
+                                    {{ number_format_id($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_barang + $q->total_harga_barang - $q->total_diskon_barang - $q->total_diskon_resep), 2) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>
