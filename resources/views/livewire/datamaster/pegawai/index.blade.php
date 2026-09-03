@@ -36,6 +36,7 @@
                         <th>No. Hp</th>
                         <th>Tanggal Masuk</th>
                         <th>Satuan Tugas</th>
+                        <th>ID</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -51,6 +52,7 @@
                             <td>{{ $row->no_hp }}</td>
                             <td>{{ $row->tanggal_masuk }}</td>
                             <td>{{ $row->satuan_tugas }}</td>
+                            <td>{{ $row->id }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @if ($row->status == 'Aktif')
                                     @role('administrator|supervisor')
